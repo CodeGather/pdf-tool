@@ -1,8 +1,8 @@
 # PDF Tool
 
-Version: v1.0.3
+Version: v1.0.5
 
-Archived snapshot of the v1.0.2 release of this tool.
+Archived snapshot of the v1.0.5 release of this tool.
 
 This directory is a standalone Go module.
 
@@ -121,4 +121,4 @@ One-shot build script:
 
 ## Archive
 
-This repository snapshot is archived as version: v1.0.2.
+This repository snapshot is archived as version: v1.0.5.
