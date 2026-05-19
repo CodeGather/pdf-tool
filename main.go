@@ -1163,6 +1163,7 @@ func convertJPXToOutput(reader io.Reader, outPath, format string) (err error) {
 
 func convertJPXFile(rawPath, outPath, outputExt, sipsFormat string) error {
 	type converter struct {
+		path string
 		name string
 		args []string
 	}
@@ -1170,25 +1171,48 @@ func convertJPXFile(rawPath, outPath, outputExt, sipsFormat string) error {
 	var candidates []converter
 	// 分支选择按平台优先级排列：
 	// - macOS 优先用 sips，减少外部依赖；
+	// - Windows 优先尝试随包放置的 ImageMagick，再回退到系统 PATH；
 	// - 其他平台优先尝试 ImageMagick，作为可移植回退。
 	// 这里不是“只选一个工具”，而是“按顺序尝试多个工具”，
 	// 这样可在目标环境缺少某个命令时继续完成 JPX -> png/jpg 转换。
 	switch runtime.GOOS {
 	case "darwin":
 		candidates = append(candidates, converter{
+			path: "sips",
 			name: "sips",
 			args: []string{"-s", "format", sipsFormat, rawPath, "--out", outPath},
 		})
 		candidates = append(candidates, converter{
+			path: "magick",
 			name: "magick",
+			args: []string{rawPath, outPath},
+		})
+	case "windows":
+		if bundledMagick := resolveBundledMagickExecutable(); bundledMagick != "" {
+			candidates = append(candidates, converter{
+				path: bundledMagick,
+				name: filepath.Base(bundledMagick),
+				args: []string{rawPath, outPath},
+			})
+		}
+		candidates = append(candidates, converter{
+			path: "magick",
+			name: "magick",
+			args: []string{rawPath, outPath},
+		})
+		candidates = append(candidates, converter{
+			path: "convert",
+			name: "convert",
 			args: []string{rawPath, outPath},
 		})
 	default:
 		candidates = append(candidates, converter{
+			path: "magick",
 			name: "magick",
 			args: []string{rawPath, outPath},
 		})
 		candidates = append(candidates, converter{
+			path: "convert",
 			name: "convert",
 			args: []string{rawPath, outPath},
 		})
@@ -1199,11 +1223,14 @@ func convertJPXFile(rawPath, outPath, outputExt, sipsFormat string) error {
 	// 失败信息保留到一起，便于在目标机器上定位到底是“命令不存在”
 	// 还是“命令能执行但不支持当前 JPX 样本”。
 	for _, candidate := range candidates {
-		if _, lookErr := exec.LookPath(candidate.name); lookErr != nil {
+		if candidate.path == "" {
+			candidate.path = candidate.name
+		}
+		if _, lookErr := exec.LookPath(candidate.path); lookErr != nil {
 			errs = append(errs, fmt.Sprintf("%s not found", candidate.name))
 			continue
 		}
-		cmd := exec.Command(candidate.name, candidate.args...)
+		cmd := exec.Command(candidate.path, candidate.args...)
 		combined, runErr := cmd.CombinedOutput()
 		if runErr == nil {
 			return nil
@@ -1212,6 +1239,25 @@ func convertJPXFile(rawPath, outPath, outputExt, sipsFormat string) error {
 	}
 
 	return fmt.Errorf("convert jpx to %s failed: %s", outputExt, strings.Join(errs, " | "))
+}
+
+func resolveBundledMagickExecutable() string {
+	exePath, err := os.Executable()
+	if err != nil || exePath == "" {
+		return ""
+	}
+	searchDir := filepath.Dir(exePath)
+	matches, err := filepath.Glob(filepath.Join(searchDir, "ImageMagick*.exe"))
+	if err != nil {
+		return ""
+	}
+	sort.Strings(matches)
+	for _, candidate := range matches {
+		if info, statErr := os.Stat(candidate); statErr == nil && !info.IsDir() {
+			return candidate
+		}
+	}
+	return ""
 }
 
 func encodePNG(w io.Writer, img image.Image) error {
