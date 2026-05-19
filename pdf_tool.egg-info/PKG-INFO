@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: pdf-tool
+Version: 0.1.0
+Summary: A command-line tool for common PDF operations
+License: MIT
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: pypdf>=4.0.0
+Requires-Dist: click>=8.0.0
+Requires-Dist: Pillow>=10.0.0
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0; extra == "dev"
+
+# pdf-tool
