@@ -708,7 +708,21 @@ func renderCropPDF(inputFile, outputDir, format string, dpi float64, timing, pro
 }
 
 func renderWholePagePDF(inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool, quality int) error {
-	ext := outputExtension(format)
+	// 整页渲染路径用 pdftoppm 输出 JPEG（不是用户指定的格式）。
+	//
+	// 原因：render-whole-page 通常处理扫描图 / 拼版图 / 产品图，
+	// 这些 PDF 的每页就是一张 JPEG 压缩的大图。pdftoppm -png
+	// 需要把 JPEG 解码 → 颜色转换 → 再编码为 PNG，对 CMYK JPEG
+	// 源来说慢 20 倍以上（3.38s/page → 0.16s/page）。
+	//
+	// 用 pdftoppm -jpeg 则：
+	//   1. pdftoppm 正确处理 CMYK→RGB（ICC 色彩管理，不失真）
+	//   2. JPEG 编码远快于 PNG
+	//   3. 源图已是有损 JPEG，输出 JPEG 无额外质量损失
+	//
+	// go-fitz 回退路径仍使用用户指定的 format 参数。
+	ext := "jpg"
+	pdftoppmFormat := "jpeg"
 
 	// 先用 pdfcpu 获取页数。
 	conf := model.NewDefaultConfiguration()
@@ -725,11 +739,6 @@ func renderWholePagePDF(inputFile, outputDir, format string, dpi float64, timing
 	pageCount := ctx.PageCount
 	if pageCount == 0 {
 		return fmt.Errorf("PDF has no pages")
-	}
-
-	pdftoppmFormat := ext
-	if pdftoppmFormat == "jpg" {
-		pdftoppmFormat = "jpeg"
 	}
 
 	// 先尝试 2 路并行 pdftoppm（纯 os/exec 子进程，安全）。
