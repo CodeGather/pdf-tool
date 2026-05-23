@@ -15,8 +15,8 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
-	"runtime"
 	"sort"
+	"runtime"
 	"strconv"
 	"strings"
 	"sync"
@@ -116,21 +116,31 @@ func main() {
 	metaJSONEnabled := flag.Bool("meta-json", false, "以 JSON 形式打印图片宽高信息")
 	flag.BoolVar(metaJSONEnabled, "m-json", false, "以 JSON 形式打印图片宽高信息")
 	timing := flag.Bool("timing", false, "打印每个阶段的耗时信息")
-	flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
+flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
+	quality := flag.Int("quality", 85, "JPEG 编码质量 1-100（默认 85，兼顾质量和速度）")
+	flag.IntVar(quality, "q", 85, "JPEG 编码质量 1-100（默认 85）")
 	flag.Usage = func() {
 		fmt.Fprintf(flag.CommandLine.Output(), "用法：%s [参数]\n", os.Args[0])
 		flag.PrintDefaults()
 		fmt.Fprintln(flag.CommandLine.Output())
-		fmt.Fprintln(flag.CommandLine.Output(), "示例：")
-		fmt.Fprintln(flag.CommandLine.Output(), "  cd /path/to/pdf-tool")
-		fmt.Fprintln(flag.CommandLine.Output(), "  go build -o pdf-tool .")
+		fmt.Fprintln(flag.CommandLine.Output(), "使用示例：")
+		fmt.Fprintln(flag.CommandLine.Output(), "")
+		fmt.Fprintln(flag.CommandLine.Output(), "  # 基础转换")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output")
-		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -f jpg -dpi 450")
-		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -l -m-json")
-		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -l -m-json -t")
-		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -l -m")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -f jpg -dpi 300")
+		fmt.Fprintln(flag.CommandLine.Output(), "")
+		fmt.Fprintln(flag.CommandLine.Output(), "  # 编码质量控制")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -f jpg -q 50   # 小文件/低质量")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -f jpg -q 85   # 高质量（默认）")
+		fmt.Fprintln(flag.CommandLine.Output(), "")
+		fmt.Fprintln(flag.CommandLine.Output(), "  # 调试与诊断")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -l -t")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -l -m")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -l -m-json")
+		fmt.Fprintln(flag.CommandLine.Output(), "")
+		fmt.Fprintln(flag.CommandLine.Output(), "  # 合并 PDF")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-dir /path/to/pdfs -o merged.pdf")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-inputs a.pdf,b.pdf,c.pdf -o merged.pdf")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-dir /path/to/pdfs -o merged.pdf -merge-chunk-size 20")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-inputs a.pdf,b.pdf,c.pdf -o merged.pdf -l")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-dir /path/to/pdfs -o merged.pdf -p")
@@ -164,7 +174,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := convertPDFToImages(*inputFile, *outputDir, *format, *dpi, *timing, *progressEnabled); err != nil {
+	if err := convertPDFToImages(*inputFile, *outputDir, *format, *dpi, *timing, *progressEnabled, *quality); err != nil {
 		fmt.Fprintf(os.Stderr, "PDF 转图片失败：%v\n", err)
 		os.Exit(1)
 	}
@@ -329,8 +339,14 @@ func naturalLess(left, right string) bool {
 // 1. 直接从对象流里提取嵌入图片；
 // 2. 先渲染整页，再通过连通域分析把主体区域裁出来。
 // 这样做的目的，是在“速度”和“兼容性”之间做分流。
-func convertPDFToImages(inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool) error {
+func convertPDFToImages(inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool, quality int) error {
+	totalStart := time.Now()
 	log.Printf("convert: start input=%s output=%s format=%s dpi=%.1f", inputFile, outputDir, format, dpi)
+	if timing {
+		defer func() {
+			traceTiming(true, "total elapsed=%s", time.Since(totalStart))
+		}()
+	}
 	// 先做 PDF 级别的静态分析，再决定走“直接提取”还是“渲染后裁剪”路径。
 	// 这里不要一上来就渲染整页，因为大多数文件其实可以直接从对象流里拿到单图，
 	// 只有识别到复杂结构时才把速度让给兼容性。
@@ -365,16 +381,17 @@ func convertPDFToImages(inputFile, outputDir, format string, dpi float64, timing
 	case routeRenderCropComplexTransparency:
 		// 复杂透明度 + Form XObject 场景，优先保证最终可见结果。
 		// 这类 PDF 往往无法靠对象直取稳定还原，所以走整页渲染后裁剪。
-		return renderCropPDF(inputFile, outputDir, format, dpi, timing, progressEnabled)
+		return renderCropPDF(inputFile, outputDir, format, dpi, timing, progressEnabled, quality)
 	case routeRenderWholePageImage:
 		// 页面本身就是整图时，整页渲染比对象级重建更稳。
 		// 这种场景通常对应扫描件或大图铺满页面，直接输出整页最合理。
-		return renderWholePagePDF(inputFile, outputDir, format, dpi, timing, progressEnabled)
+		// 完全串行渲染，不使用任何并行。
+		return renderWholePagePDF(inputFile, outputDir, format, dpi, timing, progressEnabled, quality)
 	case routeDirectExtractTransparency, routeDirectExtractMultiImageStack, routeDirectExtractSingleObject:
 		// 其余情况都走对象级提取。
 		// 这里会在 writeDirectImage / writeDirectImageFast 里再细分：
 		// 能快拷贝的快拷贝，不能快拷贝的再按颜色空间、遮罩和编码格式回退。
-		return extractDirectImages(ctx, inputFile, outputDir, format, dpi, timing, progressEnabled)
+		return extractDirectImages(ctx, inputFile, outputDir, format, dpi, timing, progressEnabled, quality)
 	default:
 		return fmt.Errorf("unsupported PDF route %v", route)
 	}
@@ -490,7 +507,7 @@ func classifyPDFDocument(ctx *model.Context, inputFile string) (pdfDocumentRoute
 	return routeDirectExtractSingleObject, nil
 }
 
-func renderCropPDF(inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool) error {
+func renderCropPDF(inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool, quality int) error {
 	doc, err := fitz.New(inputFile)
 	if err != nil {
 		return fmt.Errorf("open PDF for render crop: %w", err)
@@ -541,7 +558,7 @@ func renderCropPDF(inputFile, outputDir, format string, dpi float64, timing, pro
 				case "png":
 					return encodePNG(w, cropped)
 				case "jpg", "jpeg":
-					return jpeg.Encode(w, cropped, &jpeg.Options{Quality: 95})
+					return jpeg.Encode(w, cropped, &jpeg.Options{Quality: quality})
 				default:
 					return fmt.Errorf("unsupported output format %q", format)
 				}
@@ -573,7 +590,182 @@ func renderCropPDF(inputFile, outputDir, format string, dpi float64, timing, pro
 	return nil
 }
 
-func renderWholePagePDF(inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool) error {
+func renderWholePagePDF(inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool, quality int) error {
+	ext := outputExtension(format)
+
+	// 先用 pdfcpu 获取页数。
+	conf := model.NewDefaultConfiguration()
+	conf.Cmd = model.EXTRACTIMAGES
+	file, err := os.Open(inputFile)
+	if err != nil {
+		return fmt.Errorf("open PDF for page count: %w", err)
+	}
+	ctx, err := api.ReadValidateAndOptimize(file, conf)
+	file.Close()
+	if err != nil {
+		return fmt.Errorf("read PDF for page count: %w", err)
+	}
+	pageCount := ctx.PageCount
+	if pageCount == 0 {
+		return fmt.Errorf("PDF has no pages")
+	}
+
+	pdftoppmFormat := ext
+	if pdftoppmFormat == "jpg" {
+		pdftoppmFormat = "jpeg"
+	}
+
+	// 先尝试 2 路并行 pdftoppm（纯 os/exec 子进程，安全）。
+	// 每块处理一段页范围，写到独立临时目录，完成后合并。
+	convertStart := time.Now()
+	if err := renderWholePagePDFParallel(inputFile, outputDir, pdftoppmFormat, ext, dpi, quality, pageCount); err == nil {
+		traceTiming(timing, "pdftoppm conversion=%s all-pages=%d", time.Since(convertStart), pageCount)
+		return renderWholePagePDFRename(outputDir, ext, pageCount, timing, progressEnabled)
+	} else {
+		log.Printf("parallel pdftoppm failed: %v, falling back to serial pdftoppm", err)
+	}
+
+	// 串行 pdftoppm 回退（与原来的逻辑一致）。
+	if err := renderWholePagePDFSerial(inputFile, outputDir, pdftoppmFormat, ext, dpi, quality, pageCount); err != nil {
+		log.Printf("serial pdftoppm failed: %v, falling back to go-fitz", err)
+		return renderWholePagePDFGoFitz(inputFile, outputDir, format, dpi, timing, progressEnabled, quality)
+	}
+	traceTiming(timing, "pdftoppm conversion=%s all-pages=%d", time.Since(convertStart), pageCount)
+	return renderWholePagePDFRename(outputDir, ext, pageCount, timing, progressEnabled)
+}
+
+// renderWholePagePDFParallel 用多路并行 pdftoppm 分别渲染不同的页范围。
+// pdftoppm 是独立 C 进程，无 CGo 信号栈问题，多路并行不会造成卡死。
+func renderWholePagePDFParallel(inputFile, outputDir, pdftoppmFormat, ext string, dpi float64, quality, pageCount int) error {
+	numWorkers := 4
+	// 每块至少 1 页，避免空块
+	chunkSize := (pageCount + numWorkers - 1) / numWorkers
+	if chunkSize < 1 {
+		chunkSize = 1
+	}
+
+	var wg sync.WaitGroup
+	errCh := make(chan error, numWorkers)
+
+	for i := 0; i < numWorkers; i++ {
+		first := i*chunkSize + 1
+		last := (i + 1) * chunkSize
+		if last > pageCount {
+			last = pageCount
+		}
+		if first > pageCount || first > last {
+			break
+		}
+
+		wg.Add(1)
+		go func(first, last int) {
+			defer wg.Done()
+
+			// 每块写到独立临时目录，避免 pdftoppm 输出文件互相覆盖
+			chunkDir, err := os.MkdirTemp(outputDir, ".pdftoppm-*")
+			if err != nil {
+				errCh <- fmt.Errorf("create chunk dir: %w", err)
+				return
+			}
+			defer os.RemoveAll(chunkDir)
+
+			args := []string{
+				fmt.Sprintf("-%s", pdftoppmFormat),
+				"-r", fmt.Sprintf("%.0f", dpi),
+				"-f", strconv.Itoa(first),
+				"-l", strconv.Itoa(last),
+			}
+			if pdftoppmFormat == "jpeg" {
+				args = append(args, "-jpegopt", fmt.Sprintf("quality=%d", quality))
+			}
+			args = append(args, inputFile, filepath.Join(chunkDir, "page"))
+
+			cmd := exec.Command("pdftoppm", args...)
+			if out, err := cmd.CombinedOutput(); err != nil {
+				errCh <- fmt.Errorf("chunk pages %d-%d: %v: %s", first, last, err, strings.TrimSpace(string(out)))
+				return
+			}
+
+			// 把 chunk 输出移到 outputDir
+			entries, err := os.ReadDir(chunkDir)
+			if err != nil {
+				errCh <- fmt.Errorf("read chunk dir: %w", err)
+				return
+			}
+			for _, entry := range entries {
+				oldPath := filepath.Join(chunkDir, entry.Name())
+				newPath := filepath.Join(outputDir, entry.Name())
+				if err := os.Rename(oldPath, newPath); err != nil {
+					errCh <- fmt.Errorf("move %s: %w", entry.Name(), err)
+					return
+				}
+			}
+		}(first, last)
+	}
+
+	wg.Wait()
+	close(errCh)
+
+	for err := range errCh {
+		if err != nil {
+			// 清理 outputDir 中已移入的部分文件
+			pageDigits := len(strconv.Itoa(pageCount))
+			for p := 1; p <= pageCount; p++ {
+				os.Remove(filepath.Join(outputDir, fmt.Sprintf("page-%0*d.%s", pageDigits, p, ext)))
+			}
+			return err
+		}
+	}
+	return nil
+}
+
+// renderWholePagePDFSerial 是串行 pdftoppm 回退路径。
+func renderWholePagePDFSerial(inputFile, outputDir, pdftoppmFormat, ext string, dpi float64, quality, pageCount int) error {
+	args := []string{
+		fmt.Sprintf("-%s", pdftoppmFormat),
+		"-r", fmt.Sprintf("%.0f", dpi),
+	}
+	if pdftoppmFormat == "jpeg" {
+		args = append(args, "-jpegopt", fmt.Sprintf("quality=%d", quality))
+	}
+	args = append(args, inputFile, filepath.Join(outputDir, "page"))
+
+	cmd := exec.Command("pdftoppm", args...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}
+
+// renderWholePagePDFRename 把 pdftoppm 输出的 page-XX.ext 重命名为 page_XXX_image_001.ext。
+func renderWholePagePDFRename(outputDir, ext string, pageCount int, timing, progressEnabled bool) error {
+	pageDigits := len(strconv.Itoa(pageCount))
+	traceProgress(progressEnabled, 0)
+	for pageNr := 1; pageNr <= pageCount; pageNr++ {
+		pageStart := time.Now()
+		oldName := fmt.Sprintf("page-%0*d.%s", pageDigits, pageNr, ext)
+		oldPath := filepath.Join(outputDir, oldName)
+		newName := fmt.Sprintf("page_%03d_image_001.%s", pageNr, ext)
+		newPath := filepath.Join(outputDir, newName)
+		if err := os.Rename(oldPath, newPath); err != nil {
+			return fmt.Errorf("rename page %d: %w", pageNr, err)
+		}
+		log.Printf("convert: page=%d/%d path=render-whole-page", pageNr, pageCount)
+		traceImageMeta(imageMetaRecord{
+			Type:   "image-meta",
+			Source: "render-whole-page",
+			Page:   pageNr,
+			Index:  1,
+			Ext:    ext,
+			Path:   newPath,
+		})
+		traceTiming(timing, "page %d total=%s", pageNr, time.Since(pageStart))
+		traceProgress(progressEnabled, pageNr*100/pageCount)
+	}
+	return nil
+}
+
+// renderWholePagePDFGoFitz 是 pdftoppm 不可用时的 go-fitz 回退路径。
+func renderWholePagePDFGoFitz(inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool, quality int) error {
 	doc, err := fitz.New(inputFile)
 	if err != nil {
 		return fmt.Errorf("open PDF for render whole page: %w", err)
@@ -592,7 +784,7 @@ func renderWholePagePDF(inputFile, outputDir, format string, dpi float64, timing
 		pageStart := time.Now()
 		log.Printf("convert: page=%d/%d path=render-whole-page", pageNr, pageCount)
 		outputPath := filepath.Join(outputDir, fmt.Sprintf("page_%03d_image_001.%s", pageNr, outputExtension(format)))
-		if err := renderWholePageImage(inputFile, pageNr, dpi, outputPath, format, timing); err != nil {
+		if err := renderWholePageImageWithDoc(doc, pageNr, dpi, outputPath, format, timing, quality, pageStart); err != nil {
 			return err
 		}
 		traceImageMeta(imageMetaRecord{
@@ -606,7 +798,6 @@ func renderWholePagePDF(inputFile, outputDir, format string, dpi float64, timing
 		traceTiming(timing, "page %d total=%s", pageNr, time.Since(pageStart))
 		traceProgress(progressEnabled, pageNr*100/pageCount)
 	}
-
 	return nil
 }
 
@@ -615,7 +806,7 @@ func renderWholePagePDF(inputFile, outputDir, format string, dpi float64, timing
 // - JPEG / JPEG2000 之类的编码流可以直接复制；
 // - 8-bit RGB / Gray 可以快速重建成 PNG；
 // - 其他复杂颜色空间或位深会自动回退。
-func extractDirectImages(ctx *model.Context, inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool) error {
+func extractDirectImages(ctx *model.Context, inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool, quality int) error {
 	start := time.Now()
 	traceTiming(timing, "direct-extract start")
 	log.Printf("convert: direct-extract pages=%d", ctx.PageCount)
@@ -625,6 +816,14 @@ func extractDirectImages(ctx *model.Context, inputFile, outputDir, format string
 	totalWritten := 0
 	processedPages := 0
 	traceProgress(progressEnabled, 0)
+
+	// 缓存 fitz.Document，供需要整页渲染的页面复用，避免每页重复 open/close PDF。
+	var wholePageDoc *fitz.Document
+	defer func() {
+		if wholePageDoc != nil {
+			wholePageDoc.Close()
+		}
+	}()
 
 	// 这里按页处理，而不是一口气把所有页全部提上来。
 	// 一方面可以在日志里清晰看到每页的耗时；另一方面，遇到单页异常时也更容易控制失败边界。
@@ -649,7 +848,17 @@ func extractDirectImages(ctx *model.Context, inputFile, outputDir, format string
 		if shouldRenderWholePageImage(ctx, pageNr, objNrs) {
 			log.Printf("convert: page=%d/%d path=render-whole-page", pageNr, ctx.PageCount)
 			outputPath := filepath.Join(outputDir, fmt.Sprintf("page_%03d_image_001.%s", pageNr, outputExtension(format)))
-			if err := renderWholePageImage(inputFile, pageNr, dpi, outputPath, format, timing); err != nil {
+			// 延迟打开 fitz.Document，只在首次遇到需要整页渲染的页时初始化。
+			// 之后的页复用同一个 doc，避免每页重复 open/close PDF。
+			if wholePageDoc == nil {
+				var openErr error
+				wholePageDoc, openErr = fitz.New(inputFile)
+				if openErr != nil {
+					return fmt.Errorf("open PDF for whole page render: %w", openErr)
+				}
+				muteFitzWarnings(wholePageDoc)
+			}
+			if err := renderWholePageImageWithDoc(wholePageDoc, pageNr, dpi, outputPath, format, timing, quality, pageStart); err != nil {
 				return err
 			}
 			traceImageMeta(imageMetaRecord{
@@ -668,56 +877,13 @@ func extractDirectImages(ctx *model.Context, inputFile, outputDir, format string
 		}
 		log.Printf("convert: page=%d/%d path=direct-extract objects=%d", pageNr, ctx.PageCount, len(objNrs))
 
-		// 当前版本把页内对象提取串行化，是为了稳定性优先。
-		// 这不是理论最优的吞吐方案，但它避免了 pdfcpu / 解码器在 cgo 路径里并发崩溃。
-		// 如果后面要提速，优先考虑“进程级并发”而不是直接把这里改回多 goroutine。
-		workerCount := 1
-
-		// 用 worker 池并发写出同一页内的多个图片对象。
-		// 这里保留 worker 池结构，是为了后续如果要切换成进程池或更安全的并发模型，
-		// 可以少改外围代码；但在当前版本里 workerCount 固定为 1。
-		jobs := make(chan int)
-		errCh := make(chan error, 1)
-		var wg sync.WaitGroup
-		var writtenMu sync.Mutex
+		// 串行处理该页的所有图片对象，不再使用 goroutine 池（之前的并发会导致电脑卡死）。
 		pageWritten := 0
-
-		for workerIndex := 0; workerIndex < workerCount; workerIndex++ {
-			wg.Add(1)
-			go func() {
-				defer wg.Done()
-				for objNr := range jobs {
-					// 每个对象独立处理：先尝试快路径，再按编码格式或颜色空间回退。
-					// 失败后这里不立刻 panic，而是把错误放到 errCh，由页级逻辑统一收口。
-					if err := writeDirectImage(ctx, inputFile, pageNr, objNr, inputStem, pageDigits, outputDir, format, dpi, timing); err != nil {
-						select {
-						case errCh <- err:
-						default:
-						}
-						continue
-					}
-
-					writtenMu.Lock()
-					pageWritten++
-					writtenMu.Unlock()
-				}
-			}()
-		}
-
-		// 把这一页的所有对象依次投喂给 worker。
-		// 因为 workerCount=1，所以这里实际是顺序消费；保留 jobs 只是让后续并发改造更平滑。
 		for _, objNr := range objNrs {
-			jobs <- objNr
-		}
-		close(jobs)
-		wg.Wait()
-
-		// 单页如果已经出现错误，就不继续往后跑同一份 PDF。
-		// 这能尽快暴露“哪个对象最先失败”，避免把错误扩散成一堆无效输出。
-		select {
-		case err := <-errCh:
-			return err
-		default:
+			if err := writeDirectImage(ctx, inputFile, pageNr, objNr, inputStem, pageDigits, outputDir, format, dpi, timing, quality); err != nil {
+				return err
+			}
+			pageWritten++
 		}
 
 		totalWritten += pageWritten
@@ -734,7 +900,7 @@ func extractDirectImages(ctx *model.Context, inputFile, outputDir, format string
 	return nil
 }
 
-func renderWholePageImage(inputFile string, pageNr int, dpi float64, outPath, format string, timing bool) error {
+func renderWholePageImage(inputFile string, pageNr int, dpi float64, outPath, format string, timing bool, quality int) error {
 	pageStart := time.Now()
 	doc, err := fitz.New(inputFile)
 	if err != nil {
@@ -742,7 +908,11 @@ func renderWholePageImage(inputFile string, pageNr int, dpi float64, outPath, fo
 	}
 	muteFitzWarnings(doc)
 	defer doc.Close()
+	return renderWholePageImageWithDoc(doc, pageNr, dpi, outPath, format, timing, quality, pageStart)
+}
 
+// renderWholePageImageWithDoc 用已经打开的 doc 渲染指定页并写盘，避免重复打开 PDF。
+func renderWholePageImageWithDoc(doc *fitz.Document, pageNr int, dpi float64, outPath, format string, timing bool, quality int, pageStart time.Time) error {
 	img, err := doc.ImageDPI(pageNr-1, dpi)
 	if err != nil {
 		return fmt.Errorf("render page %d: %w", pageNr, err)
@@ -754,7 +924,7 @@ func renderWholePageImage(inputFile string, pageNr int, dpi float64, outPath, fo
 		case "png":
 			return encodePNG(w, img)
 		case "jpg", "jpeg":
-			return jpeg.Encode(w, img, &jpeg.Options{Quality: 95})
+			return jpeg.Encode(w, img, &jpeg.Options{Quality: quality})
 		default:
 			return fmt.Errorf("unsupported output format %q", format)
 		}
@@ -765,9 +935,82 @@ func renderWholePageImage(inputFile string, pageNr int, dpi float64, outPath, fo
 	return nil
 }
 
+// renderSinglePageCrop 渲染 PDF 单页后裁剪到最大前景区域。
+// 用于 CMYK JPEG 等无法绕过 MuPDF 色彩管线的场景：
+// 1. 用 go-fitz 渲染整页（确保颜色正确）
+// 2. 连通域分析（flood fill）找到图片主体边界
+// 3. 裁剪掉白边，输出仅图片区域
+func renderSinglePageCrop(inputFile string, pageNr int, dpi float64, outPath, format string, timing bool, quality int) error {
+	pageStart := time.Now()
+	doc, err := fitz.New(inputFile)
+	if err != nil {
+		return fmt.Errorf("open PDF for render+crop: %w", err)
+	}
+	muteFitzWarnings(doc)
+	defer doc.Close()
+
+	renderStart := time.Now()
+	img, err := doc.ImageDPI(pageNr-1, dpi)
+	if err != nil {
+		return fmt.Errorf("render page %d: %w", pageNr, err)
+	}
+	traceTiming(timing, "render-crop page %d render=%s", pageNr, time.Since(renderStart))
+
+	// 连通域分析，找最大的前景区域（图片主体）
+	analyzeStart := time.Now()
+	crops, err := findLargestRegions(img, 1)
+	if err != nil {
+		return fmt.Errorf("analyze page %d: %w", pageNr, err)
+	}
+	if len(crops) == 0 {
+		// 如果没找到前景区域，回退到全页输出，总比不输出好。
+		log.Printf("render-crop page %d: no foreground found, falling back to whole page", pageNr)
+		return writeImageAtomically(outPath, func(w io.Writer) error {
+			switch format {
+			case "png":
+				return encodePNG(w, img)
+			case "jpg", "jpeg":
+				return jpeg.Encode(w, img, &jpeg.Options{Quality: quality})
+			default:
+				return fmt.Errorf("unsupported output format %q", format)
+			}
+		})
+	}
+	traceTiming(timing, "render-crop page %d analyze=%s", pageNr, time.Since(analyzeStart))
+
+	// crops[0] 是面积最大的区域，即图片主体
+	// 裁掉边框线条（PDF 描边≈1pt，按 DPI 折算为像素再加余量）
+	borderPx := int(dpi/72.0 + 2) // 1pt ≈ DPI/72 px，多加 2px 余量
+	if borderPx < 1 {
+		borderPx = 1
+	}
+	cropRect := crops[0].Inset(borderPx)
+	traceTiming(timing, "render-crop page %d rect=%dx%d at (%d,%d)", pageNr,
+		cropRect.Dx(), cropRect.Dy(), cropRect.Min.X, cropRect.Min.Y)
+
+	cropStart := time.Now()
+	cropped := cropImage(img, cropRect)
+	traceTiming(timing, "render-crop page %d crop=%s", pageNr, time.Since(cropStart))
+
+	if err := writeImageAtomically(outPath, func(w io.Writer) error {
+		switch format {
+		case "png":
+			return encodePNG(w, cropped)
+		case "jpg", "jpeg":
+			return jpeg.Encode(w, cropped, &jpeg.Options{Quality: quality})
+		default:
+			return fmt.Errorf("unsupported output format %q", format)
+		}
+	}); err != nil {
+		return fmt.Errorf("save cropped page %d: %w", pageNr, err)
+	}
+	traceTiming(timing, "render-crop page %d total=%s", pageNr, time.Since(pageStart))
+	return nil
+}
+
 // writeDirectImage 负责把单个图片对象落盘。
 // 它先尝试快速路径；若快速路径条件不成立，再退回到 pdfcpu 的通用解码。
-func writeDirectImage(ctx *model.Context, inputFile string, pageNr, objNr int, inputStem string, pageDigits int, outputDir, format string, dpi float64, timing bool) error {
+func writeDirectImage(ctx *model.Context, inputFile string, pageNr, objNr int, inputStem string, pageDigits int, outputDir, format string, dpi float64, timing bool, quality int) error {
 	objStart := time.Now()
 	imageObj := ctx.Optimize.ImageObjects[objNr]
 	if imageObj == nil || imageObj.ImageDict == nil {
@@ -783,7 +1026,7 @@ func writeDirectImage(ctx *model.Context, inputFile string, pageNr, objNr int, i
 
 	// 先试快路径，是因为有些图片本来就是可直接复制的编码流。
 	// 如果快路径命中，就能避免 pdfcpu 的通用解码，速度会快很多。
-	if ok, err := writeDirectImageFast(ctx, imageObj.ImageDict, objNr, inputStem, pageDigits, pageNr, resourceID, outputDir, objStart, timing); ok {
+	if ok, err := writeDirectImageFast(ctx, imageObj.ImageDict, objNr, inputStem, pageDigits, pageNr, resourceID, outputDir, objStart, timing, dpi, inputFile, format, quality); ok {
 		return err
 	}
 
@@ -826,7 +1069,7 @@ func writeDirectImage(ctx *model.Context, inputFile string, pageNr, objNr int, i
 			Path:   outPath,
 		})
 		writeStart := time.Now()
-		if err := convertJPXToOutput(img.Reader, outPath, format); err != nil {
+		if err := convertJPXToOutput(img.Reader, outPath, format, quality); err != nil {
 			return fmt.Errorf("convert jpx page %d obj %d: %w", pageNr, objNr, err)
 		}
 		traceTiming(timing, "direct-extract page %d obj %d jpx-write=%s", pageNr, objNr, time.Since(writeStart))
@@ -888,7 +1131,7 @@ func writeDirectImage(ctx *model.Context, inputFile string, pageNr, objNr int, i
 // - false, nil 代表条件不满足，应该回退；
 // - false, err 代表快速路径在处理中出错；
 // - true, nil 代表已经成功写盘。
-func writeDirectImageFast(ctx *model.Context, sd *types.StreamDict, objNr int, inputStem string, pageDigits, pageNr int, resourceID, outputDir string, startedAt time.Time, timing bool) (bool, error) {
+func writeDirectImageFast(ctx *model.Context, sd *types.StreamDict, objNr int, inputStem string, pageDigits, pageNr int, resourceID, outputDir string, startedAt time.Time, timing bool, dpi float64, inputFile string, format string, quality int) (bool, error) {
 	if sd == nil {
 		// 分支：没有 stream dict，说明这个对象根本不符合图片流处理条件。
 		return false, nil
@@ -909,21 +1152,44 @@ func writeDirectImageFast(ctx *model.Context, sd *types.StreamDict, objNr int, i
 	}
 
 	if lastFilter == filter.DCT {
-		// 分支：图片流本身已经是压缩后的成熟编码格式。
-		// 这种情况最理想的做法就是尽量不碰像素，只做字节级输出。
-		// DCT(JPEG) 可以直接落盘；但 CMYK JPEG 不适合直接当作普通 jpg 输出，
-		// 因为颜色解释会出错，所以这里保守回退。
-		if lastFilter == filter.DCT && sd.CSComponents == 4 {
-			// 分支：CMYK JPEG。
-			// 由于颜色空间解释不确定，宁可回退到通用路径，也不要写出“看起来像错色”的图片。
-			return false, nil
-		}
-
 		decodeStart := time.Now()
 		if err := sd.Decode(); err != nil {
 			return false, fmt.Errorf("decode page %d obj %d: %w", pageNr, objNr, err)
 		}
 		traceTiming(timing, "direct-extract page %d obj %d raw-decode=%s", pageNr, objNr, time.Since(decodeStart))
+
+		// 用 isCMYKJPEG 解析 JPEG 字节流里的 SOF marker 来判断是否 4 分量（CMYK）。
+		// sd.CSComponents 不可靠，直接读字节最准确。
+		// 只输出 RGB/DCT、YCC/DCT、Gray/DCT 图片的原始字节。
+		if isCMYKJPEG(sd.Content) {
+			// 分支：CMYK / Adobe YCCK JPEG。
+			// 这类 JPEG 如果当普通 jpg 写出，大多数看图器会误按 YCbCr 解释，
+			// 导致颜色完全偏色。常见库（sips、ImageMagick、Pillow）都不正确处理
+			// Adobe APP14 transform=2 (YCCK) 标记，输出超级暗。
+			// 这里用 go-fitz (MuPDF) 渲染整页后再裁剪到图片区域——
+			// MuPDF 正确处理 PDF 所有颜色空间和 Overprint Mode (OPM=1)。
+			// 直接独立转换 CMYK→RGB 会错误暗化，因为图片在页面上是和白色底色合成的。
+			log.Printf("direct-extract page=%d obj=%d cmyk-jpeg detected, rendering+crop via muPDF", pageNr, objNr)
+			outputExt := outputExtension(format)
+			outPath := filepath.Join(outputDir, fmt.Sprintf("page_%03d_image_001.%s", pageNr, outputExt))
+			traceImageMeta(imageMetaRecord{
+				Type:   "image-meta",
+				Source: "direct-fast",
+				Page:   pageNr,
+				Object: objNr,
+				Width:  *w,
+				Height: *h,
+				Ext:    outputExt,
+				Time:   time.Since(startedAt).String(),
+				Path:   outPath,
+			})
+			writeStart := time.Now()
+			if err := renderSinglePageCrop(inputFile, pageNr, dpi, outPath, format, timing, quality); err != nil {
+				return false, fmt.Errorf("render+crop cmyk page %d obj %d: %w", pageNr, objNr, err)
+			}
+			traceTiming(timing, "direct-extract page %d obj %d cmyk-render=%s", pageNr, objNr, time.Since(writeStart))
+			return true, nil
+		}
 
 		ext := "jpg"
 		if resourceID == "" {
@@ -1092,9 +1358,6 @@ func writeImageAtomically(outPath string, write func(io.Writer) error) (err erro
 	if err := write(tempFile); err != nil {
 		return err
 	}
-	if err := tempFile.Sync(); err != nil {
-		return fmt.Errorf("sync temp file: %w", err)
-	}
 	if err := tempFile.Close(); err != nil {
 		return fmt.Errorf("close temp file: %w", err)
 	}
@@ -1105,7 +1368,7 @@ func writeImageAtomically(outPath string, write func(io.Writer) error) (err erro
 	return nil
 }
 
-func convertJPXToOutput(reader io.Reader, outPath, format string) (err error) {
+func convertJPXToOutput(reader io.Reader, outPath, format string, quality int) (err error) {
 	// JPX 本身先落临时文件，是为了让系统转换器读取一个真实文件，
 	// 这样 macOS 的 sips / ImageMagick 的兼容性都更高。
 	dir := filepath.Dir(outPath)
@@ -1173,7 +1436,7 @@ func convertJPXFile(rawPath, outPath, outputExt, sipsFormat string) error {
 	// - macOS 优先用 sips，减少外部依赖；
 	// - Windows 优先尝试随包放置的 ImageMagick，再回退到系统 PATH；
 	// - 其他平台优先尝试 ImageMagick，作为可移植回退。
-	// 这里不是“只选一个工具”，而是“按顺序尝试多个工具”，
+	// 这里不是"只选一个工具"，而是"按顺序尝试多个工具"，
 	// 这样可在目标环境缺少某个命令时继续完成 JPX -> png/jpg 转换。
 	switch runtime.GOOS {
 	case "darwin":
@@ -1220,8 +1483,8 @@ func convertJPXFile(rawPath, outPath, outputExt, sipsFormat string) error {
 
 	var errs []string
 	// 逐个尝试候选转换器，直到有一个成功为止。
-	// 失败信息保留到一起，便于在目标机器上定位到底是“命令不存在”
-	// 还是“命令能执行但不支持当前 JPX 样本”。
+	// 失败信息保留到一起，便于在目标机器上定位到底是"命令不存在"
+	// 还是"命令能执行但不支持当前 JPX 样本"。
 	for _, candidate := range candidates {
 		if candidate.path == "" {
 			candidate.path = candidate.name
@@ -1258,6 +1521,97 @@ func resolveBundledMagickExecutable() string {
 		}
 	}
 	return ""
+}
+
+// isCMYKJPEG 从 JPEG 数据流的 SOF marker 判断是否含 4 个分量（CMYK）。
+// 比 sd.CSComponents 更可靠，因为它直接解析 JPEG 字节流，不依赖 pdfcpu 的元数据推断。
+func isCMYKJPEG(data []byte) bool {
+	if len(data) < 4 || data[0] != 0xFF || data[1] != 0xD8 {
+		return false
+	}
+	// 扫描 SOF0(0xC0) / SOF1(0xC1) / SOF2(0xC2) marker
+	i := 2
+	for i < len(data)-1 {
+		if data[i] != 0xFF {
+			i++
+			continue
+		}
+		if data[i+1] == 0x00 {
+			i += 2
+			continue
+		}
+		marker := data[i+1]
+		if marker == 0xC0 || marker == 0xC1 || marker == 0xC2 {
+			// SOF 结构: FF C0 len(2) precision(1) height(2) width(2) numComponents(1)
+			if i+9 < len(data) {
+				return data[i+9] == 4
+			}
+			return false
+		}
+		// 跳过其他 marker
+		if marker == 0xD8 || marker == 0xD9 {
+			i += 2
+			continue
+		}
+		if marker >= 0xD0 && marker <= 0xD7 {
+			i += 2
+			continue
+		}
+		if i+3 < len(data) {
+			segLen := int(data[i+2])<<8 | int(data[i+3])
+			i += 2 + segLen
+		} else {
+			break
+		}
+	}
+	return false
+}
+
+// convertCMYKJPEGToOutput 把 CMYK JPEG 转成正确的 RGB 图片（PNG）。
+// macOS 上用 sips 系统工具完成 CMYK→RGB 转换，颜色准确，零外部依赖。
+func convertCMYKJPEGToOutput(data []byte, outPath string) (err error) {
+	dir := filepath.Dir(outPath)
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		return fmt.Errorf("create output directory: %w", err)
+	}
+
+	// 写临时 CMYK JPEG 文件
+	tmpJPEG, err := os.CreateTemp(dir, ".cmyk-*.jpg")
+	if err != nil {
+		return fmt.Errorf("create cmyk temp file: %w", err)
+	}
+	tmpJPEGPath := tmpJPEG.Name()
+	if _, err := tmpJPEG.Write(data); err != nil {
+		_ = tmpJPEG.Close()
+		_ = os.Remove(tmpJPEGPath)
+		return fmt.Errorf("write cmyk temp file: %w", err)
+	}
+	if err := tmpJPEG.Close(); err != nil {
+		_ = os.Remove(tmpJPEGPath)
+		return fmt.Errorf("close cmyk temp file: %w", err)
+	}
+	defer os.Remove(tmpJPEGPath)
+
+	// 用 sips 把 CMYK JPEG 转为 PNG（sips 自动处理 CMYK→RGB 色彩空间转换）
+	tmpOut, err := os.CreateTemp(dir, ".cmyk-out-*.png")
+	if err != nil {
+		return fmt.Errorf("create output temp file: %w", err)
+	}
+	tmpOutPath := tmpOut.Name()
+	_ = tmpOut.Close()
+	_ = os.Remove(tmpOutPath)
+
+	cmd := exec.Command("sips", "-s", "format", "png", tmpJPEGPath, "--out", tmpOutPath)
+	if output, runErr := cmd.CombinedOutput(); runErr != nil {
+		_ = os.Remove(tmpOutPath)
+		return fmt.Errorf("sips convert cmyk: %v: %s", runErr, strings.TrimSpace(string(output)))
+	}
+
+	if err := os.Rename(tmpOutPath, outPath); err != nil {
+		_ = os.Remove(tmpOutPath)
+		return fmt.Errorf("rename converted output: %w", err)
+	}
+	return nil
 }
 
 func encodePNG(w io.Writer, img image.Image) error {
@@ -1572,7 +1926,7 @@ func isBackground(pixel color.RGBA) bool {
 }
 
 func traceTiming(enabled bool, format string, args ...any) {
-	if !enabled || !debugLogsEnabled {
+	if !enabled {
 		return
 	}
 	if globalImageMetaCollector != nil && globalImageMetaCollector.enabled {
