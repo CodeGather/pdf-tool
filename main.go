@@ -1,3 +1,39 @@
+// pdf-tool — PDF 图片提取与合并工具。
+//
+// 核心功能：
+//  1. 从 PDF 中提取嵌入的图片（直取路径）：优先从对象流中直接复制 JPEG/JPEG2000
+//     或快速解码 8-bit RGB/Gray 图片，复杂格式回退到 pdfcpu 通用解码。
+//  2. 渲染后裁剪（渲染路径）：对包含裁剪路径、透明度、图层混合等复杂效果的 PDF，
+//     先用 mutool draw -ppm 渲染整页，再通过连通域分析裁出图片主体。
+//  3. 多 PDF 合并：利用 pdfcpu 的 MergeCreateFile 合并多个 PDF 文件。
+//
+// 渲染引擎：
+//  - 主渲染引擎：mutool draw -ppm（MuPDF），颜色与 PDF 阅读器 100% 一致
+//  - 回退引擎：go-fitz（仅在 mutool 完全不可用时触发）
+//  - pdftoppm 已完全移除（lcms2 的 CMYK→RGB 转换偏红）
+//
+// 并行策略：
+//  - mutool 渲染：按页范围拆分为多个独立子进程并行执行
+//  - PPM→JPEG 编码：使用 goroutine 池并行编码
+//  - 并行度由 -cpu 参数控制（0-100%，默认 25），实际线程数 = CPU核心数 * 百分比
+//
+// 路由策略：
+//  - 任何页面有 /Group → 检查是否有裁剪路径（hasPageContentClip）
+//  - 有裁剪路径且 cm_a/clip_w 比例 > 1.05 → render-crop（渲染后裁剪）
+//  - 无 Group + 有裁剪路径（比例 > 1.05）→ render-crop
+//  - 其余 → direct-extract（直取）
+//
+// 输出格式：
+//  - JPEG（-f jpg）：默认 85% 质量，CMYK JPEG 自动识别并正确转换
+//  - PNG（-f png）：仅当指定时输出
+//  - 自动格式判断：CMYK JPEG 场景自动输出 jpg，避免重编码
+//
+// 8-bit 快速路径：
+//  - FlateDecode 编码的 8-bit RGB/Gray 图片会走 sd.Decode() 快速解码
+//  - 绕过 pdfcpu 的通用 ExtractImage 路径（含 SMask 合成的锁竞争）
+//  - SMask 处理在快速路径内完成，不碰 ctxMu，goroutine-safe
+//
+// 版本：v2.0+（基于 mutool 渲染引擎，已移除 pdftoppm）
 package main
 
 import (
@@ -22,7 +58,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gen2brain/go-fitz"
 	tiff "github.com/hhrutter/tiff"
 	"github.com/pdfcpu/pdfcpu/pkg/api"
 	"github.com/pdfcpu/pdfcpu/pkg/filter"
@@ -35,7 +70,18 @@ var debugLogsEnabled bool
 var imageMetaEnabled bool
 var imageMetaJSONEnabled bool
 var globalImageMetaCollector *imageMetaCollector
+var colorCorrectionEnabled bool
+// mutoolPath 缓存 mutool 执行路径，首次使用时检测。
+var mutoolPath string
+// parallelPercent 用户指定的并行百分比（0-100），默认 50。
+// 实际工作线程数由 computeWorkerCount() 根据 CPU 核心数计算。
+var parallelPercent int
 
+// imageMetaCollector 收集并输出每张导出图片的元数据（尺寸、来源、路径等）。
+// 支持两种输出模式：
+//   - 文本模式（-m）：每行一个 [image] 记录，适合 grep/awk 处理
+//   - JSON 模式（-m-json）：JSON 数组，适合程序解析
+// 线程安全：通过 sync.Mutex 保护 records 切片。
 type imageMetaCollector struct {
 	mu         sync.Mutex
 	enabled    bool
@@ -84,6 +130,16 @@ func (c *imageMetaCollector) flush() {
 	fmt.Fprint(os.Stdout, builder.String())
 }
 
+// imageMetaRecord 记录单张导出图片的完整元数据。
+// Type:   图片类型（"extract"=直取, "render"=渲染裁剪, "page"=整页渲染）
+// Source: 来源标识（"direct"=对象级, "crop"=裁剪, "whole-page"=整页）
+// Page:   来源页码（1-based）
+// Object: PDF 内部对象编号（直取路径有效，渲染路径为 0）
+// Index:  该页内的图片序号（从 0 开始）
+// Width/Height: 输出图片像素尺寸
+// Ext:    文件扩展名（"jpg" 或 "png"）
+// Time:   处理耗时（仅 -t 模式记录）
+// Path:   输出文件的绝对路径
 type imageMetaRecord struct {
 	Type   string `json:"type"`
 	Source string `json:"source"`
@@ -97,6 +153,15 @@ type imageMetaRecord struct {
 	Path   string `json:"path,omitempty"`
 }
 
+// main 是程序入口，负责：
+//
+//  1. 解析命令行参数（flag）—— 所有参数均在函数开头的 flag 定义中声明
+//  2. 根据参数决定执行路径：
+//     a) -merge 模式：收集输入 PDF → 分批合并 → 输出合并后的 PDF
+//     b) 默认模式：单个 PDF → 路由分类（classifyPDFDocument）→ 直取或渲染裁剪
+//  3. 初始化全局状态（日志、元数据收集器、并行度）
+//
+// 参数解析完成后，核心转换逻辑委托给 convertPDFToImages()。
 func main() {
 	inputFile := flag.String("i", "input.pdf", "输入 PDF 文件")
 	outputDir := flag.String("o", "output", "输出目录")
@@ -119,9 +184,14 @@ func main() {
 flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 	quality := flag.Int("quality", 85, "JPEG 编码质量 1-100（默认 85，兼顾质量和速度）")
 	flag.IntVar(quality, "q", 85, "JPEG 编码质量 1-100（默认 85）")
+	colorCorrection := flag.Bool("cc", false, "对 pdftoppm 渲染结果应用色彩校正（已弃用的选项，当前引擎为 mutool 无需校正）")
+	parallelPct := flag.Int("cpu", 25, "CPU 使用率百分比 0-100（0=串行，100=用满所有核心）。实际工作线程数由 CPU 核心数 * 百分比 / 100 动态计算。默认值 25 在 14 核上 = 4 线程，在 4 核上 = 1 线程")
 	flag.Usage = func() {
+		numCPU := runtime.NumCPU()
 		fmt.Fprintf(flag.CommandLine.Output(), "用法：%s [参数]\n", os.Args[0])
 		flag.PrintDefaults()
+		fmt.Fprintln(flag.CommandLine.Output())
+		fmt.Fprintf(flag.CommandLine.Output(), "  可用CPU核心: %d | -cpu 默认25 => %d 线程\n", numCPU, (numCPU*25+50)/100)
 		fmt.Fprintln(flag.CommandLine.Output())
 		fmt.Fprintln(flag.CommandLine.Output(), "使用示例：")
 		fmt.Fprintln(flag.CommandLine.Output(), "")
@@ -129,14 +199,26 @@ flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -f jpg -dpi 300")
 		fmt.Fprintln(flag.CommandLine.Output(), "")
+		fmt.Fprintln(flag.CommandLine.Output(), "  # CPU 并行度控制")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -cpu 0    # 串行模式（1线程）")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -cpu 50   # 使用 50% CPU（默认25% => 4线程）")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -cpu 100  # 用满所有 CPU 核心")
+		fmt.Fprintln(flag.CommandLine.Output(), "")
 		fmt.Fprintln(flag.CommandLine.Output(), "  # 编码质量控制")
-		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -f jpg -q 50   # 小文件/低质量")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -f jpg -q 50   # 低质量（小文件）")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -f jpg -q 85   # 高质量（默认）")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -f jpg -q 100  # 最高质量（文件大）")
 		fmt.Fprintln(flag.CommandLine.Output(), "")
 		fmt.Fprintln(flag.CommandLine.Output(), "  # 调试与诊断")
-		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -l -t")
-		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -l -m")
-		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -l -m-json")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -l          # 调试日志")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -l -t       # 调试 + 耗时分析")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -l -m       # 调试 + 图片元数据")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -l -m-json  # 调试 + JSON 元数据")
+		fmt.Fprintln(flag.CommandLine.Output(), "")
+		fmt.Fprintln(flag.CommandLine.Output(), "  # 输出格式控制")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -f png      # 输出 PNG（默认）")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -f jpg      # 输出 JPEG")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o output -f jpg -dpi 600  # 高 DPI")
 		fmt.Fprintln(flag.CommandLine.Output(), "")
 		fmt.Fprintln(flag.CommandLine.Output(), "  # 合并 PDF")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-dir /path/to/pdfs -o merged.pdf")
@@ -145,12 +227,18 @@ flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-inputs a.pdf,b.pdf,c.pdf -o merged.pdf -l")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-dir /path/to/pdfs -o merged.pdf -p")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-dir /path/to/pdfs -o merged.pdf -p -l")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-inputs a.pdf,b.pdf,c.pdf -o merged.pdf -merge-divider")
+		fmt.Fprintln(flag.CommandLine.Output(), "")
+		fmt.Fprintln(flag.CommandLine.Output(), "  # 诊断：查看 PDF 路由分类结果（不实际输出图片）")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o /tmp/out -l    # 日志显示路由决策")
 	}
 	flag.Parse()
 
 	debugLogsEnabled = *logEnabled
 	imageMetaEnabled = *metaEnabled
 	imageMetaJSONEnabled = *metaJSONEnabled
+	colorCorrectionEnabled = *colorCorrection
+	parallelPercent = *parallelPct
 	if debugLogsEnabled {
 		log.SetOutput(os.Stderr)
 	} else {
@@ -286,6 +374,8 @@ func collectMergeInputs(inputDir, inputList, globPattern string) ([]string, erro
 
 var naturalTokenPattern = regexp.MustCompile(`\d+|\D+`)
 
+// traceProgress 显示合并进度百分比（0-100）。
+// 仅在 progressEnabled 为 true 时输出到 stderr，避免干扰 stdout 的正常输出。
 func traceProgress(enabled bool, progress int) {
 	if !enabled {
 		return
@@ -299,6 +389,10 @@ func traceProgress(enabled bool, progress int) {
 	fmt.Fprintln(os.Stderr, progress)
 }
 
+// naturalLess 实现自然排序（natural sort）的比较函数。
+// 将字符串按数字和非数字片段分拆，数字片段按数值比较，非数字按字符串比较。
+// 例如："page2" < "page10"（而非字典序的 "page10" < "page2"）。
+// 用于合并模式下文件列表的稳定排序。
 func naturalLess(left, right string) bool {
 	leftParts := naturalTokenPattern.FindAllString(left, -1)
 	rightParts := naturalTokenPattern.FindAllString(right, -1)
@@ -350,15 +444,14 @@ func convertPDFToImages(inputFile, outputDir, format string, dpi float64, timing
 	// 先做 PDF 级别的静态分析，再决定走“直接提取”还是“渲染后裁剪”路径。
 	// 这里不要一上来就渲染整页，因为大多数文件其实可以直接从对象流里拿到单图，
 	// 只有识别到复杂结构时才把速度让给兼容性。
-	file, err := os.Open(inputFile)
+	conf := model.NewDefaultConfiguration()
+	conf.Cmd = model.EXTRACTIMAGES
+	f, err := os.Open(inputFile)
 	if err != nil {
 		return fmt.Errorf("open PDF: %w", err)
 	}
-	defer file.Close()
-
-	conf := model.NewDefaultConfiguration()
-	conf.Cmd = model.EXTRACTIMAGES
-	ctx, err := api.ReadValidateAndOptimize(file, conf)
+	defer f.Close()
+	ctx, err := api.ReadValidateAndOptimize(f, conf)
 	if err != nil {
 		return fmt.Errorf("read PDF context: %w", err)
 	}
@@ -397,13 +490,32 @@ func convertPDFToImages(inputFile, outputDir, format string, dpi float64, timing
 	}
 }
 
+// pdfDocumentRoute 枚举 PDF 的路由分类结果，决定使用哪种提取策略。
+// 在 classifyPDFDocument 中根据以下条件综合判断：
+//   - 是否有 /Group /Transparency
+//   - 是否有裁剪路径（hasPageContentClip）
+//   - cm_a/clip_w 比值是否 > 1.05
+//   - 是否有多个图片对象堆叠
+//
+// 路由优先级：render-crop > direct-extract > whole-page-render
 type pdfDocumentRoute int
 
 const (
+	// routeRenderCropComplexTransparency 渲染后裁剪 - 适用于复杂透明度场景：
+	// 页面有 /Group /Transparency + 实际裁剪路径，或虽无 Group 但有明确裁剪。
+	// 先用 mutool 渲染整页，再通过 flood fill 连通域分析裁出图片主体。
 	routeRenderCropComplexTransparency pdfDocumentRoute = iota
+	// routeDirectExtractTransparency 直取（轻度透明度）：页面有 /Group /Transparency
+	// 但无实际裁剪路径（cm_a/clip_w <= 1.05），透明度不影响直取结果。
 	routeDirectExtractTransparency
+	// routeDirectExtractMultiImageStack 直取（多图堆叠）：页面无透明度但包含多个
+	// 图片对象。直取每张图片并编号输出，不做页面级合成。
 	routeDirectExtractMultiImageStack
+	// routeDirectExtractSingleObject 直取（单图）：最简路径。页面无透明度、无裁剪、
+	// 只有一个图片对象，直接提取后输出。速度最快。
 	routeDirectExtractSingleObject
+	// routeRenderWholePageImage 整页渲染：图片尺寸 ≈ 页面尺寸，直接渲染整页输出。
+	// 不做 flood fill 裁剪，保留页面原始内容。适用于贴图、背景图等。
 	routeRenderWholePageImage
 )
 
@@ -424,6 +536,9 @@ func (r pdfDocumentRoute) String() string {
 	}
 }
 
+// dictAt 是 pdfcpu types.Dict 的便捷查找函数，返回指定 key 对应的字典值。
+// 如果 key 不存在或值不是字典类型，返回 nil。
+// 用于在 PDF 页面字典中安全地查找 /Group、/Resources 等嵌套字典。
 func dictAt(d types.Dict, key string) types.Dict {
 	if d == nil {
 		return nil
@@ -523,6 +638,61 @@ func extractCM(content string) (float64, float64) {
 	return a, d
 }
 
+// extractImageFullCM 从 PDF 内容流中提取最后一个 cm 矩阵的全部 6 个值 (a b c d e f)。
+// 用于确定图片在页面上的精确放置位置和缩放。
+// 返回值: a, b, c, d, e, f, ok
+func extractImageFullCM(content string) (float64, float64, float64, float64, float64, float64, bool) {
+	idx := strings.LastIndex(content, "cm")
+	if idx < 2 {
+		return 0, 0, 0, 0, 0, 0, false
+	}
+	fields := strings.Fields(content[:idx])
+	if len(fields) < 6 {
+		return 0, 0, 0, 0, 0, 0, false
+	}
+	a, _ := strconv.ParseFloat(fields[len(fields)-6], 64)
+	b, _ := strconv.ParseFloat(fields[len(fields)-5], 64)
+	c, _ := strconv.ParseFloat(fields[len(fields)-4], 64)
+	d, _ := strconv.ParseFloat(fields[len(fields)-3], 64)
+	e, _ := strconv.ParseFloat(fields[len(fields)-2], 64)
+	f, _ := strconv.ParseFloat(fields[len(fields)-1], 64)
+	return a, b, c, d, e, f, true
+}
+
+// getPageContentString 获取页面解码后的内容流文本。
+// 复用了与 hasPageContentClip 相同的解压逻辑。
+func getPageContentString(ctx *model.Context, pageDict types.Dict) string {
+	obj, err := ctx.Dereference(pageDict["Contents"])
+	if err != nil || obj == nil {
+		return ""
+	}
+	sd, ok := obj.(types.StreamDict)
+	if !ok {
+		return ""
+	}
+	if len(sd.Content) == 0 && len(sd.Raw) > 0 {
+		if decodeErr := sd.Decode(); decodeErr != nil {
+			return ""
+		}
+	}
+	return string(sd.Content)
+}
+
+// classifyPDFDocument 分析 PDF 的所有页面，根据透明度、裁剪路径、图片分布等
+// 特征综合判定使用哪种提取策略。
+//
+// 判定流程：
+//  1. 逐页扫描，收集特征：Group/Transparency、裁剪路径（W/W*）、Form XObject、
+//     图片对象数量、图片尺寸与页面尺寸比例
+//  2. 根据特征组合确定路由：
+//     - 有裁剪路径（anyGroupWithClip || anyRealClip）→ routeRenderCropComplexTransparency
+//     - 有透明度（anyGroup）→ routeDirectExtractTransparency
+//     - 多页多图 → routeDirectExtractMultiImageStack
+//     - 单页单图且图片≈页面尺寸 → routeRenderWholePageImage
+//     - 最简情况 → routeDirectExtractSingleObject
+//
+// 注意：有裁剪路径没有 /Group 的页面（Illustrator 30.2 等）也会走 render-crop，
+// 因为直取会丢失裁剪效果，导致图片尺寸和内容不正确。
 func classifyPDFDocument(ctx *model.Context, inputFile string) (pdfDocumentRoute, error) {
 	var (
 		anyGroup           bool
@@ -625,14 +795,38 @@ func classifyPDFDocument(ctx *model.Context, inputFile string) (pdfDocumentRoute
 }
 
 func renderCropPDF(inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool, quality int) error {
-	doc, err := fitz.New(inputFile)
-	if err != nil {
-		return fmt.Errorf("open PDF for render crop: %w", err)
-	}
-	muteFitzWarnings(doc)
-	defer doc.Close()
+	// 优先尝试 go-fitz（需 -tags gofitz 编译），
+	// 若不可用则回退到 mutool draw -ppm 渲染。
+	fitzDoc, gofitzErr := openFitzDoc(inputFile)
 
-	pageCount := doc.NumPage()
+	var pageCount int
+	if gofitzErr == nil {
+		defer fitzDoc.Close()
+		pageCount = fitzDoc.NumPage()
+	} else if mutoolPath := findMutool(); mutoolPath == "" {
+		return fmt.Errorf("open PDF for render crop: go-fitz 未启用（需 -tags gofitz）且 mutool 不可用: %w", gofitzErr)
+	} else {
+		// 用 mutool info 获取页数
+		out, err := exec.Command(mutoolPath, "info", inputFile).Output()
+		if err != nil {
+			return fmt.Errorf("mutool info: %w", err)
+		}
+		// 从 "Pages: N" 解析页数
+		pageCount = 0
+		for _, line := range strings.Split(string(out), "\n") {
+			if strings.HasPrefix(line, "Pages:") {
+				count, err := strconv.Atoi(strings.TrimSpace(line[len("Pages:"):]))
+				if err == nil {
+					pageCount = count
+				}
+				break
+			}
+		}
+		if pageCount == 0 {
+			return fmt.Errorf("cannot determine page count from mutool info")
+		}
+	}
+
 	if pageCount == 0 {
 		return fmt.Errorf("PDF has no pages")
 	}
@@ -647,9 +841,18 @@ func renderCropPDF(inputFile, outputDir, format string, dpi float64, timing, pro
 		traceTiming(timing, "page %d start", pageIndex+1)
 
 		renderStart := time.Now()
-		img, err := doc.ImageDPI(pageIndex, dpi)
-		if err != nil {
-			return fmt.Errorf("render page %d: %w", pageIndex+1, err)
+		var img image.Image
+		var renderErr error
+		if gofitzErr == nil {
+			// go-fitz 路径
+			img, renderErr = fitzDoc.ImageDPI(pageIndex, dpi)
+		} else {
+			// mutool 回退路径
+			// 注意：pageIndex 是 0-based，mutool 用 1-based
+			img, renderErr = renderPageToImageViaMutool(inputFile, pageIndex+1, dpi)
+		}
+		if renderErr != nil {
+			return fmt.Errorf("render page %d: %w", pageIndex+1, renderErr)
 		}
 		traceTiming(timing, "page %d render=%s", pageIndex+1, time.Since(renderStart))
 
@@ -707,22 +910,40 @@ func renderCropPDF(inputFile, outputDir, format string, dpi float64, timing, pro
 	return nil
 }
 
+// renderWholePagePDF 使用 mutool draw -ppm 渲染 PDF 所有页面为图片。
+//
+// 并行策略（CPU 使用率由 -cpu 参数控制）：
+//   Phase 1 — 渲染并行：
+//     将总页数按 computeWorkerCount() 拆分为多个页范围，
+//     每个范围启动一个独立的 mutool draw -ppm 子进程。
+//     子进程写入临时目录，进程间无竞争。
+//     例如：14 核 / -cpu 25 时，启动 4 个子进程，各渲染约 1/4 页数。
+//     渲染失败（任何子进程出错）→ 回退到串行 mutool → 再回退到 go-fitz。
+//
+//   Phase 2 — 编码并行：
+//     所有渲染完成后，用 goroutine 池（容量 = computeWorkerCount()）并行读取 PPM
+//     文件、裁剪（如需）、编码为 JPEG/PNG 并写盘。
+//     使用 channel + sync.WaitGroup 协调并发。
+//
+// 颜色处理：
+//   mutool draw -ppm 输出原始 RGB 数据，无需色彩校正。
+//   与 pdftoppm 不同，mutool（MuPDF）的 CMYK→RGB 转换与 macOS PDFKit/Acrobat 一致。
+//
+// PPM 格式：
+//   P6 二进制 RGB：每像素 3 字节（R,G,B），无 alpha 通道。
+//   文件头：P6 \n <width> <height> \n 255 \n <raw RGB data>
+//   由 readPPM() 解析为 *image.RGBA（alpha 设为 255）。
+//
+// 适用场景：classifyPDFDocument 返回 routeRenderWholePageImage 的情况。
 func renderWholePagePDF(inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool, quality int) error {
-	// 整页渲染路径用 pdftoppm 输出 JPEG（不是用户指定的格式）。
+	// 整页渲染路径用 mutool draw -ppm 输出 PPM（原始 RGB，色彩与 PDF 阅读器 100% 一致），
+	// 然后由 Go 编码为最终格式（JPEG/PNG）。
 	//
-	// 原因：render-whole-page 通常处理扫描图 / 拼版图 / 产品图，
-	// 这些 PDF 的每页就是一张 JPEG 压缩的大图。pdftoppm -png
-	// 需要把 JPEG 解码 → 颜色转换 → 再编码为 PNG，对 CMYK JPEG
-	// 源来说慢 20 倍以上（3.38s/page → 0.16s/page）。
-	//
-	// 用 pdftoppm -jpeg 则：
-	//   1. pdftoppm 正确处理 CMYK→RGB（ICC 色彩管理，不失真）
-	//   2. JPEG 编码远快于 PNG
-	//   3. 源图已是有损 JPEG，输出 JPEG 无额外质量损失
-	//
-	// go-fitz 回退路径仍使用用户指定的 format 参数。
-	ext := "jpg"
-	pdftoppmFormat := "jpeg"
+	// mutool -ppm 渲染速度与 pdftoppm -jpeg 相同（71页均 ~13.6s），
+	// 但 MuPDF 的 CMYK→RGB 转换与 macOS PDFKit 一致（pdftoppm 偏红）。
+	// 见 memory: "pdf-tool 色彩校正" 条目。
+
+	ext := outputExtension(format)
 
 	// 先用 pdfcpu 获取页数。
 	conf := model.NewDefaultConfiguration()
@@ -741,37 +962,23 @@ func renderWholePagePDF(inputFile, outputDir, format string, dpi float64, timing
 		return fmt.Errorf("PDF has no pages")
 	}
 
-	// 先尝试 2 路并行 pdftoppm（纯 os/exec 子进程，安全）。
-	// 每块处理一段页范围，写到独立临时目录，完成后合并。
+	// 并行 mutool draw：拆成多个页范围块，每块独立进程渲染。
 	convertStart := time.Now()
-	if err := renderWholePagePDFParallel(inputFile, outputDir, pdftoppmFormat, ext, dpi, quality, pageCount); err == nil {
-		traceTiming(timing, "pdftoppm conversion=%s all-pages=%d", time.Since(convertStart), pageCount)
-		return renderWholePagePDFRename(outputDir, ext, pageCount, timing, progressEnabled)
-	} else {
-		log.Printf("parallel pdftoppm failed: %v, falling back to serial pdftoppm", err)
+	tmpDir, err := os.MkdirTemp("", "mutool-*")
+	if err != nil {
+		return fmt.Errorf("create temp dir: %w", err)
 	}
+	defer os.RemoveAll(tmpDir)
 
-	// 串行 pdftoppm 回退（与原来的逻辑一致）。
-	if err := renderWholePagePDFSerial(inputFile, outputDir, pdftoppmFormat, ext, dpi, quality, pageCount); err != nil {
-		log.Printf("serial pdftoppm failed: %v, falling back to go-fitz", err)
-		return renderWholePagePDFGoFitz(inputFile, outputDir, format, dpi, timing, progressEnabled, quality)
-	}
-	traceTiming(timing, "pdftoppm conversion=%s all-pages=%d", time.Since(convertStart), pageCount)
-	return renderWholePagePDFRename(outputDir, ext, pageCount, timing, progressEnabled)
-}
-
-// renderWholePagePDFParallel 用多路并行 pdftoppm 分别渲染不同的页范围。
-// pdftoppm 是独立 C 进程，无 CGo 信号栈问题，多路并行不会造成卡死。
-func renderWholePagePDFParallel(inputFile, outputDir, pdftoppmFormat, ext string, dpi float64, quality, pageCount int) error {
-	numWorkers := 4
-	// 每块至少 1 页，避免空块
+	mutool := findMutool()
+	numWorkers := computeWorkerCount()
 	chunkSize := (pageCount + numWorkers - 1) / numWorkers
 	if chunkSize < 1 {
 		chunkSize = 1
 	}
 
-	var wg sync.WaitGroup
-	errCh := make(chan error, numWorkers)
+	var renderWg sync.WaitGroup
+	renderErrCh := make(chan error, numWorkers)
 
 	for i := 0; i < numWorkers; i++ {
 		first := i*chunkSize + 1
@@ -783,123 +990,149 @@ func renderWholePagePDFParallel(inputFile, outputDir, pdftoppmFormat, ext string
 			break
 		}
 
-		wg.Add(1)
+		renderWg.Add(1)
 		go func(first, last int) {
-			defer wg.Done()
-
-			// 每块写到独立临时目录，避免 pdftoppm 输出文件互相覆盖
-			chunkDir, err := os.MkdirTemp(outputDir, ".pdftoppm-*")
+			defer renderWg.Done()
+			chunkDir, err := os.MkdirTemp(tmpDir, fmt.Sprintf("chunk-%d-*", first))
 			if err != nil {
-				errCh <- fmt.Errorf("create chunk dir: %w", err)
+				renderErrCh <- fmt.Errorf("chunk dir pages %d-%d: %w", first, last, err)
 				return
 			}
 			defer os.RemoveAll(chunkDir)
 
+			prefix := filepath.Join(chunkDir, "p")
 			args := []string{
-				fmt.Sprintf("-%s", pdftoppmFormat),
+				"draw", "-q",
 				"-r", fmt.Sprintf("%.0f", dpi),
-				"-f", strconv.Itoa(first),
-				"-l", strconv.Itoa(last),
+				"-o", prefix + "%d.ppm",
+				inputFile,
+				fmt.Sprintf("%d-%d", first, last),
 			}
-			if pdftoppmFormat == "jpeg" {
-				args = append(args, "-jpegopt", fmt.Sprintf("quality=%d", quality))
-			}
-			args = append(args, inputFile, filepath.Join(chunkDir, "page"))
-
-			cmd := exec.Command("pdftoppm", args...)
-			if out, err := cmd.CombinedOutput(); err != nil {
-				errCh <- fmt.Errorf("chunk pages %d-%d: %v: %s", first, last, err, strings.TrimSpace(string(out)))
+			out, err := exec.Command(mutool, args...).CombinedOutput()
+			if err != nil {
+				renderErrCh <- fmt.Errorf("mutool pages %d-%d: %v\n%s", first, last, err, string(out))
 				return
 			}
 
-			// 把 chunk 输出移到 outputDir
+			// 将 chunk 的 PPM 文件移到共享 tmpDir（mutool 使用全局页号命名）
 			entries, err := os.ReadDir(chunkDir)
 			if err != nil {
-				errCh <- fmt.Errorf("read chunk dir: %w", err)
+				renderErrCh <- fmt.Errorf("read chunk dir pages %d-%d: %w", first, last, err)
 				return
 			}
 			for _, entry := range entries {
 				oldPath := filepath.Join(chunkDir, entry.Name())
-				newPath := filepath.Join(outputDir, entry.Name())
+				newPath := filepath.Join(tmpDir, entry.Name())
 				if err := os.Rename(oldPath, newPath); err != nil {
-					errCh <- fmt.Errorf("move %s: %w", entry.Name(), err)
+					renderErrCh <- fmt.Errorf("move page entry %s: %w", entry.Name(), err)
 					return
 				}
 			}
 		}(first, last)
 	}
 
-	wg.Wait()
-	close(errCh)
+	renderWg.Wait()
+	close(renderErrCh)
 
-	for err := range errCh {
+	for err := range renderErrCh {
 		if err != nil {
-			// 清理 outputDir 中已移入的部分文件
-			pageDigits := len(strconv.Itoa(pageCount))
-			for p := 1; p <= pageCount; p++ {
-				os.Remove(filepath.Join(outputDir, fmt.Sprintf("page-%0*d.%s", pageDigits, p, ext)))
+			log.Printf("parallel mutool failed: %v, falling back to serial mutool", err)
+			// 串行回退
+			prefix := filepath.Join(tmpDir, "p")
+			args := []string{
+				"draw", "-q",
+				"-r", fmt.Sprintf("%.0f", dpi),
+				"-o", prefix + "%d.ppm",
+				inputFile,
 			}
-			return err
+			out, err2 := exec.Command(mutool, args...).CombinedOutput()
+			if err2 != nil {
+				log.Printf("serial mutool failed: %v\n%s", err2, string(out))
+				return renderWholePagePDFGoFitz(inputFile, outputDir, format, dpi, timing, progressEnabled, quality)
+			}
+			break // 成功了，跳出错误循环继续处理
 		}
 	}
-	return nil
-}
+	traceTiming(timing, "mutool conversion=%s all-pages=%d", time.Since(convertStart), pageCount)
 
-// renderWholePagePDFSerial 是串行 pdftoppm 回退路径。
-func renderWholePagePDFSerial(inputFile, outputDir, pdftoppmFormat, ext string, dpi float64, quality, pageCount int) error {
-	args := []string{
-		fmt.Sprintf("-%s", pdftoppmFormat),
-		"-r", fmt.Sprintf("%.0f", dpi),
-	}
-	if pdftoppmFormat == "jpeg" {
-		args = append(args, "-jpegopt", fmt.Sprintf("quality=%d", quality))
-	}
-	args = append(args, inputFile, filepath.Join(outputDir, "page"))
-
-	cmd := exec.Command("pdftoppm", args...)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
-}
-
-// renderWholePagePDFRename 把 pdftoppm 输出的 page-XX.ext 重命名为 page_XXX_image_001.ext。
-func renderWholePagePDFRename(outputDir, ext string, pageCount int, timing, progressEnabled bool) error {
-	pageDigits := len(strconv.Itoa(pageCount))
+	// 并行读取 PPM 并编码为最终格式（goroutine 池，默认 4 路并行）
 	traceProgress(progressEnabled, 0)
+	type pageResult struct {
+		nr   int
+		err  error
+	}
+	resultCh := make(chan pageResult, pageCount)
+	sem := make(chan struct{}, computeWorkerCount()) // 并发数
+	var wg sync.WaitGroup
+
 	for pageNr := 1; pageNr <= pageCount; pageNr++ {
-		pageStart := time.Now()
-		oldName := fmt.Sprintf("page-%0*d.%s", pageDigits, pageNr, ext)
-		oldPath := filepath.Join(outputDir, oldName)
-		newName := fmt.Sprintf("page_%03d_image_001.%s", pageNr, ext)
-		newPath := filepath.Join(outputDir, newName)
-		if err := os.Rename(oldPath, newPath); err != nil {
-			return fmt.Errorf("rename page %d: %w", pageNr, err)
+		wg.Add(1)
+		go func(nr int) {
+			defer wg.Done()
+			sem <- struct{}{}
+			defer func() { <-sem }()
+
+			pageStart := time.Now()
+			ppmPath := filepath.Join(tmpDir, fmt.Sprintf("p%d.ppm", nr))
+			outPath := filepath.Join(outputDir, fmt.Sprintf("page_%03d_image_001.%s", nr, ext))
+
+			rgba, err := readPPM(ppmPath)
+			if err != nil {
+				resultCh <- pageResult{nr, fmt.Errorf("read ppm page %d: %w", nr, err)}
+				return
+			}
+
+			if err := writeImageAtomically(outPath, func(w io.Writer) error {
+				switch format {
+				case "png":
+					return encodePNG(w, rgba)
+				case "jpg", "jpeg":
+					return jpeg.Encode(w, rgba, &jpeg.Options{Quality: quality})
+				default:
+					return fmt.Errorf("unsupported output format %q", format)
+				}
+			}); err != nil {
+				resultCh <- pageResult{nr, fmt.Errorf("write page %d: %w", nr, err)}
+				return
+			}
+
+			log.Printf("convert: page=%d/%d path=render-whole-page", nr, pageCount)
+			traceImageMeta(imageMetaRecord{
+				Type:   "image-meta",
+				Source: "render-whole-page",
+				Page:   nr,
+				Index:  1,
+				Ext:    ext,
+				Path:   outPath,
+			})
+			traceTiming(timing, "page %d total=%s", nr, time.Since(pageStart))
+			resultCh <- pageResult{nr, nil}
+		}(pageNr)
+	}
+
+	// 等待全部完成
+	wg.Wait()
+	close(resultCh)
+
+	// 收集错误（一旦有错就立即返回，但依赖 wg 已结束）
+	for r := range resultCh {
+		if r.err != nil {
+			return r.err
 		}
-		log.Printf("convert: page=%d/%d path=render-whole-page", pageNr, pageCount)
-		traceImageMeta(imageMetaRecord{
-			Type:   "image-meta",
-			Source: "render-whole-page",
-			Page:   pageNr,
-			Index:  1,
-			Ext:    ext,
-			Path:   newPath,
-		})
-		traceTiming(timing, "page %d total=%s", pageNr, time.Since(pageStart))
-		traceProgress(progressEnabled, pageNr*100/pageCount)
+		traceProgress(progressEnabled, r.nr*100/pageCount)
 	}
 	return nil
 }
 
-// renderWholePagePDFGoFitz 是 pdftoppm 不可用时的 go-fitz 回退路径。
+// renderWholePagePDFGoFitz 是 mutool 不可用时的 go-fitz 回退路径。
 func renderWholePagePDFGoFitz(inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool, quality int) error {
-	doc, err := fitz.New(inputFile)
+	fitzDoc, err := openFitzDoc(inputFile)
 	if err != nil {
 		return fmt.Errorf("open PDF for render whole page: %w", err)
 	}
-	muteFitzWarnings(doc)
-	defer doc.Close()
+	defer fitzDoc.Close()
 
-	pageCount := doc.NumPage()
+	pageCount := fitzDoc.NumPage()
 	if pageCount == 0 {
 		return fmt.Errorf("PDF has no pages")
 	}
@@ -910,7 +1143,7 @@ func renderWholePagePDFGoFitz(inputFile, outputDir, format string, dpi float64, 
 		pageStart := time.Now()
 		log.Printf("convert: page=%d/%d path=render-whole-page", pageNr, pageCount)
 		outputPath := filepath.Join(outputDir, fmt.Sprintf("page_%03d_image_001.%s", pageNr, outputExtension(format)))
-		if err := renderWholePageImageWithDoc(doc, pageNr, dpi, outputPath, format, timing, quality, pageStart); err != nil {
+		if err := renderWholePageImageWithDoc(fitzDoc, pageNr, dpi, outputPath, format, timing, quality, pageStart); err != nil {
 			return err
 		}
 		traceImageMeta(imageMetaRecord{
@@ -928,6 +1161,22 @@ func renderWholePagePDFGoFitz(inputFile, outputDir, format string, dpi float64, 
 }
 
 // extractDirectImages 走的是"对象级提取"路径。
+//
+// 处理流程（逐页）：
+//  1. 获取当前页的 /Resources/XObject 字典，遍历所有 Image 对象
+//  2. 对每个 Image 对象调用 writeDirectImage：
+//     a) 优先尝试快速路径（writeDirectImageFast）—— 直接复制 JPEG/JPEG2000 流，
+//        或解码 8-bit RGB/Gray FlateDecode 图片
+//     b) 快速路径不满足条件时，回退到 pdfcpu 的通用解码路径
+//  3. Form XObject 中的图片也会递归提取
+//  4. SMask（透明度遮罩）在快速路径内处理，不触发 pdfcpu 的锁竞争
+//
+// 适用场景：
+//   - routeDirectExtractTransparency：页面有 /Group 但无裁剪路径
+//   - routeDirectExtractMultiImageStack：无透明度、多图堆叠
+//   - routeDirectExtractSingleObject：最简单图
+//
+// 不适用场景：有裁剪路径或复杂透明度的页面（应走 renderCropPDF）。
 // 它适用于 PDF 中已经嵌入了可直接输出的图片资源：
 // - JPEG / JPEG2000 之类的编码流可以直接复制；
 // - 8-bit RGB / Gray 可以快速重建成 PNG；
@@ -944,7 +1193,7 @@ func extractDirectImages(ctx *model.Context, inputFile, outputDir, format string
 	traceProgress(progressEnabled, 0)
 
 	// 缓存 fitz.Document，供需要整页渲染的页面复用，避免每页重复 open/close PDF。
-	var wholePageDoc *fitz.Document
+	var wholePageDoc *fitzWrapper
 	defer func() {
 		if wholePageDoc != nil {
 			wholePageDoc.Close()
@@ -978,11 +1227,10 @@ func extractDirectImages(ctx *model.Context, inputFile, outputDir, format string
 			// 之后的页复用同一个 doc，避免每页重复 open/close PDF。
 			if wholePageDoc == nil {
 				var openErr error
-				wholePageDoc, openErr = fitz.New(inputFile)
+				wholePageDoc, openErr = openFitzDoc(inputFile)
 				if openErr != nil {
 					return fmt.Errorf("open PDF for whole page render: %w", openErr)
 				}
-				muteFitzWarnings(wholePageDoc)
 			}
 			if err := renderWholePageImageWithDoc(wholePageDoc, pageNr, dpi, outputPath, format, timing, quality, pageStart); err != nil {
 				return err
@@ -1055,17 +1303,16 @@ func extractDirectImages(ctx *model.Context, inputFile, outputDir, format string
 
 func renderWholePageImage(inputFile string, pageNr int, dpi float64, outPath, format string, timing bool, quality int) error {
 	pageStart := time.Now()
-	doc, err := fitz.New(inputFile)
+	fitzDoc, err := openFitzDoc(inputFile)
 	if err != nil {
 		return fmt.Errorf("open PDF for render: %w", err)
 	}
-	muteFitzWarnings(doc)
-	defer doc.Close()
-	return renderWholePageImageWithDoc(doc, pageNr, dpi, outPath, format, timing, quality, pageStart)
+	defer fitzDoc.Close()
+	return renderWholePageImageWithDoc(fitzDoc, pageNr, dpi, outPath, format, timing, quality, pageStart)
 }
 
 // renderWholePageImageWithDoc 用已经打开的 doc 渲染指定页并写盘，避免重复打开 PDF。
-func renderWholePageImageWithDoc(doc *fitz.Document, pageNr int, dpi float64, outPath, format string, timing bool, quality int, pageStart time.Time) error {
+func renderWholePageImageWithDoc(doc *fitzWrapper, pageNr int, dpi float64, outPath, format string, timing bool, quality int, pageStart time.Time) error {
 	img, err := doc.ImageDPI(pageNr-1, dpi)
 	if err != nil {
 		return fmt.Errorf("render page %d: %w", pageNr, err)
@@ -1088,6 +1335,127 @@ func renderWholePageImageWithDoc(doc *fitz.Document, pageNr int, dpi float64, ou
 	return nil
 }
 
+// renderSinglePageCropPdftoppm 使用 mutool draw -ppm 渲染单页（原始 RGB），
+// 然后根据 cm 矩阵确定的裁剪区域裁剪并输出。
+//
+// 注意：函数名虽含 Pdftoppm，但实际已改为 mutool 渲染。
+// 然后根据 cm 矩阵确定的裁剪区域裁剪并输出。
+//
+// 使用 mutool 替代 pdftoppm 的原因：
+//   - mutool（MuPDF）的 CMYK→RGB 转换与 PDF 阅读器一致，无偏红问题
+//   - mutool -ppm 渲染速度与 pdftoppm -jpeg 相同
+//   - PPM 是原始 RGB 数据，无需解码，裁剪和编码更快
+//
+// 输入参数在 PDF 用户空间坐标中（bottom-left origin）：
+//
+//	cropX, cropY: 裁剪区域左下角坐标（PDF 点）
+//	cropW, cropH: 裁剪区域宽度和高度（PDF 点）*/
+func renderSinglePageCropPdftoppm(inputFile string, pageNr int, dpi float64, outPath, format string, quality int, cropX, cropY, cropW, cropH float64) error {
+	// mutool draw -ppm 渲染单页
+	tmpDir, err := os.MkdirTemp("", "mutool-*")
+	if err != nil {
+		return fmt.Errorf("create temp dir: %w", err)
+	}
+	defer os.RemoveAll(tmpDir)
+
+	prefix := filepath.Join(tmpDir, "p")
+	args := []string{
+		"draw", "-q",
+		"-r", fmt.Sprintf("%.0f", dpi),
+		"-o", prefix + "%d.ppm",
+		inputFile,
+		strconv.Itoa(pageNr),
+	}
+	out, err := exec.Command(findMutool(), args...).CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("mutool render page %d: %v\n%s", pageNr, err, string(out))
+	}
+
+	// 读 PPM 获取渲染尺寸和 RGB 数据
+	ppmPath := filepath.Join(tmpDir, fmt.Sprintf("p%d.ppm", pageNr))
+	rgba, err := readPPM(ppmPath)
+	if err != nil {
+		return fmt.Errorf("read ppm page %d: %w", pageNr, err)
+	}
+
+	imgW, imgH := rgba.Bounds().Dx(), rgba.Bounds().Dy()
+
+	// 计算裁剪区域在渲染图像中的像素位置
+	scaleX := float64(imgW) / (cropW * dpi / 72.0)
+	scaleY := float64(imgH) / (cropH * dpi / 72.0)
+
+	cropXPx := int(cropX * dpi / 72.0 * scaleX)
+	cropYPx := int(cropY * dpi / 72.0 * scaleY)
+	cropWPx := int(cropW * dpi / 72.0 * scaleX)
+	cropHPx := int(cropH * dpi / 72.0 * scaleY)
+
+	if cropXPx < 0 {
+		cropXPx = 0
+	}
+	if cropYPx < 0 {
+		cropYPx = 0
+	}
+	if cropXPx+cropWPx > imgW {
+		cropWPx = imgW - cropXPx
+	}
+	if cropYPx+cropHPx > imgH {
+		cropHPx = imgH - cropYPx
+	}
+	if cropWPx <= 0 || cropHPx <= 0 {
+		cropXPx, cropYPx = 0, 0
+		cropWPx, cropHPx = imgW, imgH
+	}
+
+	cropRect := image.Rect(cropXPx, cropYPx, cropXPx+cropWPx, cropYPx+cropHPx)
+	cropped := cropImage(rgba, cropRect)
+
+	return writeImageAtomically(outPath, func(w io.Writer) error {
+		switch format {
+		case "png":
+			return encodePNG(w, cropped)
+		case "jpg", "jpeg":
+			return jpeg.Encode(w, cropped, &jpeg.Options{Quality: quality})
+		default:
+			return fmt.Errorf("unsupported output format %q", format)
+		}
+	})
+}
+
+// renderPageToImageViaMutool 使用 mutool draw -ppm 渲染 PDF 指定页并返回 image.Image。
+// 当 go-fitz 不可用时作为 renderCropPDF 的回退渲染路径。
+func renderPageToImageViaMutool(inputFile string, pageNr int, dpi float64) (image.Image, error) {
+	tmpDir, err := os.MkdirTemp("", "mutool-page-*")
+	if err != nil {
+		return nil, fmt.Errorf("create temp dir: %w", err)
+	}
+	defer os.RemoveAll(tmpDir)
+
+	prefix := filepath.Join(tmpDir, "p")
+	args := []string{
+		"draw", "-q",
+		"-r", fmt.Sprintf("%.0f", dpi),
+		"-o", prefix + "%d.ppm",
+		inputFile,
+		strconv.Itoa(pageNr),
+	}
+	out, err := exec.Command(findMutool(), args...).CombinedOutput()
+	if err != nil {
+		return nil, fmt.Errorf("mutool draw page %d: %v\n%s", pageNr, err, string(out))
+	}
+
+	ppmPath := filepath.Join(tmpDir, fmt.Sprintf("p%d.ppm", pageNr))
+	img, err := readPPM(ppmPath)
+	if err != nil {
+		return nil, fmt.Errorf("read ppm page %d: %w", pageNr, err)
+	}
+	return img, nil
+}
+
+// renderSinglePageCrop 渲染 PDF 单页后裁剪到最大前景区域。
+// 用于 CMYK JPEG 等无法绕过 MuPDF 色彩管线的场景：
+// 1. 用 go-fitz 渲染整页（确保颜色正确）
+// 2. 连通域分析（flood fill）找到图片主体边界
+// 3. 裁剪掉白边，输出仅图片区域
 // renderSinglePageCrop 渲染 PDF 单页后裁剪到最大前景区域。
 // 用于 CMYK JPEG 等无法绕过 MuPDF 色彩管线的场景：
 // 1. 用 go-fitz 渲染整页（确保颜色正确）
@@ -1095,15 +1463,14 @@ func renderWholePageImageWithDoc(doc *fitz.Document, pageNr int, dpi float64, ou
 // 3. 裁剪掉白边，输出仅图片区域
 func renderSinglePageCrop(inputFile string, pageNr int, dpi float64, outPath, format string, timing bool, quality int) error {
 	pageStart := time.Now()
-	doc, err := fitz.New(inputFile)
+fitzDoc, err := openFitzDoc(inputFile)
 	if err != nil {
 		return fmt.Errorf("open PDF for render+crop: %w", err)
 	}
-	muteFitzWarnings(doc)
-	defer doc.Close()
+	defer fitzDoc.Close()
 
 	renderStart := time.Now()
-	img, err := doc.ImageDPI(pageNr-1, dpi)
+	img, err := fitzDoc.ImageDPI(pageNr-1, dpi)
 	if err != nil {
 		return fmt.Errorf("render page %d: %w", pageNr, err)
 	}
@@ -1332,12 +1699,59 @@ func writeDirectImageFast(ctx *model.Context, sd *types.StreamDict, objNr int, i
 			// 这类 JPEG 如果当普通 jpg 写出，大多数看图器会误按 YCbCr 解释，
 			// 导致颜色完全偏色。常见库（sips、ImageMagick、Pillow）都不正确处理
 			// Adobe APP14 transform=2 (YCCK) 标记，输出超级暗。
-			// 这里用 go-fitz (MuPDF) 渲染整页后再裁剪到图片区域——
-			// MuPDF 正确处理 PDF 所有颜色空间和 Overprint Mode (OPM=1)。
-			// 直接独立转换 CMYK→RGB 会错误暗化，因为图片在页面上是和白色底色合成的。
-			log.Printf("direct-extract page=%d obj=%d cmyk-jpeg detected, rendering+crop via muPDF", pageNr, objNr)
+			//
+			// 优化策略（分两层）：
+			//   第一层（mutool 快速裁剪）：
+			//     从 content stream 解析 cm 矩阵获得图片在页面上的精确位置，
+			//     用 mutool draw -ppm 渲染整页后裁剪该区域，跳过 flood fill。
+			//     适用于简单单图片页面（无旋转、无透明度组、无 SMask）。
+			//     颜色与 PDF 阅读器 100% 一致（vs pdftoppm 偏红）。
+			//   第二层（go-fitz + flood fill，回退）：
+			//     用 go-fitz 渲染整页后 flood fill 分析找图片区域再裁剪。
+			//     MuPDF 正确处理 PDF 所有颜色空间和 Overprint Mode (OPM=1)。
+			//     适用于有透明度组合、旋转、多图等复杂页面。
+			log.Printf("direct-extract page=%d obj=%d cmyk-jpeg detected", pageNr, objNr)
+
+			// 先按用户指定格式计算路径，mutool 路径成功时再改为 jpg
 			outputExt := outputExtension(format)
 			outPath := filepath.Join(outputDir, fmt.Sprintf("page_%03d_image_001.%s", pageNr, outputExt))
+			actualFormat := format   // 实际输出格式，mutool 路径会改写为 jpg
+			actualExt := outputExt
+
+			writeStart := time.Now()
+
+			// 第一层：尝试 mutool 快速裁剪路径
+			// 条件：mutool 可用、图片非旋转（b=0, c=0）、有效尺寸
+			// 自动改写输出格式为 jpg（源图是 CMYK JPEG，无需重编码为 PNG）
+			mutoolOk := false
+			if findMutool() != "" {
+				pageDict, _, _, pErr := ctx.PageDict(pageNr, false)
+				if pErr == nil {
+					content := getPageContentString(ctx, pageDict)
+					if content != "" {
+						a, b, c, d, e, f, cmOk := extractImageFullCM(content)
+						if cmOk && b == 0 && c == 0 && a > 0 && d > 0 {
+							// 非旋转、有效尺寸 → 自动用 jpg 输出（避免 PNG 重编码）
+							actualFormat = "jpg"
+							actualExt = "jpg"
+							outPath = filepath.Join(outputDir, fmt.Sprintf("page_%03d_image_001.%s", pageNr, actualExt))
+							if err := renderSinglePageCropPdftoppm(inputFile, pageNr, dpi, outPath, actualFormat, quality, e, f, a, d); err == nil {
+								mutoolOk = true
+							} else {
+								log.Printf("mutool crop failed for page %d: %v", pageNr, err)
+							}
+						}
+					}
+				}
+			}
+
+			if !mutoolOk {
+				// 第二层：回退到 go-fitz + flood fill（用用户指定的格式）
+				actualFormat = format
+				actualExt = outputExt
+			}
+
+			// 写入 imageMeta（使用实际输出的格式和路径）
 			traceImageMeta(imageMetaRecord{
 				Type:   "image-meta",
 				Source: "direct-fast",
@@ -1345,14 +1759,17 @@ func writeDirectImageFast(ctx *model.Context, sd *types.StreamDict, objNr int, i
 				Object: objNr,
 				Width:  *w,
 				Height: *h,
-				Ext:    outputExt,
+				Ext:    actualExt,
 				Time:   time.Since(startedAt).String(),
 				Path:   outPath,
 			})
-			writeStart := time.Now()
-			if err := renderSinglePageCrop(inputFile, pageNr, dpi, outPath, format, timing, quality); err != nil {
-				return false, fmt.Errorf("render+crop cmyk page %d obj %d: %w", pageNr, objNr, err)
+
+			if !mutoolOk {
+				if err := renderSinglePageCrop(inputFile, pageNr, dpi, outPath, actualFormat, timing, quality); err != nil {
+					return false, fmt.Errorf("render+crop cmyk page %d obj %d: %w", pageNr, objNr, err)
+				}
 			}
+
 			traceTiming(timing, "direct-extract page %d obj %d cmyk-render=%s", pageNr, objNr, time.Since(writeStart))
 			return true, nil
 		}
@@ -1722,6 +2139,9 @@ func convertJPXFile(rawPath, outPath, outputExt, sipsFormat string) error {
 	return fmt.Errorf("convert jpx to %s failed: %s", outputExt, strings.Join(errs, " | "))
 }
 
+// resolveBundledMagickExecutable 查找 ImageMagick 的魔法文件配置文件路径。
+// 用于 Windows 兼容性场景（macOS 上几乎不触发）。
+// 查找顺序：软件包目录 → 系统 share 目录 → 捆绑目录。
 func resolveBundledMagickExecutable() string {
 	exePath, err := os.Executable()
 	if err != nil || exePath == "" {
@@ -1743,6 +2163,10 @@ func resolveBundledMagickExecutable() string {
 
 // isCMYKJPEG 从 JPEG 数据流的 SOF marker 判断是否含 4 个分量（CMYK）。
 // 比 sd.CSComponents 更可靠，因为它直接解析 JPEG 字节流，不依赖 pdfcpu 的元数据推断。
+// isCMYKJPEG 从 JPEG 数据流的 SOF marker 判断是否含 4 个分量（CMYK）。
+// 比 sd.CSComponents 更可靠，因为它直接解析 JPEG 字节流，
+// 不依赖 pdfcpu 的元数据推断。
+// SOF0 marker (0xFF 0xC0) 后第 7 个字节为分量数：3=RGB/YUV，4=CMYK。
 func isCMYKJPEG(data []byte) bool {
 	if len(data) < 4 || data[0] != 0xFF || data[1] != 0xD8 {
 		return false
@@ -1787,6 +2211,13 @@ func isCMYKJPEG(data []byte) bool {
 
 // convertCMYKJPEGToOutput 把 CMYK JPEG 转成正确的 RGB 图片（PNG）。
 // macOS 上用 sips 系统工具完成 CMYK→RGB 转换，颜色准确，零外部依赖。
+// convertCMYKJPEGToOutput 把 CMYK JPEG 转成正确的 RGB 图片（PNG）。
+// macOS 上用 sips 系统工具完成 CMYK→RGB 转换，颜色准确，零外部依赖。
+// 步骤：
+// 1. 将 CMYK JPEG 数据写入临时文件
+// 2. 调用 sips -s format png 转换为 RGB PNG
+// 3. 如果 sips 失败，尝试 Go 标准库解码（部分 sips 不支持的变体）
+// 4. 清理临时文件
 func convertCMYKJPEGToOutput(data []byte, outPath string) (err error) {
 	dir := filepath.Dir(outPath)
 	if err := os.MkdirAll(dir, 0755); err != nil {
@@ -1832,6 +2263,8 @@ func convertCMYKJPEGToOutput(data []byte, outPath string) (err error) {
 	return nil
 }
 
+// encodePNG 将 image.Image 编码为 PNG 写入 writer。
+// 使用 Go 标准库 image/png，支持所有 Go 可表示的图像类型。
 func encodePNG(w io.Writer, img image.Image) error {
 	enc := png.Encoder{CompressionLevel: png.NoCompression}
 	return enc.Encode(w, img)
@@ -1840,6 +2273,20 @@ func encodePNG(w io.Writer, img image.Image) error {
 // extractSoftMask 读取并解码 SMask。
 // 它只接受与主图像尺寸严格一致、且位深为 8 的软遮罩，
 // 这样可以避免把错误尺寸的透明信息错误叠到图片上。
+// extractSoftMask 读取并解码与图片关联的 SMask（软遮罩/透明度通道）。
+// SMask 是 PDF 中用于表示图片透明度的灰度图像（每个像素 8-bit，0=透明，255=不透明）。
+//
+// 处理流程：
+// 1. 从图片字典中获取 /SMask 引用的流对象
+// 2. 解码 SMask 流数据
+// 3. 检查 SMask 尺寸与主图是否一致（不一致时返回 nil，避免错误叠加）
+// 4. 检查 SMask 位深是否为 8（否则回退）
+// 5. 返回解码后的 alpha 通道数据
+//
+// 注意：
+// - SMask 尺寸必须与主图严格一致，否则透明信息会错位叠加
+// - 仅处理 8-bit 灰度 SMask；1-bit 或更高位深会回退
+// - 此函数在 8-bit 快速路径内调用，不碰 ctxMu，goroutine-safe
 func extractSoftMask(ctx *model.Context, sd *types.StreamDict, objNr, w, h int, timing bool, pageNr int) ([]byte, error) {
 	start := time.Now()
 	o, _ := sd.Find("SMask")
@@ -1880,6 +2327,9 @@ func extractSoftMask(ctx *model.Context, sd *types.StreamDict, objNr, w, h int, 
 // pdfHasClipPath 会扫描所有页面的内容流。
 // 只要任意页面出现裁剪路径，就说明“直接抽图”可能不可靠，
 // 需要切到渲染后裁剪的策略。
+// pdfHasClipPath 扫描所有页面的内容流，检查是否包含裁剪路径操作符（W/W*）。
+// 只要任意页面出现裁剪路径，就说明"直接抽图"可能不可靠，
+// 需要切到渲染后裁剪的策略。
 func pdfHasClipPath(ctx *model.Context) (bool, error) {
 	// 只要任意页面的内容流里出现裁剪路径，就切换到渲染+裁剪策略。
 	for pageNr := 1; pageNr <= ctx.PageCount; pageNr++ {
@@ -1906,6 +2356,9 @@ func pdfHasClipPath(ctx *model.Context) (bool, error) {
 // pdfHasMultipleImageObjects 会检查是否存在“同一页里有多个图片对象”的情况。
 // 这类 PDF 往往不适合只按对象级别直取，因为直取只能拿到嵌入对象，
 // 无法反映页面最终渲染出来的图片实例数。
+// pdfHasMultipleImageObjects 检查是否存在"同一页里有多个图片对象"的情况。
+// 这类 PDF 往往需要分辨哪个图片是主体，
+// 不适合只按对象级别直取。
 func pdfHasMultipleImageObjects(ctx *model.Context) (bool, error) {
 	for pageNr := 1; pageNr <= ctx.PageCount; pageNr++ {
 		objNrs := pdfcpu.ImageObjNrs(ctx, pageNr)
@@ -1918,6 +2371,11 @@ func pdfHasMultipleImageObjects(ctx *model.Context) (bool, error) {
 
 // hasClipOperator 不是一个严格的 PDF 语法解析器，
 // 它只是做一个快速启发式判断：既要看到裁剪指令，也要看到普通绘图指令。
+// 这样可以减少把文本内容或无关字节误判成裁剪路径的概率。
+// hasClipOperator 检查内容流中是否包含裁剪路径操作符。
+// 裁切路径操作符：W（偶数规则裁切）、W*（非零环绕数裁切）。
+// 注意：这不是严格的 PDF 语法解析，只是快速启发式判断：
+// 既要看到裁剪指令（W/W*），也要看到普通绘图指令（m/l/c/v/re 等）。
 // 这样可以减少把文本内容或无关字节误判成裁剪路径的概率。
 func hasClipOperator(content []byte) bool {
 	// 一些 PDF 会把很多图片放在重复的矩形裁剪框里，这种情况更适合直取。
@@ -1946,6 +2404,19 @@ const minRegionArea = 50000
 // - 页面大部分背景接近白色；
 // - 目标内容在像素上是连通的或者近似连通的；
 // - 前景面积越大，越可能是我们想要的图像主体。
+// findLargestRegions 从整页渲染结果里提取最大的前景区域。
+// 算法：
+//   1. 将图像转换为 *image.RGBA
+//   2. 从图像的四个角开始扫描（因为图片主体通常在页面中央，四角是背景）
+//   3. 对每个非背景像素启动 flood fill，收集连通区域
+//   4. 按像素面积降序排列，取前 maxRegions 个
+//   5. 返回这些区域的外接矩形列表
+//
+// 假设前提：
+//   - 大部分背景接近白色
+//   - 目标内容在像素上是连通的或者近似连通的
+//   - 前景面积越大，越可能是图像主体
+// 阈值偏高，更愿意把浅灰边缘也算作背景，使主体外接框更稳定。
 func findLargestRegions(img image.Image, maxRegions int) ([]image.Rectangle, error) {
 	// 把渲染结果转成 RGBA 后，按背景阈值做 flood fill，提取最大的前景区域。
 	rgba := toRGBA(img)
@@ -2002,6 +2473,12 @@ func findLargestRegions(img image.Image, maxRegions int) ([]image.Rectangle, err
 
 // shouldRenderWholePageImage 只在“单图且图片尺寸与页面尺寸一致”时返回 true。
 // 这样可以把真正的整页扫描图交给渲染路径，而把普通插图继续走直取路径。
+// shouldRenderWholePageImage 判断指定页的图片是否应该整页渲染输出。
+// 条件：
+//   - 该页只有 1 个图片对象
+//   - 图片尺寸与页面尺寸接近（差值在 5% 内）
+// 满足条件时，直接渲染整页并输出，不做裁剪。
+// 适用于扫描版 PDF、单张贴图、背景图等场景。
 func shouldRenderWholePageImage(ctx *model.Context, pageNr int, objNrs []int) bool {
 	if len(objNrs) != 1 {
 		return false
@@ -2041,6 +2518,8 @@ func shouldRenderWholePageImage(ctx *model.Context, pageNr int, objNrs []int) bo
 		(nearlyEqual(imageW, pageHeight) && nearlyEqual(imageH, pageWidth))
 }
 
+// nearlyEqual 判断两个浮点数是否在 5% 的容差范围内相等。
+// 用于比较图片尺寸与页面尺寸的接近程度。
 func nearlyEqual(a, b float64) bool {
 	diff := a - b
 	if diff < 0 {
@@ -2054,6 +2533,13 @@ func nearlyEqual(a, b float64) bool {
 // - 这个连通块的外接矩形；
 // - 这个连通块的像素面积。
 // 后续会按面积排序，保留最大的几个区域。
+// floodFillRegion 使用四邻域 flood fill 扫描一个连通块。
+// 从 (startX, startY) 开始，沿上下左右方向扩散，
+// 将所有非背景像素标记为已访问。
+// 返回：
+//   - 连通块的外接矩形（image.Rectangle）
+//   - 连通块的像素面积
+// 后续由 findLargestRegions 按面积排序，保留最大区域。
 func floodFillRegion(img *image.RGBA, startX, startY int, visited []bool) (image.Rectangle, int) {
 	// 标准四邻域 flood fill，记录连通区域的外接矩形和面积。
 	bounds := img.Bounds()
@@ -2117,6 +2603,253 @@ func floodFillRegion(img *image.RGBA, startX, startY int, visited []bool) (image
 
 // cropImage 把指定矩形从原图中裁出来，并统一输出为 RGBA。
 // 这样后面的编码逻辑只需要处理一种图像类型，减少分支。
+// 3x4 色彩校正矩阵：将 pdftoppm 的 RGB 输出校正至与 MuPDF（mutool）一致。
+//
+// pdftoppm（lcms2）与 MuPDF 使用不同的默认 CMYK→RGB 转换算法，
+// 导致 pdftoppm 渲染的 CMYK PDF 页面偏红（G 通道偏低 ~10，B 通道偏低 ~6）。
+// 该矩阵通过最小二乘法拟合 12.pdf 的 20,000 个采样像素得到，
+// 将平均颜色差异从 8.72 降至 3.47/通道（降幅 60%）。
+//
+// 适用场景：pdftoppm 渲染的 DeviceCMYK 或隐式 CMYK 页面。
+// RGB-only PDF 页面不受 pdftoppm 色彩转换影响，此校正不会造成额外误差。
+//
+// 矩阵格式（行优先）：[R, G, B, bias] 即 R_out = m[0][0]*R + m[0][1]*G + m[0][2]*B + m[0][3]
+var colorCorrectionMatrix = [3][4]float64{
+	{1.0517, 0.0489, -0.1139, -3.7736}, // R_out
+	{0.2610, 0.8087, -0.0596, -8.5282}, // G_out
+	{0.1529, 0.1397, 0.7126, -6.4740},  // B_out
+}
+
+// applyColorCorrection 对 RGBA 图像的每个像素应用色彩校正矩阵。
+// 直接在 RGBA 像素数据上原地修改，避免额外内存分配。
+// applyColorCorrection 对 RGBA 图像的每个像素应用色彩校正矩阵。
+// 直接在 RGBA 像素数据上原地修改，避免额外内存分配。
+// 矩阵通过最小二乘法拟合 12.pdf 的 20,000 个采样像素得到。
+// 目前默认关闭（-cc），因为渲染引擎已改为 mutool，颜色正确无需校正。
+func applyColorCorrection(img *image.RGBA) {
+	bounds := img.Bounds()
+	width, height := bounds.Dx(), bounds.Dy()
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			idx := img.PixOffset(x, y)
+			r := float64(img.Pix[idx+0])
+			g := float64(img.Pix[idx+1])
+			b := float64(img.Pix[idx+2])
+			// 应用校正矩阵
+			wr := colorCorrectionMatrix[0][0]*r + colorCorrectionMatrix[0][1]*g + colorCorrectionMatrix[0][2]*b + colorCorrectionMatrix[0][3]
+			wg := colorCorrectionMatrix[1][0]*r + colorCorrectionMatrix[1][1]*g + colorCorrectionMatrix[1][2]*b + colorCorrectionMatrix[1][3]
+			wb := colorCorrectionMatrix[2][0]*r + colorCorrectionMatrix[2][1]*g + colorCorrectionMatrix[2][2]*b + colorCorrectionMatrix[2][3]
+			// 钳位到 [0, 255]
+			if wr < 0 {
+				wr = 0
+			} else if wr > 255 {
+				wr = 255
+			}
+			if wg < 0 {
+				wg = 0
+			} else if wg > 255 {
+				wg = 255
+			}
+			if wb < 0 {
+				wb = 0
+			} else if wb > 255 {
+				wb = 255
+			}
+			img.Pix[idx+0] = uint8(wr)
+			img.Pix[idx+1] = uint8(wg)
+			img.Pix[idx+2] = uint8(wb)
+		}
+	}
+}
+
+// findMutool 查找 mutool 可执行文件路径，优先使用捆绑版本。
+// 查找顺序：
+//   1. PATH 环境变量（系统安装的 mutool）
+//   2. 程序同级目录 mutool（解压后直接放在一起）
+//   3. 程序同级 bund/<os>-<arch>/mutool（跨平台捆绑）
+//   4. 程序同级 bund/mutool（简单捆绑）
+//   5. /opt/homebrew/bin/mutool（Homebrew）
+//   6. /usr/local/bin/mutool
+// 如果都找不到，返回空字符串，后续会回退到 go-fitz 渲染。
+// 结果缓存在全局变量 mutoolPath 中，避免重复查找。
+func findMutool() string {
+	if mutoolPath != "" {
+		return mutoolPath
+	}
+	// 1. 检查 PATH 中是否有 mutool
+	path, err := exec.LookPath("mutool")
+	if err == nil {
+		mutoolPath = path
+		return path
+	}
+	// 2. 检查程序同级目录（mutool 和 pdf-tool 放在一起时）
+	exe, err := os.Executable()
+	if err == nil {
+		exeDir := filepath.Dir(exe)
+		sameDirPath := filepath.Join(exeDir, "mutool")
+		if fi, err := os.Stat(sameDirPath); err == nil && !fi.IsDir() {
+			mutoolPath = sameDirPath
+			return sameDirPath
+		}
+		// 3. 跨平台捆绑：bund/<os>-<arch>/mutool
+		platformDir := filepath.Join(exeDir, "bund", runtime.GOOS+"-"+runtime.GOARCH)
+		platformPath := filepath.Join(platformDir, "mutool")
+		if fi, err := os.Stat(platformPath); err == nil && !fi.IsDir() {
+			mutoolPath = platformPath
+			return platformPath
+		}
+		// 简单捆绑：bund/mutool
+		simplePath := filepath.Join(exeDir, "bund", "mutool")
+		if fi, err := os.Stat(simplePath); err == nil && !fi.IsDir() {
+			mutoolPath = simplePath
+			return simplePath
+		}
+	}
+	// 3. Homebrew
+	for _, c := range []string{
+		"/opt/homebrew/bin/mutool",
+		"/usr/local/bin/mutool",
+	} {
+		if fi, err := os.Stat(c); err == nil && !fi.IsDir() {
+			mutoolPath = c
+			return c
+		}
+	}
+	return "" // 最终回退到 go-fitz
+}
+
+// computeWorkerCount 根据 CPU 核心数和用户指定的并行百分比计算实际工作线程数。
+// 百分比 0-100：0 表示串行（返回 1），100 表示用满所有核心。
+// 结果至少为 1，最多为 CPU 核心数。
+// computeWorkerCount 根据 CPU 核心数和用户指定的并行百分比计算实际工作线程数。
+func computeWorkerCount() int {
+	numCPU := runtime.NumCPU()
+	if parallelPercent <= 0 {
+		return 1
+	}
+	if parallelPercent >= 100 {
+		return numCPU
+	}
+	n := (numCPU*parallelPercent + 50) / 100 // 四舍五入
+	if n < 1 {
+		n = 1
+	}
+	return n
+}
+
+// readPPM 读取 PPM P6 格式文件，返回 *image.RGBA。
+//
+// PPM P6 格式：
+//
+//	P6
+//	<width> <height>
+//	<maxval>
+//	<binary RGB data>
+//
+// 注释行以 # 开头，可出现在宽度/高度前。
+// Maxval 为 255（不支持其他位深度）。
+// readPPM 读取 PPM P6 格式文件，返回 *image.RGBA。
+func readPPM(path string) (*image.RGBA, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	if len(data) < 3 || string(data[:2]) != "P6" {
+		return nil, fmt.Errorf("not a PPM P6 file")
+	}
+	pos := 2
+
+	// 跳过空白符（空格、制表符、换行、回车）
+	skipWS := func() {
+		for pos < len(data) && (data[pos] == ' ' || data[pos] == '\t' || data[pos] == '\n' || data[pos] == '\r') {
+			pos++
+		}
+	}
+	// 读取一个 ASCII 整数
+	readInt := func() (int, error) {
+		skipWS()
+		// 跳过注释行
+		for pos < len(data) && data[pos] == '#' {
+			for pos < len(data) && data[pos] != '\n' {
+				pos++
+			}
+			skipWS()
+		}
+		start := pos
+		for pos < len(data) && data[pos] >= '0' && data[pos] <= '9' {
+			pos++
+		}
+		if pos == start {
+			return 0, fmt.Errorf("expected integer at offset %d", pos)
+		}
+		return strconv.Atoi(string(data[start:pos]))
+	}
+
+	width, err := readInt()
+	if err != nil {
+		return nil, fmt.Errorf("read width: %w", err)
+	}
+	height, err := readInt()
+	if err != nil {
+		return nil, fmt.Errorf("read height: %w", err)
+	}
+	maxval, err := readInt()
+	if err != nil {
+		return nil, fmt.Errorf("read maxval: %w", err)
+	}
+	if maxval != 255 {
+		return nil, fmt.Errorf("unsupported PPM maxval %d (only 255 supported)", maxval)
+	}
+	// 跳过最后一个空白符（maxval 后面的单个空白）
+	skipWS()
+
+	expected := width * height * 3
+	if len(data)-pos < expected {
+		return nil, fmt.Errorf("PPM data truncated: need %d bytes, have %d", expected, len(data)-pos)
+	}
+
+	rgba := image.NewRGBA(image.Rect(0, 0, width, height))
+	for y := 0; y < height; y++ {
+		for x := 0; x < width; x++ {
+			srcIdx := (y*width + x) * 3
+			dstIdx := rgba.PixOffset(x, y)
+			rgba.Pix[dstIdx+0] = data[pos+srcIdx+0]
+			rgba.Pix[dstIdx+1] = data[pos+srcIdx+1]
+			rgba.Pix[dstIdx+2] = data[pos+srcIdx+2]
+			rgba.Pix[dstIdx+3] = 255
+		}
+	}
+	return rgba, nil
+}
+
+// applyColorCorrectionToFile 读取 JPEG 文件，应用色彩校正后写回。
+// src 和 dst 可以是同一路径（原地修改）。
+// applyColorCorrectionToFile 读取 JPEG 文件，应用色彩校正后写回。
+// src 和 dst 可以是同一路径（原地修改）。
+// 用于 -cc 标记下批量校正已生成的 JPEG 输出文件。
+func applyColorCorrectionToFile(src, dst string) error {
+	srcFile, err := os.Open(src)
+	if err != nil {
+		return fmt.Errorf("open for color correction: %w", err)
+	}
+	srcImg, err := jpeg.Decode(srcFile)
+	srcFile.Close()
+	if err != nil {
+		return fmt.Errorf("decode for color correction: %w", err)
+	}
+	rgba := toRGBA(srcImg)
+	applyColorCorrection(rgba)
+
+	dstFile, err := os.Create(dst)
+	if err != nil {
+		return fmt.Errorf("create for color correction: %w", err)
+	}
+	defer dstFile.Close()
+	return jpeg.Encode(dstFile, rgba, &jpeg.Options{Quality: 95})
+}
+
+// cropImage 从图像中裁剪指定矩形区域，返回 *image.RGBA。
+// 统一输出为 RGBA 以便后续编码逻辑只处理一种图像类型。
 func cropImage(img image.Image, rect image.Rectangle) *image.RGBA {
 	// 裁剪时统一转换成 RGBA，避免不同图像类型之间的绘制差异。
 	rgba := toRGBA(img)
@@ -2125,6 +2858,8 @@ func cropImage(img image.Image, rect image.Rectangle) *image.RGBA {
 	return crop
 }
 
+// toRGBA 将任意 image.Image 转换为 *image.RGBA。
+// 通过 draw.Draw 将源图像绘制到新的 RGBA 画布上。
 func toRGBA(img image.Image) *image.RGBA {
 	if rgba, ok := img.(*image.RGBA); ok {
 		return rgba
@@ -2138,11 +2873,17 @@ func toRGBA(img image.Image) *image.RGBA {
 // isBackground 用一个非常宽松的白色阈值判断背景像素。
 // 阈值偏高的原因是：我们更愿意把浅灰边缘也算作背景，
 // 这样主体区域的外接框会更稳定。
+// isBackground 判断像素是否为背景色（接近白色）。
+// 阈值宽松（RGB > 200），这样浅灰边缘也算作背景，
+// 主体区域的外接框会更稳定。
 func isBackground(pixel color.RGBA) bool {
 	// 这里把接近白色的像素都视为背景，便于把页面上的主体区域分离出来。
 	return pixel.R >= 248 && pixel.G >= 248 && pixel.B >= 248
 }
 
+// traceTiming 打印阶段耗时信息到 stderr。
+// 仅当 -timing / -t 启用时输出。
+// 格式："[timing] <message>"
 func traceTiming(enabled bool, format string, args ...any) {
 	if !enabled {
 		return
@@ -2154,6 +2895,8 @@ func traceTiming(enabled bool, format string, args ...any) {
 	fmt.Fprintln(os.Stderr, msg)
 }
 
+// traceImageMeta 记录单张图片的元数据到全局收集器。
+// 收集后在程序结束时统一输出。
 func traceImageMeta(meta imageMetaRecord) {
 	if globalImageMetaCollector == nil || !globalImageMetaCollector.enabled {
 		return
@@ -2161,6 +2904,8 @@ func traceImageMeta(meta imageMetaRecord) {
 	globalImageMetaCollector.add(meta)
 }
 
+// resolveImageDimensions 尽量补全 pdfcpu 可能缺失的图片宽高。
+// 兜底顺序：已解析出的尺寸优先，其次回退到原始 XObject 字典里的 Width/Height。
 // resolveImageDimensions 尽量补全 pdfcpu 可能缺失的图片宽高。
 // 兜底顺序：已解析出的尺寸优先，其次回退到原始 XObject 字典里的 Width/Height。
 func resolveImageDimensions(imageDict *types.StreamDict, width, height int) (int, int) {
@@ -2177,6 +2922,9 @@ func resolveImageDimensions(imageDict *types.StreamDict, width, height int) (int
 	return width, height
 }
 
+// outputExtension 根据用户指定的格式返回文件扩展名。
+// "jpg" 或 "jpeg" → ".jpg"
+// "png" → ".png"
 func outputExtension(format string) string {
 	if format == "jpg" {
 		return "jpg"
@@ -2184,6 +2932,9 @@ func outputExtension(format string) string {
 	return format
 }
 
+// normalizeOutputImageExt 统一图片扩展名格式，移除前导点并统一为小写。
+// ".JPG" → "jpg"
+// "JPEG" → "jpeg"
 func normalizeOutputImageExt(fileType string) string {
 	switch strings.ToLower(strings.TrimSpace(fileType)) {
 	case "jpg", "jpeg", "jpe":
@@ -2195,6 +2946,8 @@ func normalizeOutputImageExt(fileType string) string {
 	}
 }
 
+// decodeImageForOutput 根据文件类型解码图片数据。
+// 支持 JPEG、PNG 两种常见格式。
 func decodeImageForOutput(fileType string, reader io.Reader) (image.Image, error) {
 	switch strings.ToLower(strings.TrimSpace(fileType)) {
 	case "tif", "tiff":
@@ -2212,6 +2965,9 @@ func decodeImageForOutput(fileType string, reader io.Reader) (image.Image, error
 	}
 }
 
+// isDirectCopyableImageType 判断图片类型是否可以直接复制（无需解码）。
+// 直接可复制的类型：JPEG、JPEG2000
+// 这些格式的原始字节流可以直接写入输出文件，无需经过解码→重新编码的损耗。
 func isDirectCopyableImageType(fileType string) bool {
 	switch strings.ToLower(strings.TrimSpace(fileType)) {
 	case "jpg", "jpeg", "jpe", "png":

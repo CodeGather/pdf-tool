@@ -1,63 +1,148 @@
-#!/usr/bin/env sh
-set -eu
+#!/bin/bash
+# build-release.sh — 编译 pdf-tool + 打包 mutool 到 dist/<platform>/
+#
+# 用法：
+#   ./scripts/build-release.sh           # 编译当前平台
+#   ./scripts/build-release.sh all       # 编译所有已就绪的平台
+#   ./scripts/build-release.sh darwin    # 仅编译 darwin（通用二进制）
+#   ./scripts/build-release.sh win       # 仅编译 Windows
+#
+# 输出：
+#   dist/darwin/
+#     pdf-tool           (通用二进制：Apple Silicon + Intel)
+#     mutool             (通用二进制：Apple Silicon + Intel)
+#   dist/win/
+#     pdf-tool.exe
+#     mutool.exe
+#   dist/linux/
+#     pdf-tool
+#     mutool
+#
+# 前置条件：
+#   - Go 1.24+
+#   - bund/darwin-arm64/mutool 和 bund/darwin-amd64/mutool（darwin 通用二进制需要）
+#   - bund/windows-amd64/mutool.exe（Windows 需要）
+#   - mingw-w64（编译 Windows 可能需要，当前用 CGO_ENABLED=0 可跳过）
+#   - lipo（macOS 自带）
 
-# Release metadata used for versioned archive filenames.
-VERSION=v1.0.5
-DARWIN_PACKAGE=pdf-tool-${VERSION}-darwin-amd64
-WINDOWS_PACKAGE=pdf-tool-${VERSION}-windows-amd64
+set -euo pipefail
 
-ROOT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
-CACHE_DIR=${GOCACHE:-${TMPDIR:-$HOME/.cache}/go-build}
-ARCHIVE_DIR="$ROOT_DIR/dist/archive"
-SOURCE_ARCHIVE="$ROOT_DIR/pdf-tool-${VERSION}.zip"
-
-mkdir -p "$ROOT_DIR/dist/darwin" "$ROOT_DIR/dist/win" "$CACHE_DIR" "$ARCHIVE_DIR"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+BUND_DIR="$PROJECT_DIR/bund"
+DIST_DIR="$PROJECT_DIR/dist"
 
 export GOTELEMETRY=off
-export GOCACHE="$CACHE_DIR"
 
-cd "$ROOT_DIR"
+# ———————————————————————————————————————
+# 编译 darwin 通用二进制（Apple Silicon + Intel）
+# ———————————————————————————————————————
+build_darwin() {
+    echo ""
+    echo "=== [darwin] 编译通用二进制 ==="
 
-echo "Building macOS binary..."
-go build -o dist/darwin/pdf-tool .
+    local out_dir="$DIST_DIR/darwin"
+    mkdir -p "$out_dir"
 
-echo "Building Windows amd64 binary..."
-CGO_ENABLED=1 GOOS=windows GOARCH=amd64 CC=/opt/homebrew/bin/x86_64-w64-mingw32-gcc \
-  go build -o dist/win/pdf-tool.exe .
+    # 1. 编译 arm64 pdf-tool
+    local tmp_arm64="$(mktemp)"
+    echo "  → 编译 arm64 pdf-tool（临时）"
+    GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 go build -o "$tmp_arm64" "$PROJECT_DIR" 2>&1 | tail -3
 
-# Build self-contained release archives in a temporary staging directory.
-# This keeps the public release package separate from the compiled binaries,
-# while still letting both formats reuse the same build outputs.
-STAGE_DIR="$ROOT_DIR/dist/package-tmp"
-rm -rf "$STAGE_DIR"
-mkdir -p "$STAGE_DIR/$DARWIN_PACKAGE" "$STAGE_DIR/$WINDOWS_PACKAGE"
+    # 2. 编译 amd64 pdf-tool
+    local tmp_amd64="$(mktemp)"
+    echo "  → 编译 amd64 pdf-tool（临时）"
+    GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -o "$tmp_amd64" "$PROJECT_DIR" 2>&1 | tail -3
 
-cp "$ROOT_DIR/dist/darwin/pdf-tool" "$STAGE_DIR/$DARWIN_PACKAGE/"
-cp "$ROOT_DIR/README.md" "$STAGE_DIR/$DARWIN_PACKAGE/"
-cp "$ROOT_DIR/VERSION.md" "$STAGE_DIR/$DARWIN_PACKAGE/"
+    # 3. lipo 合并为通用二进制
+    echo "  → lipo 合并 pdf-tool"
+    lipo -create -output "$out_dir/pdf-tool" "$tmp_arm64" "$tmp_amd64"
+    rm "$tmp_arm64" "$tmp_amd64"
 
-cp "$ROOT_DIR/dist/win/pdf-tool.exe" "$STAGE_DIR/$WINDOWS_PACKAGE/"
-cp "$ROOT_DIR/README.md" "$STAGE_DIR/$WINDOWS_PACKAGE/"
-cp "$ROOT_DIR/VERSION.md" "$STAGE_DIR/$WINDOWS_PACKAGE/"
+    echo "  pdf-tool: $out_dir/pdf-tool"
+    file "$out_dir/pdf-tool" | awk '{print "    " $0}'
 
-tar -C "$STAGE_DIR" -czf "$ARCHIVE_DIR/$DARWIN_PACKAGE.tar.gz" "$DARWIN_PACKAGE"
-(cd "$STAGE_DIR" && zip -qr "$ARCHIVE_DIR/$WINDOWS_PACKAGE.zip" "$WINDOWS_PACKAGE")
+    # 4. lipo 合并 mutool
+    if [ -f "$BUND_DIR/darwin-arm64/mutool" ] && [ -f "$BUND_DIR/darwin-amd64/mutool" ]; then
+        echo "  → lipo 合并 mutool"
+        lipo -create -output "$out_dir/mutool" \
+            "$BUND_DIR/darwin-arm64/mutool" \
+            "$BUND_DIR/darwin-amd64/mutool"
+        chmod +x "$out_dir/mutool"
+        echo "  mutool:   $out_dir/mutool"
+        file "$out_dir/mutool" | awk '{print "    " $0}'
+    else
+        echo "  ⚠ darwin-arm64/amd64 mutool 缺失（跳过，运行 build-mutool.sh 补充）"
+    fi
+}
 
-# Build a root-level source archive that matches the older v1.0.0 layout.
-# This package keeps only the key source and manifest files so it stays small,
-# easy to inspect, and consistent with the previous release artifact.
-zip -qj "$SOURCE_ARCHIVE" \
-  "$ROOT_DIR/go.mod" \
-  "$ROOT_DIR/go.sum" \
-  "$ROOT_DIR/README.md" \
-  "$ROOT_DIR/VERSION.md" \
-  "$ROOT_DIR/main.go"
+# ———————————————————————————————————————
+# 编译 Windows（仅 amd64）
+# ———————————————————————————————————————
+build_win() {
+    echo ""
+    echo "=== [win] 编译 Windows (amd64) ==="
 
-rm -rf "$STAGE_DIR"
+    local out_dir="$DIST_DIR/win"
+    mkdir -p "$out_dir"
 
-echo "Done."
-echo "  $ROOT_DIR/dist/darwin/pdf-tool"
-echo "  $ROOT_DIR/dist/win/pdf-tool.exe"
-echo "  $ARCHIVE_DIR/$DARWIN_PACKAGE.tar.gz"
-echo "  $ARCHIVE_DIR/$WINDOWS_PACKAGE.zip"
-echo "  $SOURCE_ARCHIVE"
+    # 编译 pdf-tool.exe（CGO_ENABLED=0，无需 mingw）
+    echo "  → 编译 pdf-tool.exe"
+    GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o "$out_dir/pdf-tool.exe" "$PROJECT_DIR" 2>&1 | tail -3
+    echo "  pdf-tool: $out_dir/pdf-tool.exe"
+    file "$out_dir/pdf-tool.exe" | awk '{print "    " $0}'
+
+    # 拷贝 mutool.exe
+    if [ -f "$BUND_DIR/windows-amd64/mutool.exe" ]; then
+        cp "$BUND_DIR/windows-amd64/mutool.exe" "$out_dir/mutool.exe"
+        chmod +x "$out_dir/mutool.exe"
+        echo "  mutool:   $out_dir/mutool.exe"
+        file "$out_dir/mutool.exe" | awk '{print "    " $0}'
+    else
+        echo "  ⚠ windows-amd64 mutool.exe 缺失（跳过，运行 build-mutool.sh 补充）"
+    fi
+}
+
+# ———————————————————————————————————————
+# 确定编译哪些平台
+# ———————————————————————————————————————
+TARGET="${1:-}"
+
+if [ -z "$TARGET" ] || [ "$TARGET" = "auto" ]; then
+    # 自动检测
+    TARGET="darwin"
+    echo "检测到当前平台: macOS → 编译 darwin"
+fi
+
+case "$TARGET" in
+    darwin)
+        build_darwin
+        ;;
+    win)
+        build_win
+        ;;
+    all)
+        echo "=== 编译所有可用平台 ==="
+        build_darwin
+        build_win
+        ;;
+    *)
+        echo "⚠ 未知目标平台: $TARGET"
+        echo "用法: $0 [darwin|win|all]"
+        exit 1
+        ;;
+esac
+
+# ———————————————————————————————————————
+# 显示结果
+# ———————————————————————————————————————
+echo ""
+echo "=== dist/ 目录结构 ==="
+find "$DIST_DIR" -type f | sort | while read -r f; do
+    size=$(ls -lh "$f" | awk '{print $5}')
+    echo "  $f ($size)"
+done
+
+echo ""
+echo "=== 完成 ==="
+echo "各平台的 dist/<platform>/ 目录可直接分发（mutool 和 pdf-tool 在同目录）"

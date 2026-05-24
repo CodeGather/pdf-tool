@@ -1,8 +1,8 @@
 # PDF Tool
 
-Version: v1.0.4
+Version: v2.0+ (基于 mutool 渲染引擎，已移除 pdftoppm)
 
-基于 Go + go-fitz (MuPDF) + pdfcpu 的 PDF 图片提取工具。支持多种提取策略自动路由、CMYK/YCCK JPEG 正确色彩还原、以及 macOS 上的进程级并行渲染加速。
+基于 Go + MuPDF (mutool) + pdfcpu 的 PDF 图片提取与合并工具。支持多种提取策略自动路由、CMYK JPEG 正确色彩还原、以及 CPU 使用率可配的并行渲染加速。
 
 ## 快速开始
 
@@ -10,7 +10,19 @@ Version: v1.0.4
 cd /path/to/pdf-tool
 go build -o pdf-tool .
 ./pdf-tool -i input.pdf -o output
+./pdf-tool -i input.pdf -o output -f jpg -cpu 50
 ```
+
+## 功能特性
+
+- **智能路由**：自动分析 PDF 结构，在「直取」与「渲染裁剪」之间选择最优路径
+- **双引擎渲染**：主引擎 mutool draw (MuPDF)，回退引擎 go-fitz (MuPDF CGo)
+- **颜色准确**：mutool 的 CMYK→RGB 与 PDF 阅读器/Acrobat 100% 一致，无偏红问题
+- **CPU 并行可配**：渲染分块和编码池均受 `-cpu` 控制（0-100%，默认 25% 核心）
+- **CMYK JPEG 正确还原**：通过 JPEG SOF marker 检测分量数，经 sips 精准转换
+- **SMask 透明合成**：FlateDecode+SMask 场景 21x 加速（goroutine-safe 快速路径）
+- **8-bit 快速路径**：绕过 pdfcpu 锁竞争，直接解码 FlateDecode 图片
+- **多 PDF 合并**：支持目录/列表/通配符，分批合并避免 OOM
 
 ## 所有命令行参数
 
@@ -20,34 +32,29 @@ go build -o pdf-tool .
 |------|--------|------|
 | `-i` | `input.pdf` | 输入 PDF 文件路径 |
 | `-o` | `output` | 输出目录 |
-| `-f` | `png` | 输出图片格式：`png`、`jpg` / `jpeg` |
-| `-dpi` | `300` | 渲染 DPI（仅影响整页渲染/裁剪路径） |
+| `-f` | `png` | 输出图片格式：`png`、`jpg` |
+| `-dpi` | `300` | 渲染 DPI（仅影响渲染路径） |
+
+### CPU 并行度
+
+| 参数 | 默认值 | 说明 |
+|------|--------|------|
+| `-cpu` | `25` | CPU 使用率百分比 0-100。0=串行，100=用满所有核心。公式：`max(1, round(CPU核心数 × 百分比 / 100))`。例：`-cpu 25` 在 14 核上 = 4 线程 |
 
 ### 编码与质量
 
 | 参数 | 简写 | 默认值 | 说明 |
 |------|------|--------|------|
-| `-quality` | `-q` | `95` | JPEG 编码质量 1-100。仅对整页渲染路径有效（直接拷贝的 JPEG 不受影响）。降低质量可显著缩小文件并加快编码：`-q 50` 比 `-q 95` 文件缩小约 4x，编码提速约 15% |
-
-### 并行渲染
-
-| 参数 | 简写 | 默认值 | 说明 |
-|------|------|--------|------|
-| `-workers` | `-w` | `1` | 并行渲染的进程数。仅当路由为 `render-whole-page`（页面本身就是整图）且页数 ≥ 4 时生效。例：`-w 4` 同时启动 4 个子进程各渲染一部分页面 |
-| `-worker-start` | — | `0` | 内部参数。子进程通过此参数收到分配的起始页号（从 1 开始），0 表示渲染全部页面 |
-| `-worker-end` | — | `0` | 内部参数。子进程通过此参数收到分配的结束页号（含） |
-
-> 为什么是进程级并行？macOS 上 CGo 库（如 go-fitz/MuPDF）无法安全地在 goroutine 中并发调用，会触发 `semasleep on Darwin signal stack` 崩溃。进程级并行通过 `os/exec` 启动独立子进程绕过此限制，每个进程拥有自己的 MuPDF CGo 上下文和信号栈。实测 71 页 PDF：串行 13.6s → 4 进程 6.1s（2.23x 加速）。
+| `-quality` | `-q` | `85` | JPEG 编码质量 1-100 |
 
 ### 调试与诊断
 
 | 参数 | 简写 | 说明 |
 |------|------|------|
-| `-log` | `-l` | 启用调试日志输出 |
+| `-log` | `-l` | 启用调试日志输出（含路由决策） |
 | `-meta` | `-m` | 打印每张图片的宽高信息 |
 | `-meta-json` | `-m-json` | 以 JSON 格式输出图片元数据 |
-| `-timing` | `-t` | 打印每个阶段的耗时信息；与 `-meta-json` 同时使用时，耗时写入记录的 `time` 字段 |
-| `-p` | — | 打印处理进度百分比（0-100），仅合并模式有效 |
+| `-timing` | `-t` | 打印每个阶段的耗时信息 |
 
 ### 合并模式
 
@@ -57,44 +64,51 @@ go build -o pdf-tool .
 | `-merge-dir` | `""` | 待合并 PDF 所在目录 |
 | `-merge-inputs` | `""` | 逗号分隔的待合并 PDF 文件列表 |
 | `-merge-glob` | `*.pdf` | 合并模式下的文件匹配模式 |
-| `-merge-chunk-size` | `50` | 每批合并的 PDF 数量，大量文件时建议降低 |
+| `-merge-chunk-size` | `50` | 每批合并的 PDF 数量 |
 | `-merge-divider` | `false` | 在合并文件之间插入空白分隔页 |
+| `-p` | `false` | 打印合并进度 0-100 |
+
+### 已废弃（保留兼容）
+
+| 参数 | 说明 |
+|------|------|
+| `-cc` | 色彩校正矩阵。pdftoppm 时代遗留，当前引擎 mutool 颜色正确无需校正 |
 
 ## 用法示例
 
 ### 基础用法
 
 ```bash
-# 默认 PNG 输出，300 DPI
+# 默认 PNG 输出
 ./pdf-tool -i sample.pdf -o out
 
-# JPG 输出 + 高质量
-./pdf-tool -i sample.pdf -o out -f jpg -dpi 300
-
-# 高 DPI（适合印刷级图片）
-./pdf-tool -i sample.pdf -o out -f jpg -dpi 450
-
-# 低质量小文件（适合缩略图/预览）
-./pdf-tool -i sample.pdf -o out -f jpg -q 50
+# JPG 输出
+./pdf-tool -i sample.pdf -o out -f jpg
 ```
 
-### 并行渲染加速
+### CPU 并行度控制
 
 ```bash
-# 4 进程并行渲染多页 PDF（仅整页渲染路径有效）
-./pdf-tool -i sample.pdf -o out -f jpg -w 4
+# 串行模式（适用于小文件或内存受限场景）
+./pdf-tool -i sample.pdf -o out -cpu 0
 
-# 8 进程 + 低质量，最大化吞吐
-./pdf-tool -i sample.pdf -o out -f jpg -w 8 -q 50
+# 使用 50% CPU 资源
+./pdf-tool -i sample.pdf -o out -cpu 50
 
-# 并行 + 耗时观察
-./pdf-tool -i sample.pdf -o out -f jpg -w 4 -t
+# 用满所有核心（最大吞吐）
+./pdf-tool -i sample.pdf -o out -cpu 100
+
+# 默认 25%（14 核机器 ≈ 4 线程）
+./pdf-tool -i sample.pdf -o out
 ```
 
 ### 调试与诊断
 
 ```bash
-# 调试日志 + 耗时
+# 调试日志 + 路由决策
+./pdf-tool -i sample.pdf -o out -l
+
+# 调试 + 耗时分析
 ./pdf-tool -i sample.pdf -o out -l -t
 
 # 查看图片元数据
@@ -102,9 +116,6 @@ go build -o pdf-tool .
 
 # JSON 格式元数据
 ./pdf-tool -i sample.pdf -o out -l -m-json
-
-# 完整调试
-./pdf-tool -i sample.pdf -o out -l -t -m-json
 ```
 
 ### 合并 PDF
@@ -114,76 +125,48 @@ go build -o pdf-tool .
 ./pdf-tool -merge -merge-dir ./pdfs -o merged.pdf
 
 # 指定文件列表
-./pdf-tool -merge -merge-inputs 1.pdf,2.pdf,3.pdf -o merged.pdf
+./pdf-tool -merge -merge-inputs a.pdf,b.pdf,c.pdf -o merged.pdf
 
 # 大量文件分批合并
 ./pdf-tool -merge -merge-dir ./pdfs -o merged.pdf -merge-chunk-size 25
 
-# 合并 + 进度 + 日志
-./pdf-tool -merge -merge-dir ./pdfs -o merged.pdf -p -l -t
+# 合并 + 进度
+./pdf-tool -merge -merge-dir ./pdfs -o merged.pdf -p
 ```
 
-## 架构说明
+## 架构概览
+
+详见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) 完整架构文档。
 
 ### 路由机制
 
-PDF 工具会根据文档结构自动选择最佳提取策略：
-
-```
+```text
 convertPDFToImages()
-  ├─ classifyPDFDocument() → 静态分析得到路由
+  ├─ classifyPDFDocument() ── 逐页分析 → 路由分类
   │
   ├─ routeRenderCropComplexTransparency
-  │   └─ renderCropPDF(): 渲染整页 → 连通域分析 → 裁剪主体区域
-  │      适用于：复杂透明度 + Form XObject，无法直接提取
+  │   └─ renderCropPDF(): mutool 渲染整页 → flood fill 裁剪
   │
   ├─ routeRenderWholePageImage
-  │   ├─ 串行 (w=1 或 页数<4)
-  │   │   └─ renderWholePagePDF(): 复用 doc 逐页渲染
-  │   └─ 并行 (w>1 且 页数≥4)
-  │       └─ renderWholePageParallel()
-  │           ├─ worker 0: spawn -worker-start=1 -worker-end=N1
-  │           ├─ worker 1: spawn -worker-start=N1+1 -worker-end=N2
-  │           └─ ...
-  │       适用于：扫描件、满版大图
+  │   └─ renderWholePagePDF(): mutool 并行渲染 → PPM→JPEG 并行编码
   │
-  └─ routeDirectExtractTransparency / MultiImageStack / SingleObject
-      └─ extractDirectImages(): 直接从对象流提取嵌入图片
-          ├─ writeDirectImageFast(): JPEG/JPX 快速拷贝
-          ├─ writeDirectImage(): 逐对象解码 → 编码写盘
-          └─ renderSinglePageCrop(): CMYK JPEG 回退（MuPDF 渲染→裁剪）
+  ├─ routeDirectExtractTransparency
+  │   └─ extractDirectImages(): 对象流提取（含 SMask 透明合成）
+  │
+  ├─ routeDirectExtractMultiImageStack
+  │   └─ extractDirectImages(): 多图逐个提取并编号
+  │
+  └─ routeDirectExtractSingleObject
+      └─ extractDirectImages(): 单图最简路径
 ```
 
-### 色彩空间处理
+### 并行策略
 
-- **RGB JPEG/PNG**：直接拷贝或解码重建，最快路径
-- **CMYK JPEG**：通过 isCMYKJPEG() 从 JPEG SOF marker 检测 4 分量 → 走 MuPDF 渲染整页后裁剪（避免 sips/ImageMagick/Pillow 对 Adobe YCCK 的错误转换）
-- **JPXDecode (JPEG2000)**：pdfcpu 内部解码 + 颜色空间转换，消除外部命令依赖
-- **Gray/8-bit**：快速重建为 PNG
-
-### 性能优化
-
-1. **Doc 复用**：`renderWholePagePDF` 打开一次 PDF 文件，所有页面共用 `fitz.Document`，避免每页重复 `fitz.New()`
-2. **JPEG 质量可配**：`-quality N` 控制 JPEG 编码质量，q=50 比 q=95 编码速度快约 15%，文件缩小约 4x
-3. **进程级并行**（整页渲染）：`-w N` 启动 N 个子进程分担页面渲染，实测 71 页 4 进程加速 2.23x。仅对 `render-whole-page` 路由生效
-4. **对象级 goroutine 并行**（直取路径）：`extractDirectImages` 内部使用 `runtime.NumCPU()` 个 goroutine 并行提取同一页内的多个图片对象。pdfcpu 是纯 Go 库，goroutine 并行安全，macOS 上不会触发 CGo 信号栈问题。实测 20 对象单页 PDF 从 6.8s 降到 1.07s（6.4x）
-5. **路由分流**：先做 PDF 结构静态分析，对能直接提取的文件不走渲染路径。避免对已有嵌入图片的 PDF 做不必要的全页渲染
-
-### 并行渲染说明
-
-为什么不用 goroutine：
-- macOS 上 CGo 库（MuPDF）的信号栈与 goroutine 调度冲突
-- goroutine 并行调用 `fitz.New()` 或 `doc.ImageDPI()` 会导致 `semasleep on Darwin signal stack` 崩溃
-
-进程级并行 vs goroutine 并行：
-
-| 特性 | goroutine 并行 | 进程级并行 |
-|------|---------------|-----------|
-| macOS 兼容性 | ❌ 崩溃 | ✅ 稳定 |
-| 每 worker 独立上下文 | ✅ 共享进程空间 | ✅ 完全隔离 |
-| 启动开销 | ~1µs | ~50ms |
-| 页面分配 | 需保证 MuPDF 线程安全 | 各开各的 doc |
-| 适用场景 | Linux 可用 | 全平台 |
+| 阶段 | 方式 | 控制参数 |
+|------|------|----------|
+| mutool 渲染 | 子进程拆分页范围 | `-cpu` → `computeWorkerCount()` |
+| PPM→编码 | goroutine 池 | `-cpu` → `computeWorkerCount()` |
+| go-fitz 回退 | 串行（CGo 不安全） | 无（仅回退） |
 
 ## 构建
 
@@ -194,25 +177,31 @@ cd /path/to/pdf-tool
 go build -o pdf-tool .
 ```
 
+**依赖**：
+
+- **mutool**（MuPDF）：需在 PATH 中，或安装在 `/opt/homebrew/bin/mutool`，或放在同级 `bund/` 目录
+- **Go 模块**：自动下载（pdfcpu, go-fitz, tiff）
+
 ### 交叉编译
 
 ```bash
 # macOS Intel/ARM
-GOTELEMETRY=off GOCACHE="$TMPDIR/go-cache" go build -o dist/darwin/pdf-tool .
+GOTELEMETRY=off go build -o dist/darwin/pdf-tool .
 
-# Windows 64-bit (需 mingw-w64)
-GOTELEMETRY=off GOCACHE="$TMPDIR/go-cache" CGO_ENABLED=1 \
-  GOOS=windows GOARCH=amd64 \
-  CC=/opt/homebrew/bin/x86_64-w64-mingw32-gcc \
+# Linux
+GOOS=linux GOARCH=amd64 go build -o dist/linux/pdf-tool .
+
+# Windows (需 mingw-w64)
+GOOS=windows GOARCH=amd64 CGO_ENABLED=1 \
+  CC=x86_64-w64-mingw32-gcc \
   go build -o dist/win/pdf-tool.exe .
 ```
 
-### 一键构建脚本
+## 项目文档
 
-```bash
-./scripts/build-release.sh
-```
-
-输出：
-- `dist/darwin/pdf-tool`
-- `dist/win/pdf-tool.exe`
+| 文件 | 说明 |
+|------|------|
+| [README.md](README.md) | 本文件：快速入门、参数说明、示例 |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | 完整架构文档：每个分支和流程的精确描述 |
+| [docs/AI_HANDOVER.md](docs/AI_HANDOVER.md) | AI 模型接手文档：函数调用图、关键陷阱、修改指南 |
+| [main.go](main.go) | 核心代码（～2900 行，单文件，有完整中文注解） |
