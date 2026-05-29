@@ -239,7 +239,7 @@ flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 	imageMetaJSONEnabled = *metaJSONEnabled
 	colorCorrectionEnabled = *colorCorrection
 	parallelPercent = *parallelPct
-	if debugLogsEnabled {
+	if debugLogsEnabled && !imageMetaJSONEnabled {
 		log.SetOutput(os.Stderr)
 	} else {
 		log.SetOutput(io.Discard)
@@ -453,7 +453,15 @@ func convertPDFToImages(inputFile, outputDir, format string, dpi float64, timing
 	defer f.Close()
 	ctx, err := api.ReadValidateAndOptimize(f, conf)
 	if err != nil {
-		return fmt.Errorf("read PDF context: %w", err)
+		// 部分 PDF 有 pdfcpu 不支持的 Properties/Marked Content 资源结构，
+		// 抛出的错误如 "missing required resource subdict: Properties"。
+		// 此时回退到 mutool 直接渲染整页。
+		f.Close()
+		log.Printf("convert: pdfcpu failed (%v), falling back to mutool render", err)
+		if findMutool() == "" {
+			return fmt.Errorf("read PDF context: %w (mutool also unavailable)", err)
+		}
+		return renderWholePagePDF(inputFile, outputDir, format, dpi, timing, progressEnabled, quality)
 	}
 
 	format = strings.ToLower(strings.TrimSpace(format))
@@ -946,18 +954,10 @@ func renderWholePagePDF(inputFile, outputDir, format string, dpi float64, timing
 	ext := outputExtension(format)
 
 	// 先用 pdfcpu 获取页数。
-	conf := model.NewDefaultConfiguration()
-	conf.Cmd = model.EXTRACTIMAGES
-	file, err := os.Open(inputFile)
-	if err != nil {
-		return fmt.Errorf("open PDF for page count: %w", err)
-	}
-	ctx, err := api.ReadValidateAndOptimize(file, conf)
-	file.Close()
+	pageCount, err := getPageCount(inputFile)
 	if err != nil {
 		return fmt.Errorf("read PDF for page count: %w", err)
 	}
-	pageCount := ctx.PageCount
 	if pageCount == 0 {
 		return fmt.Errorf("PDF has no pages")
 	}
@@ -1143,7 +1143,8 @@ func renderWholePagePDFGoFitz(inputFile, outputDir, format string, dpi float64, 
 		pageStart := time.Now()
 		log.Printf("convert: page=%d/%d path=render-whole-page", pageNr, pageCount)
 		outputPath := filepath.Join(outputDir, fmt.Sprintf("page_%03d_image_001.%s", pageNr, outputExtension(format)))
-		if err := renderWholePageImageWithDoc(fitzDoc, pageNr, dpi, outputPath, format, timing, quality, pageStart); err != nil {
+		w, h, err := renderWholePageImageWithDoc(fitzDoc, pageNr, dpi, outputPath, format, timing, quality, pageStart)
+		if err != nil {
 			return err
 		}
 		traceImageMeta(imageMetaRecord{
@@ -1151,6 +1152,8 @@ func renderWholePagePDFGoFitz(inputFile, outputDir, format string, dpi float64, 
 			Source: "render-whole-page",
 			Page:   pageNr,
 			Index:  1,
+			Width:  w,
+			Height: h,
 			Ext:    outputExtension(format),
 			Path:   outputPath,
 		})
@@ -1229,10 +1232,43 @@ func extractDirectImages(ctx *model.Context, inputFile, outputDir, format string
 				var openErr error
 				wholePageDoc, openErr = openFitzDoc(inputFile)
 				if openErr != nil {
-					return fmt.Errorf("open PDF for whole page render: %w", openErr)
+					// mutool 回退：go-fitz 不可用时用 mutool draw -ppm 渲染
+					img, renderErr := renderPageToImageViaMutool(inputFile, pageNr, dpi)
+					if renderErr != nil {
+						return fmt.Errorf("render page %d: %w (fitz: %v)", pageNr, renderErr, openErr)
+					}
+					bounds := img.Bounds()
+					w, h := bounds.Dx(), bounds.Dy()
+					if err := writeImageAtomically(outputPath, func(wr io.Writer) error {
+						switch format {
+						case "png":
+							return encodePNG(wr, img)
+						case "jpg", "jpeg":
+							return jpeg.Encode(wr, img, &jpeg.Options{Quality: quality})
+						default:
+							return fmt.Errorf("unsupported output format %q", format)
+						}
+					}); err != nil {
+						return fmt.Errorf("write rendered page %d: %w", pageNr, err)
+					}
+					traceImageMeta(imageMetaRecord{
+						Type:   "image-meta",
+						Source: "render-whole-page",
+						Page:   pageNr,
+						Index:  1,
+						Width:  w,
+						Height: h,
+						Ext:    outputExtension(format),
+						Path:   outputPath,
+					})
+					totalWritten++
+					traceTiming(timing, "direct-extract page %d=%s rendered-whole-page (mutool)", pageNr, time.Since(pageStart))
+					processedPages++
+					traceProgress(progressEnabled, processedPages*100/ctx.PageCount)
+					continue
 				}
 			}
-			if err := renderWholePageImageWithDoc(wholePageDoc, pageNr, dpi, outputPath, format, timing, quality, pageStart); err != nil {
+			if _, _, err := renderWholePageImageWithDoc(wholePageDoc, pageNr, dpi, outputPath, format, timing, quality, pageStart); err != nil {
 				return err
 			}
 			traceImageMeta(imageMetaRecord{
@@ -1308,15 +1344,19 @@ func renderWholePageImage(inputFile string, pageNr int, dpi float64, outPath, fo
 		return fmt.Errorf("open PDF for render: %w", err)
 	}
 	defer fitzDoc.Close()
-	return renderWholePageImageWithDoc(fitzDoc, pageNr, dpi, outPath, format, timing, quality, pageStart)
+	_, _, err = renderWholePageImageWithDoc(fitzDoc, pageNr, dpi, outPath, format, timing, quality, pageStart)
+	return err
 }
 
 // renderWholePageImageWithDoc 用已经打开的 doc 渲染指定页并写盘，避免重复打开 PDF。
-func renderWholePageImageWithDoc(doc *fitzWrapper, pageNr int, dpi float64, outPath, format string, timing bool, quality int, pageStart time.Time) error {
+func renderWholePageImageWithDoc(doc *fitzWrapper, pageNr int, dpi float64, outPath, format string, timing bool, quality int, pageStart time.Time) (int, int, error) {
 	img, err := doc.ImageDPI(pageNr-1, dpi)
 	if err != nil {
-		return fmt.Errorf("render page %d: %w", pageNr, err)
+		return 0, 0, fmt.Errorf("render page %d: %w", pageNr, err)
 	}
+	bounds := img.Bounds()
+	width := bounds.Dx()
+	height := bounds.Dy()
 	traceTiming(timing, "render-whole-page page %d render=%s", pageNr, time.Since(pageStart))
 
 	if err := writeImageAtomically(outPath, func(w io.Writer) error {
@@ -1329,10 +1369,10 @@ func renderWholePageImageWithDoc(doc *fitzWrapper, pageNr int, dpi float64, outP
 			return fmt.Errorf("unsupported output format %q", format)
 		}
 	}); err != nil {
-		return fmt.Errorf("encode image %s: %w", outPath, err)
+		return 0, 0, fmt.Errorf("encode image %s: %w", outPath, err)
 	}
 	traceTiming(timing, "render-whole-page page %d write=%s path=%s", pageNr, time.Since(pageStart), outPath)
-	return nil
+	return width, height, nil
 }
 
 // renderSinglePageCropPdftoppm 使用 mutool draw -ppm 渲染单页（原始 RGB），
@@ -2397,7 +2437,17 @@ type region struct {
 	area int
 }
 
-const minRegionArea = 50000
+// minRegionAreaThreshold 根据图片尺寸动态计算前景区域的最小面积阈值。
+// 这确保在不同 DPI 下同一物理区域都能被正确识别。
+// 比例设为 0.5% 的页面面积，与 300 DPI 下原固定值 50000 相当，
+// 最低 1000 像素防止小页面过拟合。
+func minRegionAreaThreshold(width, height int) int {
+	area := width * height * 5 / 1000 // 0.5% of page area
+	if area < 1000 {
+		return 1000
+	}
+	return area
+}
 
 // findLargestRegions 从整页渲染结果里提取最大的前景区域。
 // 它的假设很简单：
@@ -2442,7 +2492,7 @@ func findLargestRegions(img image.Image, maxRegions int) ([]image.Rectangle, err
 			}
 
 			rect, area := floodFillRegion(rgba, x, y, visited)
-			if area >= minRegionArea {
+			if area >= minRegionAreaThreshold(width, height) {
 				regions = append(regions, region{rect: rect, area: area})
 			}
 		}
