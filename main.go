@@ -461,7 +461,7 @@ func convertPDFToImages(inputFile, outputDir, format string, dpi float64, timing
 		if findMutool() == "" {
 			return fmt.Errorf("read PDF context: %w (mutool also unavailable)", err)
 		}
-		return renderWholePagePDF(inputFile, outputDir, format, dpi, timing, progressEnabled, quality)
+		return renderCropPDF(inputFile, outputDir, format, dpi, timing, progressEnabled, quality)
 	}
 
 	format = strings.ToLower(strings.TrimSpace(format))
@@ -487,7 +487,7 @@ func convertPDFToImages(inputFile, outputDir, format string, dpi float64, timing
 		// 页面本身就是整图时，整页渲染比对象级重建更稳。
 		// 这种场景通常对应扫描件或大图铺满页面，直接输出整页最合理。
 		// 完全串行渲染，不使用任何并行。
-		return renderWholePagePDF(inputFile, outputDir, format, dpi, timing, progressEnabled, quality)
+		return renderCropPDF(inputFile, outputDir, format, dpi, timing, progressEnabled, quality)
 	case routeDirectExtractTransparency, routeDirectExtractMultiImageStack, routeDirectExtractSingleObject:
 		// 其余情况都走对象级提取。
 		// 这里会在 writeDirectImage / writeDirectImageFast 里再细分：
@@ -808,30 +808,17 @@ func renderCropPDF(inputFile, outputDir, format string, dpi float64, timing, pro
 	fitzDoc, gofitzErr := openFitzDoc(inputFile)
 
 	var pageCount int
+	var err error
 	if gofitzErr == nil {
 		defer fitzDoc.Close()
 		pageCount = fitzDoc.NumPage()
 	} else if mutoolPath := findMutool(); mutoolPath == "" {
 		return fmt.Errorf("open PDF for render crop: go-fitz 未启用（需 -tags gofitz）且 mutool 不可用: %w", gofitzErr)
 	} else {
-		// 用 mutool info 获取页数
-		out, err := exec.Command(mutoolPath, "info", inputFile).Output()
+		// 用 getPageCountViaMutool 获取页数（复用函数，避免重复解析逻辑）
+		pageCount, err = getPageCountViaMutool(inputFile)
 		if err != nil {
-			return fmt.Errorf("mutool info: %w", err)
-		}
-		// 从 "Pages: N" 解析页数
-		pageCount = 0
-		for _, line := range strings.Split(string(out), "\n") {
-			if strings.HasPrefix(line, "Pages:") {
-				count, err := strconv.Atoi(strings.TrimSpace(line[len("Pages:"):]))
-				if err == nil {
-					pageCount = count
-				}
-				break
-			}
-		}
-		if pageCount == 0 {
-			return fmt.Errorf("cannot determine page count from mutool info")
+			return fmt.Errorf("get page count for render crop: %w", err)
 		}
 	}
 
@@ -874,38 +861,65 @@ func renderCropPDF(inputFile, outputDir, format string, dpi float64, timing, pro
 			return fmt.Errorf("page %d contains no crop candidates", pageIndex+1)
 		}
 
+		// 同一页内多个 crop 之间完全独立（只读 img + 写不同文件），用 goroutine 并行。
+		nWorkers := computeWorkerCount()
+		if nWorkers < 1 {
+			nWorkers = 1
+		}
+		var (
+			cropWg  sync.WaitGroup
+			cropMu  sync.Mutex
+			cropErr error
+		)
+		sem := make(chan struct{}, nWorkers)
 		for cropIndex, cropRect := range crops {
-			cropStart := time.Now()
-			cropped := cropImage(img, cropRect)
-			traceTiming(timing, "page %d crop %d crop-image=%s rect=%dx%d", pageIndex+1, cropIndex+1, time.Since(cropStart), cropRect.Dx(), cropRect.Dy())
+			sem <- struct{}{}
+			cropWg.Add(1)
+			go func(ci int, cr image.Rectangle) {
+				defer cropWg.Done()
+				defer func() { <-sem }()
 
-			writeStart := time.Now()
-			outputPath := filepath.Join(outputDir, fmt.Sprintf("page_%03d_image_%03d.%s", pageIndex+1, cropIndex+1, outputExtension(format)))
-			if err := writeImageAtomically(outputPath, func(w io.Writer) error {
-				switch format {
-				case "png":
-					return encodePNG(w, cropped)
-				case "jpg", "jpeg":
-					return jpeg.Encode(w, cropped, &jpeg.Options{Quality: quality})
-				default:
-					return fmt.Errorf("unsupported output format %q", format)
+				cropStart := time.Now()
+				cropped := cropImage(img, cr)
+				traceTiming(timing, "page %d crop %d crop-image=%s rect=%dx%d", pageIndex+1, ci+1, time.Since(cropStart), cr.Dx(), cr.Dy())
+
+				writeStart := time.Now()
+				outputPath := filepath.Join(outputDir, fmt.Sprintf("page_%03d_image_%03d.%s", pageIndex+1, ci+1, outputExtension(format)))
+				if err := writeImageAtomically(outputPath, func(w io.Writer) error {
+					switch format {
+					case "png":
+						return encodePNG(w, cropped)
+					case "jpg", "jpeg":
+						return jpeg.Encode(w, cropped, &jpeg.Options{Quality: quality})
+					default:
+						return fmt.Errorf("unsupported output format %q", format)
+					}
+				}); err != nil {
+					cropMu.Lock()
+					cropErr = fmt.Errorf("save page %d crop %d: %w", pageIndex+1, ci+1, err)
+					cropMu.Unlock()
+					return
 				}
-			}); err != nil {
-				return fmt.Errorf("save page %d crop %d: %w", pageIndex+1, cropIndex+1, err)
-			}
-			traceImageMeta(imageMetaRecord{
-				Type:   "image-meta",
-				Source: "render-crop",
-				Page:   pageIndex + 1,
-				Index:  cropIndex + 1,
-				Width:  cropRect.Dx(),
-				Height: cropRect.Dy(),
-				Ext:    outputExtension(format),
-				Time:   time.Since(cropStart).String(),
-				Path:   outputPath,
-			})
-			traceTiming(timing, "page %d crop %d write=%s path=%s", pageIndex+1, cropIndex+1, time.Since(writeStart), outputPath)
-			totalSaved++
+				traceImageMeta(imageMetaRecord{
+					Type:   "image-meta",
+					Source: "render-crop",
+					Page:   pageIndex + 1,
+					Index:  ci + 1,
+					Width:  cr.Dx(),
+					Height: cr.Dy(),
+					Ext:    outputExtension(format),
+					Time:   time.Since(cropStart).String(),
+					Path:   outputPath,
+				})
+				traceTiming(timing, "page %d crop %d write=%s path=%s", pageIndex+1, ci+1, time.Since(writeStart), outputPath)
+				cropMu.Lock()
+				totalSaved++
+				cropMu.Unlock()
+			}(cropIndex, cropRect)
+		}
+		cropWg.Wait()
+		if cropErr != nil {
+			return cropErr
 		}
 		traceTiming(timing, "page %d total=%s", pageIndex+1, time.Since(pageStart))
 		traceProgress(progressEnabled, (pageIndex+1)*100/pageCount)
@@ -2766,6 +2780,47 @@ func findMutool() string {
 		}
 	}
 	return "" // 最终回退到 go-fitz
+}
+
+// getPageCount 获取 PDF 页数，多源回退保证不因为单一工具不可用而失败。
+// 优先级：mutool info（最快，轻量子进程）→ go-fitz（CGo 回退）
+// 不依赖 pdfcpu，避免 "missing required resource subdict: Properties" 等解析失败。
+func getPageCount(inputFile string) (int, error) {
+	// mutool info 最快（<15ms），只读 Catalog 不加载整个 PDF。
+	if findMutool() != "" {
+		if n, err := getPageCountViaMutool(inputFile); err == nil && n > 0 {
+			return n, nil
+		}
+	}
+	// go-fitz 回退（如果编译时启用了 -tags gofitz）
+	if doc, err := openFitzDoc(inputFile); err == nil {
+		n := doc.NumPage()
+		doc.Close()
+		if n > 0 {
+			return n, nil
+		}
+	}
+	return 0, fmt.Errorf("cannot determine page count: mutool and go-fitz both unavailable")
+}
+
+// getPageCountViaMutool 用 mutool info 获取 PDF 页数。
+// 解析 mutool info 输出中的 "Pages: N" 行。
+// 这是最轻量的页数获取方式：启动子进程 → 读 Catalog → 退出，通常 <15ms。
+func getPageCountViaMutool(inputFile string) (int, error) {
+	mutool := findMutool()
+	if mutool == "" {
+		return 0, fmt.Errorf("mutool not available")
+	}
+	out, err := exec.Command(mutool, "info", inputFile).Output()
+	if err != nil {
+		return 0, err
+	}
+	for _, line := range strings.Split(string(out), "\n") {
+		if strings.HasPrefix(line, "Pages:") {
+			return strconv.Atoi(strings.TrimSpace(line[len("Pages:"):]))
+		}
+	}
+	return 0, fmt.Errorf("cannot parse page count from mutool info output")
 }
 
 // computeWorkerCount 根据 CPU 核心数和用户指定的并行百分比计算实际工作线程数。
