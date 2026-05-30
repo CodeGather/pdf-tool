@@ -177,6 +177,8 @@ func main() {
 	mergeCompress := flag.Bool("merge-compress", false, "合并后执行完整压缩优化（更小体积，更慢速度）")
 	progressEnabled := flag.Bool("p", false, "打印合并进度 0-100")
 	compressEnabled := flag.Bool("compress", false, "压缩 PDF（结构优化 + 图片重压缩为 JPEG）")
+	compressDirFlag := flag.String("compress-dir", "", "压缩指定目录下所有 PDF（并行，受 -cpu 控制）")
+	mergePrecompress := flag.Bool("merge-precompress", false, "合并前先并行压缩每个 PDF，再执行合并")
 	logEnabled := flag.Bool("log", false, "打印调试日志")
 	flag.BoolVar(logEnabled, "l", false, "打印调试日志")
 	metaEnabled := flag.Bool("meta", false, "打印图片宽高信息")
@@ -234,6 +236,14 @@ flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 		fmt.Fprintln(flag.CommandLine.Output(), "")
 		fmt.Fprintln(flag.CommandLine.Output(), "  # 诊断：查看 PDF 路由分类结果（不实际输出图片）")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o /tmp/out -l    # 日志显示路由决策")
+		fmt.Fprintln(flag.CommandLine.Output(), "")
+		fmt.Fprintln(flag.CommandLine.Output(), "  # 压缩")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -compress -i input.pdf -o output.pdf -q 85")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -compress-dir /path/to/pdfs -o /outdir -q 85 -cpu 50 -p")
+		fmt.Fprintln(flag.CommandLine.Output(), "")
+		fmt.Fprintln(flag.CommandLine.Output(), "  # 合并 + 预压缩（先并行压缩所有 PDF，再合并）")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-dir /path -o merged.pdf -merge-precompress -q 85 -cpu 50 -p")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-dir /path -o merged.pdf -merge-precompress -merge-compress -q 85 -p")
 	}
 	flag.Parse()
 
@@ -251,6 +261,10 @@ flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 	globalImageMetaCollector = newImageMetaCollector(debugLogsEnabled && (imageMetaEnabled || imageMetaJSONEnabled), imageMetaJSONEnabled)
 
 	if *compressEnabled {
+		if *inputFile == "" || *outputDir == "" {
+			fmt.Fprintln(os.Stderr, "压缩单个 PDF 需要 -i 和 -o 参数")
+			os.Exit(1)
+		}
 		if err := compressPDF(*inputFile, *outputDir, *quality, *logEnabled); err != nil {
 			fmt.Fprintf(os.Stderr, "PDF 压缩失败：%v\n", err)
 			os.Exit(1)
@@ -258,10 +272,43 @@ flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 		return
 	}
 
-	if *mergeEnabled {
-		if err := mergePDFs(*mergeInputDir, *mergeInputList, *mergeGlob, *outputDir, *mergeChunkSize, *mergeDivider, *progressEnabled, *mergeCompress); err != nil {
-			fmt.Fprintf(os.Stderr, "PDF 合并失败：%v\n", err)
+	if *compressDirFlag != "" {
+		workers := computeWorkerCount() * 2
+		files, err := filepath.Glob(filepath.Join(*compressDirFlag, "*.pdf"))
+		if err != nil || len(files) == 0 {
+			fmt.Fprintf(os.Stderr, "目录 %s 中未找到 PDF 文件\n", *compressDirFlag)
 			os.Exit(1)
+		}
+		sort.Slice(files, func(i, j int) bool {
+			return naturalLess(filepath.Base(files[i]), filepath.Base(files[j]))
+		})
+		if err := os.MkdirAll(*outputDir, 0755); err != nil {
+			fmt.Fprintf(os.Stderr, "创建输出目录失败：%v\n", err)
+			os.Exit(1)
+		}
+		totalFiles := len(files)
+		compressDirFiles(files, *outputDir, *quality, *logEnabled, workers, func(done, total int) {
+			if *progressEnabled {
+				fmt.Fprintf(os.Stderr, "\rcompress-dir: %d/%d done (%d%%)", done, total, done*100/total)
+			}
+		})
+		if *progressEnabled {
+			fmt.Fprintf(os.Stderr, "\rcompress-dir: %d/%d done (100%%)\n", totalFiles, totalFiles)
+		}
+		return
+	}
+
+	if *mergeEnabled {
+		if *mergePrecompress {
+			if err := mergePDFs(*mergeInputDir, *mergeInputList, *mergeGlob, *outputDir, *mergeChunkSize, *mergeDivider, *progressEnabled, *mergeCompress, *quality, true); err != nil {
+				fmt.Fprintf(os.Stderr, "合并失败：%v\n", err)
+				os.Exit(1)
+			}
+		} else {
+			if err := mergePDFs(*mergeInputDir, *mergeInputList, *mergeGlob, *outputDir, *mergeChunkSize, *mergeDivider, *progressEnabled, *mergeCompress, *quality, false); err != nil {
+				fmt.Fprintf(os.Stderr, "合并失败：%v\n", err)
+				os.Exit(1)
+			}
 		}
 		globalImageMetaCollector.flush()
 		return
@@ -281,7 +328,7 @@ flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 }
 
 // mergePDFs 负责按参数收集输入文件，并在需要时分批合并，避免一次性处理过多文件。
-func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize int, dividerPage, progressEnabled, compress bool) error {
+func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize int, dividerPage, progressEnabled, compress bool, quality int, precompress bool) error {
 	files, err := collectMergeInputs(inputDir, inputList, globPattern)
 	if err != nil {
 		return err
@@ -300,6 +347,50 @@ func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize in
 	if outDir != "." && outDir != "" {
 		if err := os.MkdirAll(outDir, 0755); err != nil {
 			return fmt.Errorf("create output directory: %w", err)
+		}
+	}
+
+	// 预压缩阶段自己管理进度条
+	if !precompress {
+		traceProgress(progressEnabled, 0)
+	}
+
+	// 预压缩：合并前先并行压缩所有 PDF
+	if precompress {
+		compressTempDir, err := os.MkdirTemp(outDir, "pdf-tool-precompress-*")
+		if err != nil {
+			return fmt.Errorf("创建预压缩临时目录: %w", err)
+		}
+		defer os.RemoveAll(compressTempDir)
+
+		workers := computeWorkerCount() * 2
+		log.Printf("merge: precompress files=%d workers=%d quality=%d", len(files), workers, quality)
+
+		compressedFiles := compressDirFiles(files, compressTempDir, quality, false, workers, func(done, total int) {
+			if progressEnabled {
+				// 压缩阶段进度映射到 0-70%
+				pct := done * 70 / total
+				fmt.Fprintf(os.Stderr, "\rmerge: precompress %d/%d (%d%%)", done, total, pct)
+			}
+		})
+
+		// 过滤成功压缩的文件
+		validFiles := make([]string, 0, len(compressedFiles))
+		for _, f := range compressedFiles {
+			if f != "" {
+				validFiles = append(validFiles, f)
+			}
+		}
+		if len(validFiles) == 0 {
+			return fmt.Errorf("预压缩后没有可用文件，全部失败")
+		}
+		if len(validFiles) < len(files) {
+			log.Printf("merge: %d 个文件压缩失败，使用剩余 %d 个文件继续合并", len(files)-len(validFiles), len(validFiles))
+		}
+		files = validFiles
+
+		if progressEnabled {
+			fmt.Fprintf(os.Stderr, "\rmerge: precompress %d/%d done (100%%)\n", len(files), len(files))
 		}
 	}
 
@@ -535,6 +626,117 @@ func compressPDF(inFile, outFile string, quality int, verbose bool) error {
 	}
 
 	return nil
+}
+
+// compressDirFiles 并行压缩所有 PDF 文件。
+// 使用 workers 个 goroutine 并发处理，progressFn 回调报告进度 (done, total)。
+// 返回压缩后的文件路径列表。
+func compressDirFiles(files []string, outputDir string, quality int, verbose bool, workers int, progressFn func(done, total int)) []string {
+	if len(files) == 0 {
+		fmt.Fprintf(os.Stderr, "compress-dir: 未提供 PDF 文件\n")
+		os.Exit(1)
+	}
+
+	if workers < 1 {
+		workers = 1
+	}
+
+	compressed := make([]string, len(files))
+	type job struct {
+		index int
+		in    string
+	}
+	jobs := make(chan job, len(files))
+	results := make(chan struct {
+		index int
+		out   string
+		err   error
+	}, len(files))
+
+	// 启动 worker 池
+	var wg sync.WaitGroup
+	for w := 0; w < workers; w++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for j := range jobs {
+				outPath := filepath.Join(outputDir, filepath.Base(j.in))
+				if err := compressPDF(j.in, outPath, quality, verbose); err != nil {
+					results <- struct {
+						index int
+						out   string
+						err   error
+					}{j.index, "", err}
+				} else {
+					results <- struct {
+						index int
+						out   string
+						err   error
+					}{j.index, outPath, nil}
+				}
+			}
+		}()
+	}
+
+	// 发送任务
+	for i, f := range files {
+		jobs <- job{index: i, in: f}
+	}
+	close(jobs)
+
+	// 等待所有 worker 完成
+	go func() {
+		wg.Wait()
+		close(results)
+	}()
+
+	// 收集结果并报告进度
+	var failed int
+	done := 0
+	total := len(files)
+	for r := range results {
+		done++
+		if r.err != nil {
+			failed++
+			if verbose {
+				fmt.Fprintf(os.Stderr, "compress-dir: %s 失败: %v\n", files[r.index], r.err)
+			}
+		} else {
+			compressed[r.index] = r.out
+		}
+		progressFn(done, total)
+	}
+
+	if verbose {
+		if failed > 0 {
+			log.Printf("compress-dir: 完成 %d/%d，%d 个失败", done-failed, total, failed)
+		} else {
+			log.Printf("compress-dir: 全部完成 %d/%d", done, total)
+		}
+		// 输出总体积对比
+		var srcSize, dstSize int64
+		for _, f := range files {
+			if fi, err := os.Stat(f); err == nil {
+				srcSize += fi.Size()
+			}
+		}
+		for _, f := range compressed {
+			if f != "" {
+				if fi, err := os.Stat(f); err == nil {
+					dstSize += fi.Size()
+				}
+			}
+		}
+		if srcSize > 0 {
+			log.Printf("compress-dir: %.1f MB → %.1f MB (%.1f%%)",
+				float64(srcSize)/1024/1024,
+				float64(dstSize)/1024/1024,
+				float64(dstSize)*100/float64(srcSize),
+			)
+		}
+	}
+
+	return compressed
 }
 
 // collectMergeInputs 根据目录或显式列表收集合并输入，并保持稳定排序。
