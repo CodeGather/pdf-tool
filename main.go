@@ -37,6 +37,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -173,7 +174,9 @@ func main() {
 	mergeGlob := flag.String("merge-glob", "*.pdf", "合并模式下的文件匹配模式")
 	mergeChunkSize := flag.Int("merge-chunk-size", 50, "合并模式下每批处理的 PDF 数量")
 	mergeDivider := flag.Bool("merge-divider", false, "在合并文件之间插入分隔页")
+	mergeCompress := flag.Bool("merge-compress", false, "合并后执行完整压缩优化（更小体积，更慢速度）")
 	progressEnabled := flag.Bool("p", false, "打印合并进度 0-100")
+	compressEnabled := flag.Bool("compress", false, "压缩 PDF（结构优化 + 图片重压缩为 JPEG）")
 	logEnabled := flag.Bool("log", false, "打印调试日志")
 	flag.BoolVar(logEnabled, "l", false, "打印调试日志")
 	metaEnabled := flag.Bool("meta", false, "打印图片宽高信息")
@@ -247,8 +250,16 @@ flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 	log.SetFlags(0)
 	globalImageMetaCollector = newImageMetaCollector(debugLogsEnabled && (imageMetaEnabled || imageMetaJSONEnabled), imageMetaJSONEnabled)
 
+	if *compressEnabled {
+		if err := compressPDF(*inputFile, *outputDir, *quality, *logEnabled); err != nil {
+			fmt.Fprintf(os.Stderr, "PDF 压缩失败：%v\n", err)
+			os.Exit(1)
+		}
+		return
+	}
+
 	if *mergeEnabled {
-		if err := mergePDFs(*mergeInputDir, *mergeInputList, *mergeGlob, *outputDir, *mergeChunkSize, *mergeDivider, *progressEnabled); err != nil {
+		if err := mergePDFs(*mergeInputDir, *mergeInputList, *mergeGlob, *outputDir, *mergeChunkSize, *mergeDivider, *progressEnabled, *mergeCompress); err != nil {
 			fmt.Fprintf(os.Stderr, "PDF 合并失败：%v\n", err)
 			os.Exit(1)
 		}
@@ -270,7 +281,7 @@ flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 }
 
 // mergePDFs 负责按参数收集输入文件，并在需要时分批合并，避免一次性处理过多文件。
-func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize int, dividerPage, progressEnabled bool) error {
+func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize int, dividerPage, progressEnabled, compress bool) error {
 	files, err := collectMergeInputs(inputDir, inputList, globPattern)
 	if err != nil {
 		return err
@@ -293,10 +304,35 @@ func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize in
 	}
 
 	traceProgress(progressEnabled, 0)
+
+	// 快速合并配置：跳过优化，仅做对象合并，速度极快
+	fastMergeConf := model.NewDefaultConfiguration()
+	fastMergeConf.Cmd = model.MERGECREATE
+	fastMergeConf.Optimize = false
+	fastMergeConf.OptimizeBeforeWriting = false
+
 	if len(files) <= chunkSize {
 		log.Printf("merge: single pass files=%d", len(files))
-		if err := api.MergeCreateFile(files, outputFile, dividerPage, nil); err != nil {
-			return fmt.Errorf("merge pdfs: %w", err)
+		// 单批次批量合并所有文件（跳过优化）
+		tmpOut := filepath.Join(outDir, ".merge_batch_tmp.pdf")
+		if err := api.MergeCreateFile(files, tmpOut, dividerPage, fastMergeConf); err != nil {
+			os.Remove(tmpOut)
+			return fmt.Errorf("merge batch: %w", err)
+		}
+		if compress {
+			traceProgress(progressEnabled, 90)
+			// 完整优化输出（体积小，速度慢）
+			if err := api.MergeCreateFile([]string{tmpOut}, outputFile, false, nil); err != nil {
+				os.Remove(tmpOut)
+				return fmt.Errorf("merge final optimize: %w", err)
+			}
+			os.Remove(tmpOut)
+		} else {
+			// 直接输出（体积大，速度快）
+			if err := os.Rename(tmpOut, outputFile); err != nil {
+				os.Remove(tmpOut)
+				return fmt.Errorf("rename to output: %w", err)
+			}
 		}
 		log.Printf("merge: done output=%s", outputFile)
 		traceProgress(progressEnabled, 100)
@@ -310,31 +346,194 @@ func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize in
 	defer os.RemoveAll(tempDir)
 
 	chunkFiles := make([]string, 0, (len(files)+chunkSize-1)/chunkSize)
-	for index := 0; index < len(files); index += chunkSize {
+	totalChunks := (len(files) + chunkSize - 1) / chunkSize
+	for ci, index := 0, 0; index < len(files); ci, index = ci+1, index+chunkSize {
 		end := index + chunkSize
 		if end > len(files) {
 			end = len(files)
 		}
-		log.Printf("merge: chunk %d start files=%d", len(chunkFiles)+1, end-index)
-		chunkOut := filepath.Join(tempDir, fmt.Sprintf("chunk_%04d.pdf", len(chunkFiles)+1))
-		if err := api.MergeCreateFile(files[index:end], chunkOut, dividerPage, nil); err != nil {
-			return fmt.Errorf("merge chunk %d: %w", len(chunkFiles)+1, err)
+		log.Printf("merge: chunk %d start files=%d", ci+1, end-index)
+		chunkOut := filepath.Join(tempDir, fmt.Sprintf("chunk_%04d.pdf", ci+1))
+		// 批量合并整个 chunk（跳过优化），比逐文件快很多
+		if err := api.MergeCreateFile(files[index:end], chunkOut, dividerPage, fastMergeConf); err != nil {
+			return fmt.Errorf("merge chunk %d: %w", ci+1, err)
 		}
 		chunkFiles = append(chunkFiles, chunkOut)
-		log.Printf("merge: chunk %d done output=%s", len(chunkFiles), chunkOut)
-		progress := len(chunkFiles) * 100 / ((len(files) + chunkSize - 1) / chunkSize)
-		if progress > 99 {
-			progress = 99
-		}
-		traceProgress(progressEnabled, progress)
+		log.Printf("merge: chunk %d done output=%s", ci+1, chunkOut)
+		traceProgress(progressEnabled, (ci+1)*99/totalChunks)
 	}
 
-	log.Printf("merge: final pass chunks=%d", len(chunkFiles))
-	if err := api.MergeCreateFile(chunkFiles, outputFile, dividerPage, nil); err != nil {
+	// 最终合并各 chunk：是否压缩由 -merge-compress 控制
+	mergeConf := fastMergeConf
+	if compress {
+		mergeConf = nil
+	}
+	log.Printf("merge: final pass chunks=%d compress=%v", len(chunkFiles), compress)
+	if err := api.MergeCreateFile(chunkFiles, outputFile, dividerPage, mergeConf); err != nil {
 		return fmt.Errorf("merge final output: %w", err)
 	}
 	log.Printf("merge: done output=%s", outputFile)
 	traceProgress(progressEnabled, 100)
+	return nil
+}
+
+// compressPDF 压缩单个 PDF 文件：先进行结构优化（pdfcpu），再重压缩 FlateDecode 图片为 JPEG。
+// 输入：inFile — 源 PDF 路径
+// 输出：outFile — 压缩后 PDF 路径
+// quality — JPEG 编码质量 1-100
+// verbose — 是否打印日志
+func compressPDF(inFile, outFile string, quality int, verbose bool) error {
+	if quality < 1 || quality > 100 {
+		quality = 85
+	}
+
+	// Step 1: 结构优化
+	optFile := outFile + ".opt_tmp"
+	if err := api.OptimizeFile(inFile, optFile, nil); err != nil {
+		os.Remove(optFile)
+		return fmt.Errorf("结构优化: %w", err)
+	}
+	defer os.Remove(optFile)
+
+	// Step 2: 打开优化后的 PDF
+	f, err := os.Open(optFile)
+	if err != nil {
+		return fmt.Errorf("打开优化文件: %w", err)
+	}
+	defer f.Close()
+
+	conf := model.NewDefaultConfiguration()
+	conf.Optimize = false
+	conf.OptimizeBeforeWriting = false
+	ctx, err := api.ReadAndValidate(f, conf)
+	if err != nil {
+		return fmt.Errorf("读取 PDF: %w", err)
+	}
+
+	// Step 3: 遍历所有图片，重压缩 FlateDecode 为 JPEG
+	recompressed := 0
+	for objNr, entry := range ctx.Table {
+		if entry.Free || entry.Object == nil {
+			continue
+		}
+		sd, ok := entry.Object.(types.StreamDict)
+		if !ok {
+			continue
+		}
+		subtype := sd.NameEntry("Subtype")
+		if subtype == nil || *subtype != "Image" {
+			continue
+		}
+		// 只处理 FlateDecode 图片（PNG 编码）
+		isFlate := false
+		for _, pl := range sd.FilterPipeline {
+			if pl.Name == "FlateDecode" {
+				isFlate = true
+				break
+			}
+		}
+		if !isFlate {
+			continue
+		}
+
+		wPtr := sd.IntEntry("Width")
+		hPtr := sd.IntEntry("Height")
+		if wPtr == nil || hPtr == nil {
+			continue
+		}
+		w, h := *wPtr, *hPtr
+
+		if err := sd.Decode(); err != nil {
+			continue
+		}
+		if len(sd.Content) == 0 {
+			continue
+		}
+
+		csPtr := sd.NameEntry("ColorSpace")
+		cs := ""
+		if csPtr != nil {
+			cs = *csPtr
+		}
+		components := 3
+		switch cs {
+		case "DeviceGray", "G":
+			components = 1
+		case "DeviceCMYK":
+			// CMYK 图片跳过重压缩，保持原样
+			continue
+		}
+
+		expectedSize := w * h * components
+		if len(sd.Content) < expectedSize {
+			continue
+		}
+
+		var img image.Image
+		switch components {
+		case 1:
+			gray := image.NewGray(image.Rect(0, 0, w, h))
+			copy(gray.Pix, sd.Content[:w*h])
+			img = gray
+		case 3:
+			rgb := image.NewRGBA(image.Rect(0, 0, w, h))
+			for y := 0; y < h; y++ {
+				for x := 0; x < w; x++ {
+					srcIdx := y*w*3 + x*3
+					dstIdx := y*rgb.Stride + x*4
+					rgb.Pix[dstIdx+0] = sd.Content[srcIdx+0]
+					rgb.Pix[dstIdx+1] = sd.Content[srcIdx+1]
+					rgb.Pix[dstIdx+2] = sd.Content[srcIdx+2]
+					rgb.Pix[dstIdx+3] = 255
+				}
+			}
+			img = rgb
+		default:
+			continue
+		}
+
+		var jpegBuf bytes.Buffer
+		if err := jpeg.Encode(&jpegBuf, img, &jpeg.Options{Quality: quality}); err != nil {
+			continue
+		}
+
+		// 更新 StreamDict 和 Dict 条目
+		sd.Raw = jpegBuf.Bytes()
+		sd.Content = nil
+		sd.FilterPipeline = []types.PDFFilter{{Name: "DCTDecode"}}
+		l := int64(len(sd.Raw))
+		sd.StreamLength = &l
+		sd.StreamLengthObjNr = nil
+		sd.Update("Filter", types.Name("DCTDecode"))
+		sd.Update("Length", types.Integer(l))
+		sd.Delete("DecodeParms")
+
+		entry.Object = sd
+		ctx.Table[objNr] = entry
+		recompressed++
+	}
+
+	if verbose {
+		log.Printf("compress: %d 张 FlateDecode 图片重压缩为 JPEG Q%d", recompressed, quality)
+	}
+
+	// Step 4: 写出
+	if err := api.WriteContextFile(ctx, outFile); err != nil {
+		return fmt.Errorf("写出 PDF: %w", err)
+	}
+
+	if verbose {
+		src, _ := os.Stat(inFile)
+		dst, _ := os.Stat(outFile)
+		log.Printf("compress: %s (%.1f MB) → %s (%.1f MB, %.1f%%)",
+			inFile,
+			float64(src.Size())/1024/1024,
+			outFile,
+			float64(dst.Size())/1024/1024,
+			float64(dst.Size())*100/float64(src.Size()),
+		)
+	}
+
 	return nil
 }
 
