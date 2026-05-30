@@ -300,7 +300,8 @@ flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 
 	if *mergeEnabled {
 		if *mergePrecompress {
-			if err := mergePDFs(*mergeInputDir, *mergeInputList, *mergeGlob, *outputDir, *mergeChunkSize, *mergeDivider, *progressEnabled, *mergeCompress, *quality, true); err != nil {
+			// merge-precompress 自动启用最终优化，无需额外加 -merge-compress
+			if err := mergePDFs(*mergeInputDir, *mergeInputList, *mergeGlob, *outputDir, *mergeChunkSize, *mergeDivider, *progressEnabled, true, *quality, true); err != nil {
 				fmt.Fprintf(os.Stderr, "合并失败：%v\n", err)
 				os.Exit(1)
 			}
