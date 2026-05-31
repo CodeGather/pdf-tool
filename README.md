@@ -66,8 +66,8 @@ go build -o pdf-tool .
 | `-merge-glob` | `*.pdf` | 合并模式下的文件匹配模式 |
 | `-merge-chunk-size` | `50` | 每批合并的 PDF 数量 |
 | `-merge-divider` | `false` | 在合并文件之间插入空白分隔页 |
-| `-merge-compress` | `true` | 合并前用 Ghostscript 压缩每个文件，大幅减小输出体积 |
-| `-p` | `false` | 打印合并进度 0-100 |
+| `-merge-compress` | `true` | 合并前用 Ghostscript 压缩每个文件，大幅减小输出体积。配合 `-p` 可查看压缩进度 |
+| `-p` | `false` | 打印合并与压缩进度 0-100 |
 
 ### 压缩模式
 
@@ -141,7 +141,7 @@ go build -o pdf-tool .
 # 大量文件分批合并
 ./pdf-tool -merge -merge-dir ./pdfs -o merged.pdf -merge-chunk-size 25
 
-# 合并 + 进度
+# 查看压缩与合并进度
 ./pdf-tool -merge -merge-dir ./pdfs -o merged.pdf -p
 ```
 
@@ -170,6 +170,9 @@ go build -o pdf-tool .
 
 # 指定压缩预设
 ./pdf-tool -merge -merge-dir ./pdfs -o merged.pdf -compress-preset ebook -compress-resolution 150
+
+# 查看压缩与合并进度（实时输出 0-100 数字到 stderr）
+./pdf-tool -merge -merge-dir ./pdfs -o merged.pdf -p
 ```
 
 ## 架构概览

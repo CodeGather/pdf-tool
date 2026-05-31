@@ -8,30 +8,30 @@
 //  3. 多 PDF 合并：利用 pdfcpu 的 MergeCreateFile 合并多个 PDF 文件。
 //
 // 渲染引擎：
-//  - 主渲染引擎：mutool draw -ppm（MuPDF），颜色与 PDF 阅读器 100% 一致
-//  - 回退引擎：go-fitz（仅在 mutool 完全不可用时触发）
-//  - pdftoppm 已完全移除（lcms2 的 CMYK→RGB 转换偏红）
+//   - 主渲染引擎：mutool draw -ppm（MuPDF），颜色与 PDF 阅读器 100% 一致
+//   - 回退引擎：go-fitz（仅在 mutool 完全不可用时触发）
+//   - pdftoppm 已完全移除（lcms2 的 CMYK→RGB 转换偏红）
 //
 // 并行策略：
-//  - mutool 渲染：按页范围拆分为多个独立子进程并行执行
-//  - PPM→JPEG 编码：使用 goroutine 池并行编码
-//  - 并行度由 -cpu 参数控制（0-100%，默认 25），实际线程数 = CPU核心数 * 百分比
+//   - mutool 渲染：按页范围拆分为多个独立子进程并行执行
+//   - PPM→JPEG 编码：使用 goroutine 池并行编码
+//   - 并行度由 -cpu 参数控制（0-100%，默认 25），实际线程数 = CPU核心数 * 百分比
 //
 // 路由策略：
-//  - 任何页面有 /Group → 检查是否有裁剪路径（hasPageContentClip）
-//  - 有裁剪路径且 cm_a/clip_w 比例 > 1.05 → render-crop（渲染后裁剪）
-//  - 无 Group + 有裁剪路径（比例 > 1.05）→ render-crop
-//  - 其余 → direct-extract（直取）
+//   - 任何页面有 /Group → 检查是否有裁剪路径（hasPageContentClip）
+//   - 有裁剪路径且 cm_a/clip_w 比例 > 1.05 → render-crop（渲染后裁剪）
+//   - 无 Group + 有裁剪路径（比例 > 1.05）→ render-crop
+//   - 其余 → direct-extract（直取）
 //
 // 输出格式：
-//  - JPEG（-f jpg）：默认 85% 质量，CMYK JPEG 自动识别并正确转换
-//  - PNG（-f png）：仅当指定时输出
-//  - 自动格式判断：CMYK JPEG 场景自动输出 jpg，避免重编码
+//   - JPEG（-f jpg）：默认 85% 质量，CMYK JPEG 自动识别并正确转换
+//   - PNG（-f png）：仅当指定时输出
+//   - 自动格式判断：CMYK JPEG 场景自动输出 jpg，避免重编码
 //
 // 8-bit 快速路径：
-//  - FlateDecode 编码的 8-bit RGB/Gray 图片会走 sd.Decode() 快速解码
-//  - 绕过 pdfcpu 的通用 ExtractImage 路径（含 SMask 合成的锁竞争）
-//  - SMask 处理在快速路径内完成，不碰 ctxMu，goroutine-safe
+//   - FlateDecode 编码的 8-bit RGB/Gray 图片会走 sd.Decode() 快速解码
+//   - 绕过 pdfcpu 的通用 ExtractImage 路径（含 SMask 合成的锁竞争）
+//   - SMask 处理在快速路径内完成，不碰 ctxMu，goroutine-safe
 //
 // 版本：v2.0+（基于 mutool 渲染引擎，已移除 pdftoppm）
 package main
@@ -51,8 +51,8 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
-	"sort"
 	"runtime"
+	"sort"
 	"strconv"
 	"strings"
 	"sync"
@@ -71,8 +71,10 @@ var imageMetaEnabled bool
 var imageMetaJSONEnabled bool
 var globalImageMetaCollector *imageMetaCollector
 var colorCorrectionEnabled bool
+
 // mutoolPath 缓存 mutool 执行路径，首次使用时检测。
 var mutoolPath string
+
 // parallelPercent 用户指定的并行百分比（0-100），默认 50。
 // 实际工作线程数由 computeWorkerCount() 根据 CPU 核心数计算。
 var parallelPercent int
@@ -81,6 +83,7 @@ var parallelPercent int
 // 支持两种输出模式：
 //   - 文本模式（-m）：每行一个 [image] 记录，适合 grep/awk 处理
 //   - JSON 模式（-m-json）：JSON 数组，适合程序解析
+//
 // 线程安全：通过 sync.Mutex 保护 records 切片。
 type imageMetaCollector struct {
 	mu         sync.Mutex
@@ -179,7 +182,7 @@ func main() {
 	compressJPEGQ := flag.Int("compress-jpegq", 95, "压缩 JPEG 质量 1-100（默认 95）")
 	compressDir := flag.String("compress-dir", "", "压缩目录下所有 PDF 文件")
 	mergeCompress := flag.Bool("merge-compress", true, "合并前先压缩每个 PDF 文件（默认开启）")
-	progressEnabled := flag.Bool("p", false, "打印合并进度 0-100")
+	progressEnabled := flag.Bool("p", false, "打印合并与压缩进度 0-100")
 	logEnabled := flag.Bool("log", false, "打印调试日志")
 	flag.BoolVar(logEnabled, "l", false, "打印调试日志")
 	metaEnabled := flag.Bool("meta", false, "打印图片宽高信息")
@@ -187,7 +190,7 @@ func main() {
 	metaJSONEnabled := flag.Bool("meta-json", false, "以 JSON 形式打印图片宽高信息")
 	flag.BoolVar(metaJSONEnabled, "m-json", false, "以 JSON 形式打印图片宽高信息")
 	timing := flag.Bool("timing", false, "打印每个阶段的耗时信息")
-flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
+	flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 	quality := flag.Int("quality", 85, "JPEG 编码质量 1-100（默认 85，兼顾质量和速度）")
 	flag.IntVar(quality, "q", 85, "JPEG 编码质量 1-100（默认 85）")
 	colorCorrection := flag.Bool("cc", false, "对 pdftoppm 渲染结果应用色彩校正（已弃用的选项，当前引擎为 mutool 无需校正）")
@@ -353,84 +356,90 @@ func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize in
 		results := make(chan compResult, len(files))
 
 		var wg sync.WaitGroup
+		wg.Add(len(files))
 		sem := make(chan struct{}, numWorkers)
-		for i, f := range files {
-			wg.Add(1)
-			sem <- struct{}{}
-			go func(idx int, inputPath string) {
-				defer wg.Done()
-				defer func() { <-sem }()
-				base := filepath.Base(inputPath)
-				outPath := filepath.Join(compressDir, base)
-				inputInfo, _ := os.Stat(inputPath)
-				inputSize := int64(0)
-				if inputInfo != nil {
-					inputSize = inputInfo.Size()
-				}
+		traceProgress(progressEnabled, 0)
+		// 后台启动 goroutine（与收结果并行，避免 sem 阻塞延迟进度）
+		go func() {
+			for i, f := range files {
+				sem <- struct{}{}
+				go func(idx int, inputPath string) {
+					defer wg.Done()
+					defer func() { <-sem }()
+					base := filepath.Base(inputPath)
+					outPath := filepath.Join(compressDir, base)
+					inputInfo, _ := os.Stat(inputPath)
+					inputSize := int64(0)
+					if inputInfo != nil {
+						inputSize = inputInfo.Size()
+					}
 
-				args := []string{
-					"-sDEVICE=pdfwrite",
-					"-dNOPAUSE", "-dSAFER", "-dBATCH",
-					"-dQUIET",
-				}
-				if gsPreset != "" {
-					args = append(args, fmt.Sprintf("-dPDFSETTINGS=%s", gsPreset))
-				}
-				if disableDownsample {
+					args := []string{
+						"-sDEVICE=pdfwrite",
+						"-dNOPAUSE", "-dSAFER", "-dBATCH",
+						"-dQUIET",
+					}
+					if gsPreset != "" {
+						args = append(args, fmt.Sprintf("-dPDFSETTINGS=%s", gsPreset))
+					}
+					if disableDownsample {
+						args = append(args,
+							"-dDownsampleColorImages=false",
+							"-dDownsampleGrayImages=false",
+							"-dDownsampleMonoImages=false",
+							"-dColorImageResolution=1200",
+							"-dGrayImageResolution=1200",
+							"-dMonoImageResolution=2400",
+						)
+					}
+					// 用户指定降采样 DPI（覆盖预设，也覆盖 high 预设的默认 1200）
+					if resolution > 0 {
+						args = append(args,
+							fmt.Sprintf("-dColorImageResolution=%d", resolution),
+							fmt.Sprintf("-dGrayImageResolution=%d", resolution),
+							fmt.Sprintf("-dMonoImageResolution=%d", resolution*2),
+						)
+					}
+					if jpegQuality > 0 && jpegQuality <= 100 {
+						args = append(args, fmt.Sprintf("-dJPEGQ=%d", jpegQuality))
+					}
 					args = append(args,
-						"-dDownsampleColorImages=false",
-						"-dDownsampleGrayImages=false",
-						"-dDownsampleMonoImages=false",
-						"-dColorImageResolution=1200",
-						"-dGrayImageResolution=1200",
-						"-dMonoImageResolution=2400",
+						"-dAutoFilterColorImages=false",
+						"-dColorImageFilter=/DCTEncode",
+						"-dAutoFilterGrayImages=false",
+						"-dGrayImageFilter=/DCTEncode",
+						"-dSubsetFonts=true", "-dMaxSubsetPct=100",
+						"-dCompressPages=true", "-dUseFlateCompression=true",
+						fmt.Sprintf("-sOutputFile=%s", outPath),
+						inputPath,
 					)
-				}
-				// 用户指定降采样 DPI（覆盖预设，也覆盖 high 预设的默认 1200）
-				if resolution > 0 {
-					args = append(args,
-						fmt.Sprintf("-dColorImageResolution=%d", resolution),
-						fmt.Sprintf("-dGrayImageResolution=%d", resolution),
-						fmt.Sprintf("-dMonoImageResolution=%d", resolution*2),
-					)
-				}
-				if jpegQuality > 0 && jpegQuality <= 100 {
-					args = append(args, fmt.Sprintf("-dJPEGQ=%d", jpegQuality))
-				}
-				args = append(args,
-					"-dAutoFilterColorImages=false",
-					"-dColorImageFilter=/DCTEncode",
-					"-dAutoFilterGrayImages=false",
-					"-dGrayImageFilter=/DCTEncode",
-					"-dSubsetFonts=true", "-dMaxSubsetPct=100",
-					"-dCompressPages=true", "-dUseFlateCompression=true",
-					fmt.Sprintf("-sOutputFile=%s", outPath),
-					inputPath,
-				)
 
-cmd := exec.Command(findGS(), args...)
-				if err := cmd.Run(); err != nil {
-					results <- compResult{idx: idx, err: fmt.Errorf("压缩 %s 失败: %w", inputPath, err)}
-					return
-				}
+					cmd := exec.Command(findGS(), args...)
+					if err := cmd.Run(); err != nil {
+						results <- compResult{idx: idx, err: fmt.Errorf("压缩 %s 失败: %w", inputPath, err)}
+						return
+					}
 
-				outputInfo, _ := os.Stat(outPath)
-				outputSize := int64(0)
-				if outputInfo != nil {
-					outputSize = outputInfo.Size()
-				}
+					outputInfo, _ := os.Stat(outPath)
+					outputSize := int64(0)
+					if outputInfo != nil {
+						outputSize = outputInfo.Size()
+					}
 
-				results <- compResult{idx: idx, compressed: outPath, inputSize: inputSize, outputSize: outputSize}
-			}(i, f)
-		}
+					results <- compResult{idx: idx, compressed: outPath, inputSize: inputSize, outputSize: outputSize}
+				}(i, f)
+			}
+		}()
 
-		// 等待完成
-		wg.Wait()
+		// 另起 goroutine 等待完成，主 goroutine 边收结果边报进度
+		go func() {
+			wg.Wait()
+			close(results)
+		}()
 
-		// 收集结果
 		compressedFiles := make([]string, len(files))
 		var totalInputSize, totalOutputSize int64
-		close(results)
+		completed := 0
 		for r := range results {
 			if r.err != nil {
 				return r.err
@@ -438,6 +447,8 @@ cmd := exec.Command(findGS(), args...)
 			compressedFiles[r.idx] = r.compressed
 			totalInputSize += r.inputSize
 			totalOutputSize += r.outputSize
+			completed++
+			traceProgress(progressEnabled, completed*100/len(files))
 		}
 
 		// 替换文件列表为压缩版本
@@ -445,7 +456,6 @@ cmd := exec.Command(findGS(), args...)
 
 		ratio := float64(totalOutputSize) / float64(totalInputSize) * 100
 		reduction := (1 - float64(totalOutputSize)/float64(totalInputSize)) * 100
-		traceProgress(progressEnabled, 0)
 		log.Printf("merge-compress: 完成 输入=%s 输出=%s 压缩比=%.1f%% (减少 %.1f%%)",
 			formatSize(totalInputSize), formatSize(totalOutputSize), ratio, reduction)
 	}
@@ -732,7 +742,7 @@ func dictAt(d types.Dict, key string) types.Dict {
 
 // hasPageContentClip 检查页面的内容流是否包含 clip 操作符（W / W*）。
 // 这用于区分 Illustrator 等工具自动添加的 /Group /Transparency 标记
-//（没有实际裁剪）和确实有裁剪路径的页面。
+// （没有实际裁剪）和确实有裁剪路径的页面。
 // content stream 此时可能还是 FlateDecode 压缩的，需要先解压再检查。
 func hasPageContentClip(ctx *model.Context, pageDict types.Dict) bool {
 	// 先用 Dereference 解析间接引用，再尝试转为 StreamDict
@@ -1106,26 +1116,29 @@ func renderCropPDF(inputFile, outputDir, format string, dpi float64, timing, pro
 // renderWholePagePDF 使用 mutool draw -ppm 渲染 PDF 所有页面为图片。
 //
 // 并行策略（CPU 使用率由 -cpu 参数控制）：
-//   Phase 1 — 渲染并行：
-//     将总页数按 computeWorkerCount() 拆分为多个页范围，
-//     每个范围启动一个独立的 mutool draw -ppm 子进程。
-//     子进程写入临时目录，进程间无竞争。
-//     例如：14 核 / -cpu 25 时，启动 4 个子进程，各渲染约 1/4 页数。
-//     渲染失败（任何子进程出错）→ 回退到串行 mutool → 再回退到 go-fitz。
 //
-//   Phase 2 — 编码并行：
-//     所有渲染完成后，用 goroutine 池（容量 = computeWorkerCount()）并行读取 PPM
-//     文件、裁剪（如需）、编码为 JPEG/PNG 并写盘。
-//     使用 channel + sync.WaitGroup 协调并发。
+//	Phase 1 — 渲染并行：
+//	  将总页数按 computeWorkerCount() 拆分为多个页范围，
+//	  每个范围启动一个独立的 mutool draw -ppm 子进程。
+//	  子进程写入临时目录，进程间无竞争。
+//	  例如：14 核 / -cpu 25 时，启动 4 个子进程，各渲染约 1/4 页数。
+//	  渲染失败（任何子进程出错）→ 回退到串行 mutool → 再回退到 go-fitz。
+//
+//	Phase 2 — 编码并行：
+//	  所有渲染完成后，用 goroutine 池（容量 = computeWorkerCount()）并行读取 PPM
+//	  文件、裁剪（如需）、编码为 JPEG/PNG 并写盘。
+//	  使用 channel + sync.WaitGroup 协调并发。
 //
 // 颜色处理：
-//   mutool draw -ppm 输出原始 RGB 数据，无需色彩校正。
-//   与 pdftoppm 不同，mutool（MuPDF）的 CMYK→RGB 转换与 macOS PDFKit/Acrobat 一致。
+//
+//	mutool draw -ppm 输出原始 RGB 数据，无需色彩校正。
+//	与 pdftoppm 不同，mutool（MuPDF）的 CMYK→RGB 转换与 macOS PDFKit/Acrobat 一致。
 //
 // PPM 格式：
-//   P6 二进制 RGB：每像素 3 字节（R,G,B），无 alpha 通道。
-//   文件头：P6 \n <width> <height> \n 255 \n <raw RGB data>
-//   由 readPPM() 解析为 *image.RGBA（alpha 设为 255）。
+//
+//	P6 二进制 RGB：每像素 3 字节（R,G,B），无 alpha 通道。
+//	文件头：P6 \n <width> <height> \n 255 \n <raw RGB data>
+//	由 readPPM() 解析为 *image.RGBA（alpha 设为 255）。
 //
 // 适用场景：classifyPDFDocument 返回 routeRenderWholePageImage 的情况。
 func renderWholePagePDF(inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool, quality int) error {
@@ -1243,8 +1256,8 @@ func renderWholePagePDF(inputFile, outputDir, format string, dpi float64, timing
 	// 并行读取 PPM 并编码为最终格式（goroutine 池，默认 4 路并行）
 	traceProgress(progressEnabled, 0)
 	type pageResult struct {
-		nr   int
-		err  error
+		nr  int
+		err error
 	}
 	resultCh := make(chan pageResult, pageCount)
 	sem := make(chan struct{}, computeWorkerCount()) // 并发数
@@ -1354,7 +1367,7 @@ func renderWholePagePDFGoFitz(inputFile, outputDir, format string, dpi float64, 
 //  1. 获取当前页的 /Resources/XObject 字典，遍历所有 Image 对象
 //  2. 对每个 Image 对象调用 writeDirectImage：
 //     a) 优先尝试快速路径（writeDirectImageFast）—— 直接复制 JPEG/JPEG2000 流，
-//        或解码 8-bit RGB/Gray FlateDecode 图片
+//     或解码 8-bit RGB/Gray FlateDecode 图片
 //     b) 快速路径不满足条件时，回退到 pdfcpu 的通用解码路径
 //  3. Form XObject 中的图片也会递归提取
 //  4. SMask（透明度遮罩）在快速路径内处理，不触发 pdfcpu 的锁竞争
@@ -1688,7 +1701,7 @@ func renderPageToImageViaMutool(inputFile string, pageNr int, dpi float64) (imag
 // 3. 裁剪掉白边，输出仅图片区域
 func renderSinglePageCrop(inputFile string, pageNr int, dpi float64, outPath, format string, timing bool, quality int) error {
 	pageStart := time.Now()
-fitzDoc, err := openFitzDoc(inputFile)
+	fitzDoc, err := openFitzDoc(inputFile)
 	if err != nil {
 		return fmt.Errorf("open PDF for render+crop: %w", err)
 	}
@@ -1940,7 +1953,7 @@ func writeDirectImageFast(ctx *model.Context, sd *types.StreamDict, objNr int, i
 			// 先按用户指定格式计算路径，mutool 路径成功时再改为 jpg
 			outputExt := outputExtension(format)
 			outPath := filepath.Join(outputDir, fmt.Sprintf("page_%03d_image_001.%s", pageNr, outputExt))
-			actualFormat := format   // 实际输出格式，mutool 路径会改写为 jpg
+			actualFormat := format // 实际输出格式，mutool 路径会改写为 jpg
 			actualExt := outputExt
 
 			writeStart := time.Now()
@@ -2641,16 +2654,17 @@ func minRegionAreaThreshold(width, height int) int {
 // - 前景面积越大，越可能是我们想要的图像主体。
 // findLargestRegions 从整页渲染结果里提取最大的前景区域。
 // 算法：
-//   1. 将图像转换为 *image.RGBA
-//   2. 从图像的四个角开始扫描（因为图片主体通常在页面中央，四角是背景）
-//   3. 对每个非背景像素启动 flood fill，收集连通区域
-//   4. 按像素面积降序排列，取前 maxRegions 个
-//   5. 返回这些区域的外接矩形列表
+//  1. 将图像转换为 *image.RGBA
+//  2. 从图像的四个角开始扫描（因为图片主体通常在页面中央，四角是背景）
+//  3. 对每个非背景像素启动 flood fill，收集连通区域
+//  4. 按像素面积降序排列，取前 maxRegions 个
+//  5. 返回这些区域的外接矩形列表
 //
 // 假设前提：
 //   - 大部分背景接近白色
 //   - 目标内容在像素上是连通的或者近似连通的
 //   - 前景面积越大，越可能是图像主体
+//
 // 阈值偏高，更愿意把浅灰边缘也算作背景，使主体外接框更稳定。
 func findLargestRegions(img image.Image, maxRegions int) ([]image.Rectangle, error) {
 	// 把渲染结果转成 RGBA 后，按背景阈值做 flood fill，提取最大的前景区域。
@@ -2712,6 +2726,7 @@ func findLargestRegions(img image.Image, maxRegions int) ([]image.Rectangle, err
 // 条件：
 //   - 该页只有 1 个图片对象
 //   - 图片尺寸与页面尺寸接近（差值在 5% 内）
+//
 // 满足条件时，直接渲染整页并输出，不做裁剪。
 // 适用于扫描版 PDF、单张贴图、背景图等场景。
 func shouldRenderWholePageImage(ctx *model.Context, pageNr int, objNrs []int) bool {
@@ -2774,6 +2789,7 @@ func nearlyEqual(a, b float64) bool {
 // 返回：
 //   - 连通块的外接矩形（image.Rectangle）
 //   - 连通块的像素面积
+//
 // 后续由 findLargestRegions 按面积排序，保留最大区域。
 func floodFillRegion(img *image.RGBA, startX, startY int, visited []bool) (image.Rectangle, int) {
 	// 标准四邻域 flood fill，记录连通区域的外接矩形和面积。
@@ -2899,12 +2915,13 @@ func applyColorCorrection(img *image.RGBA) {
 
 // findMutool 查找 mutool 可执行文件路径，优先使用捆绑版本。
 // 查找顺序：
-//   1. PATH 环境变量（系统安装的 mutool）
-//   2. 程序同级目录 mutool（解压后直接放在一起）
-//   3. 程序同级 bund/<os>-<arch>/mutool（跨平台捆绑）
-//   4. 程序同级 bund/mutool（简单捆绑）
-//   5. /opt/homebrew/bin/mutool（Homebrew）
-//   6. /usr/local/bin/mutool
+//  1. PATH 环境变量（系统安装的 mutool）
+//  2. 程序同级目录 mutool（解压后直接放在一起）
+//  3. 程序同级 bund/<os>-<arch>/mutool（跨平台捆绑）
+//  4. 程序同级 bund/mutool（简单捆绑）
+//  5. /opt/homebrew/bin/mutool（Homebrew）
+//  6. /usr/local/bin/mutool
+//
 // 如果都找不到，返回空字符串，后续会回退到 go-fitz 渲染。
 // 结果缓存在全局变量 mutoolPath 中，避免重复查找。
 func findMutool() string {
@@ -2965,12 +2982,12 @@ func findMutool() string {
 // findGS 查找 Ghostscript (gs) 可执行文件路径，优先使用捆绑版本。
 // 查找顺序：
 //
-//	1. PATH 环境变量（系统安装的 gs）
-//	2. 程序同级目录 gs（dist 打包后 gs 和 pdf-tool 放在一起）
-//	3. 程序同级 bund/<os>-<arch>/gs（跨平台捆绑）
-//	4. 程序同级 bund/gs（简单捆绑）
-//	5. /opt/homebrew/bin/gs（Homebrew）
-//	6. /usr/local/bin/gs
+//  1. PATH 环境变量（系统安装的 gs）
+//  2. 程序同级目录 gs（dist 打包后 gs 和 pdf-tool 放在一起）
+//  3. 程序同级 bund/<os>-<arch>/gs（跨平台捆绑）
+//  4. 程序同级 bund/gs（简单捆绑）
+//  5. /opt/homebrew/bin/gs（Homebrew）
+//  6. /usr/local/bin/gs
 //
 // 结果缓存在全局变量中，避免重复查找。
 var gsPath string
@@ -3646,9 +3663,3 @@ func compressPDFDir(inputDir, outputDir, preset string, jpegQuality, resolution 
 
 	return nil
 }
-
-
-
-
-
-

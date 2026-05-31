@@ -234,9 +234,9 @@ which mutool  # 或 /opt/homebrew/bin/mutool
 
 mutool 渲染使用 `os.MkdirTemp`，如果 `TMPDIR` 环境变量无效或目录不存在，渲染失败会被静默吞掉（`renderWholePagePDF` 的并行阶段出错时回退到串行）。
 
-### 8.4 `-p` 冲突
+### 8.4 `-p` 同时用于压缩与合并进度
 
-`-p` 已被合并进度使用。如果你需要添加新的布尔标志，不要用 `-p`。
+`-p` 参数同时输出压缩阶段（`-merge-compress=true`）和合并阶段的进度数字。压缩阶段每完成一个文件输出一次 `completed*100/total`，合并阶段每完成一个 chunk 输出一次。两者都是 0→100 的数字序列，Tauri 前端通过 stderr 接收。
 
 ---
 
@@ -247,7 +247,8 @@ mutool 渲染使用 `os.MkdirTemp`，如果 `TMPDIR` 环境变量无效或目录
 1. **添加函数** → 在文件末尾添加（自定义排序：public 函数在前，private 辅助在后）
 2. **添加全局变量** → 在文件顶部 `var` 区块添加（必须加中文注释）
 3. **添加参数** → 在 `main()` 的 flag 定义区块添加，同时在 `flag.Usage` 中添加示例
-4. **添加路由** → 扩展 `pdfDocumentRoute` 枚举 + `classifyPDFDocument` 的判定 + `convertPDFToImages` 的分支 + 实现对应函数
+4. **添加进度输出** → 如果新增慢速阶段，使用 `traceProgress(enabled, 0→100)` 输出到 stderr，配合已有 `-p` 参数。注意启动循环和结果收集需分 goroutine 并行，避免 sem/信号量阻塞延迟进度；`wg.Add(total)` 必须在主 goroutine 提前设置，防止 WaitGroup 竞态
+5. **添加路由** → 扩展 `pdfDocumentRoute` 枚举 + `classifyPDFDocument` 的判定 + `convertPDFToImages` 的分支 + 实现对应函数
 
 ---
 

@@ -1,6 +1,12 @@
 # PDF Tool Version
 
-Current version: v2.5+ (with Ghostscript compression & merge-compress)
+Current version: v2.6+ (with concurrent compress progress)
+
+## 新增功能（v2.6+）
+
+- **并发压缩进度**：`-merge-compress -p` 现在实时输出压缩进度（0→100），与合并进度共用同一 `-p` 参数
+- **后台并发启动**：压缩 goroutine 启动与结果收集并行，避免 sem 信号量阻塞延迟进度显示
+- **WaitGroup 竞态修复**：`wg.Add(len(files))` 提前到主 goroutine 设置，确保压缩完整执行
 
 ## 新增功能（v2.5+）
 
