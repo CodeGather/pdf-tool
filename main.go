@@ -2926,6 +2926,15 @@ func findMutool() string {
 			mutoolPath = sameDirPath
 			return sameDirPath
 		}
+		// 2b. 平台子目录：darwin/mutool 或 win/mutool.exe（Tauri 打包常见结构）
+		platformSubPath := filepath.Join(exeDir, runtime.GOOS, "mutool")
+		if runtime.GOOS == "windows" {
+			platformSubPath = filepath.Join(exeDir, "win", "mutool.exe")
+		}
+		if fi, err := os.Stat(platformSubPath); err == nil && !fi.IsDir() {
+			mutoolPath = platformSubPath
+			return platformSubPath
+		}
 		// 3. 跨平台捆绑：bund/<os>-<arch>/mutool
 		platformDir := filepath.Join(exeDir, "bund", runtime.GOOS+"-"+runtime.GOARCH)
 		platformPath := filepath.Join(platformDir, "mutool")
@@ -2984,6 +2993,15 @@ func findGS() string {
 		if fi, err := os.Stat(sameDirPath); err == nil && !fi.IsDir() {
 			gsPath = sameDirPath
 			return sameDirPath
+		}
+		// 2b. 平台子目录：darwin/gs 或 win/gs.exe（Tauri 打包常见结构）
+		platformSubPath := filepath.Join(exeDir, runtime.GOOS, "gs")
+		if runtime.GOOS == "windows" {
+			platformSubPath = filepath.Join(exeDir, "win", "gs.exe")
+		}
+		if fi, err := os.Stat(platformSubPath); err == nil && !fi.IsDir() {
+			gsPath = platformSubPath
+			return platformSubPath
 		}
 		// 3. 跨平台捆绑：bund/<os>-<arch>/gs
 		platformDir := filepath.Join(exeDir, "bund", runtime.GOOS+"-"+runtime.GOARCH)
