@@ -358,7 +358,7 @@ func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize in
 		var wg sync.WaitGroup
 		wg.Add(len(files))
 		sem := make(chan struct{}, numWorkers)
-		traceProgress(progressEnabled, 0)
+		traceProgress(progressEnabled, 0, fmt.Sprintf("正在压缩 PDF（共 %d 个）", len(files)))
 		// 后台启动 goroutine（与收结果并行，避免 sem 阻塞延迟进度）
 		go func() {
 			for i, f := range files {
@@ -448,7 +448,7 @@ func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize in
 			totalInputSize += r.inputSize
 			totalOutputSize += r.outputSize
 			completed++
-			traceProgress(progressEnabled, completed*100/len(files))
+			traceProgress(progressEnabled, completed*100/len(files), "正在压缩 PDF")
 		}
 
 		// 替换文件列表为压缩版本
@@ -473,14 +473,14 @@ func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize in
 		}
 	}
 
-	traceProgress(progressEnabled, 0)
+	traceProgress(progressEnabled, 0, "正在合并 PDF")
 	if len(files) <= chunkSize {
 		log.Printf("merge: single pass files=%d", len(files))
 		if err := api.MergeCreateFile(files, outputFile, dividerPage, nil); err != nil {
 			return fmt.Errorf("merge pdfs: %w", err)
 		}
 		log.Printf("merge: done output=%s", outputFile)
-		traceProgress(progressEnabled, 100)
+		traceProgress(progressEnabled, 100, "合并完成")
 		return nil
 	}
 
@@ -507,7 +507,7 @@ func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize in
 		if progress > 99 {
 			progress = 99
 		}
-		traceProgress(progressEnabled, progress)
+		traceProgress(progressEnabled, progress, "正在合并 PDF")
 	}
 
 	log.Printf("merge: final pass chunks=%d", len(chunkFiles))
@@ -515,7 +515,7 @@ func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize in
 		return fmt.Errorf("merge final output: %w", err)
 	}
 	log.Printf("merge: done output=%s", outputFile)
-	traceProgress(progressEnabled, 100)
+	traceProgress(progressEnabled, 100, "合并完成")
 	return nil
 }
 
@@ -555,9 +555,10 @@ func collectMergeInputs(inputDir, inputList, globPattern string) ([]string, erro
 
 var naturalTokenPattern = regexp.MustCompile(`\d+|\D+`)
 
-// traceProgress 显示合并进度百分比（0-100）。
-// 仅在 progressEnabled 为 true 时输出到 stderr，避免干扰 stdout 的正常输出。
-func traceProgress(enabled bool, progress int) {
+// traceProgress 显示进度百分比（0-100）。
+// 普通模式输出纯数字到 stderr；metaJSON 模式输出 {"message":"...","percent":N}。
+// message 可选，留空时使用 context 相关默认消息。
+func traceProgress(enabled bool, progress int, message ...string) {
 	if !enabled {
 		return
 	}
@@ -567,7 +568,20 @@ func traceProgress(enabled bool, progress int) {
 	if progress > 100 {
 		progress = 100
 	}
-	fmt.Fprintln(os.Stderr, progress)
+	msg := ""
+	if len(message) > 0 {
+		msg = message[0]
+	}
+	if imageMetaJSONEnabled {
+		b, _ := json.Marshal(map[string]interface{}{
+			"message": msg,
+			"percent": progress,
+		})
+		os.Stderr.Write(b)
+		os.Stderr.Write([]byte{'\n'})
+	} else {
+		fmt.Fprintln(os.Stderr, progress)
+	}
 }
 
 // naturalLess 实现自然排序（natural sort）的比较函数。
