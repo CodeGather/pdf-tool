@@ -37,7 +37,6 @@
 package main
 
 import (
-	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -174,11 +173,13 @@ func main() {
 	mergeGlob := flag.String("merge-glob", "*.pdf", "合并模式下的文件匹配模式")
 	mergeChunkSize := flag.Int("merge-chunk-size", 50, "合并模式下每批处理的 PDF 数量")
 	mergeDivider := flag.Bool("merge-divider", false, "在合并文件之间插入分隔页")
-	mergeCompress := flag.Bool("merge-compress", false, "合并后执行完整压缩优化（更小体积，更慢速度）")
+	compressEnabled := flag.Bool("compress", false, "压缩 PDF 文件")
+	compressPreset := flag.String("compress-preset", "prepress", "压缩预设: screen(72dpi)/ebook(150dpi)/printer(300dpi)/prepress/ high(不降采样)。默认 -compress-resolution=1200 配合 prepress")
+	compressResolution := flag.Int("compress-resolution", 1200, "覆盖预设的降采样 DPI（0=使用预设默认值），如 -compress-resolution 600。默认 1200 配合 prepress 预设达到高质量")
+	compressJPEGQ := flag.Int("compress-jpegq", 95, "压缩 JPEG 质量 1-100（默认 95）")
+	compressDir := flag.String("compress-dir", "", "压缩目录下所有 PDF 文件")
+	mergeCompress := flag.Bool("merge-compress", true, "合并前先压缩每个 PDF 文件（默认开启）")
 	progressEnabled := flag.Bool("p", false, "打印合并进度 0-100")
-	compressEnabled := flag.Bool("compress", false, "压缩 PDF（结构优化 + 图片重压缩为 JPEG）")
-	compressDirFlag := flag.String("compress-dir", "", "压缩指定目录下所有 PDF（并行，受 -cpu 控制）")
-	mergePrecompress := flag.Bool("merge-precompress", false, "合并前先并行压缩每个 PDF，再执行合并")
 	logEnabled := flag.Bool("log", false, "打印调试日志")
 	flag.BoolVar(logEnabled, "l", false, "打印调试日志")
 	metaEnabled := flag.Bool("meta", false, "打印图片宽高信息")
@@ -234,16 +235,12 @@ flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-dir /path/to/pdfs -o merged.pdf -p -l")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-inputs a.pdf,b.pdf,c.pdf -o merged.pdf -merge-divider")
 		fmt.Fprintln(flag.CommandLine.Output(), "")
+		fmt.Fprintln(flag.CommandLine.Output(), "  # 合并前压缩（默认开启）")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-dir /path/to/pdfs -o merged.pdf -merge-compress=true -compress-preset ebook")
+		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-dir /path/to/pdfs -o merged.pdf -merge-compress=false")
+		fmt.Fprintln(flag.CommandLine.Output(), "")
 		fmt.Fprintln(flag.CommandLine.Output(), "  # 诊断：查看 PDF 路由分类结果（不实际输出图片）")
 		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -i input.pdf -o /tmp/out -l    # 日志显示路由决策")
-		fmt.Fprintln(flag.CommandLine.Output(), "")
-		fmt.Fprintln(flag.CommandLine.Output(), "  # 压缩")
-		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -compress -i input.pdf -o output.pdf -q 85")
-		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -compress-dir /path/to/pdfs -o /outdir -q 85 -cpu 50 -p")
-		fmt.Fprintln(flag.CommandLine.Output(), "")
-		fmt.Fprintln(flag.CommandLine.Output(), "  # 合并 + 预压缩（先并行压缩所有 PDF，再合并）")
-		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-dir /path -o merged.pdf -merge-precompress -q 85 -cpu 50 -p")
-		fmt.Fprintln(flag.CommandLine.Output(), "  ./pdf-tool -merge -merge-dir /path -o merged.pdf -merge-precompress -merge-compress -q 85 -p")
 	}
 	flag.Parse()
 
@@ -260,58 +257,29 @@ flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 	log.SetFlags(0)
 	globalImageMetaCollector = newImageMetaCollector(debugLogsEnabled && (imageMetaEnabled || imageMetaJSONEnabled), imageMetaJSONEnabled)
 
-	if *compressEnabled {
-		if *inputFile == "" || *outputDir == "" {
-			fmt.Fprintln(os.Stderr, "压缩单个 PDF 需要 -i 和 -o 参数")
-			os.Exit(1)
-		}
-		if err := compressPDF(*inputFile, *outputDir, *quality, *logEnabled); err != nil {
-			fmt.Fprintf(os.Stderr, "PDF 压缩失败：%v\n", err)
-			os.Exit(1)
-		}
-		return
-	}
-
-	if *compressDirFlag != "" {
-		workers := computeWorkerCount() * 2
-		files, err := filepath.Glob(filepath.Join(*compressDirFlag, "*.pdf"))
-		if err != nil || len(files) == 0 {
-			fmt.Fprintf(os.Stderr, "目录 %s 中未找到 PDF 文件\n", *compressDirFlag)
-			os.Exit(1)
-		}
-		sort.Slice(files, func(i, j int) bool {
-			return naturalLess(filepath.Base(files[i]), filepath.Base(files[j]))
-		})
-		if err := os.MkdirAll(*outputDir, 0755); err != nil {
-			fmt.Fprintf(os.Stderr, "创建输出目录失败：%v\n", err)
-			os.Exit(1)
-		}
-		totalFiles := len(files)
-		compressDirFiles(files, *outputDir, *quality, *logEnabled, workers, func(done, total int) {
-			if *progressEnabled {
-				fmt.Fprintf(os.Stderr, "\rcompress-dir: %d/%d done (%d%%)", done, total, done*100/total)
-			}
-		})
-		if *progressEnabled {
-			fmt.Fprintf(os.Stderr, "\rcompress-dir: %d/%d done (100%%)\n", totalFiles, totalFiles)
-		}
-		return
-	}
-
 	if *mergeEnabled {
-		if *mergePrecompress {
-			// merge-precompress 自动启用最终优化，无需额外加 -merge-compress
-			if err := mergePDFs(*mergeInputDir, *mergeInputList, *mergeGlob, *outputDir, *mergeChunkSize, *mergeDivider, *progressEnabled, true, *quality, true); err != nil {
-				fmt.Fprintf(os.Stderr, "合并失败：%v\n", err)
+		if err := mergePDFs(*mergeInputDir, *mergeInputList, *mergeGlob, *outputDir, *mergeChunkSize, *mergeDivider, *progressEnabled, *mergeCompress, *compressPreset, *compressJPEGQ, *compressResolution); err != nil {
+			fmt.Fprintf(os.Stderr, "PDF 合并失败：%v\n", err)
+			os.Exit(1)
+		}
+		globalImageMetaCollector.flush()
+		return
+	}
+
+	if *compressEnabled {
+		if *compressDir != "" {
+			// 目录模式：压缩目录下所有 PDF
+			if err := compressPDFDir(*compressDir, *outputDir, *compressPreset, *compressJPEGQ, *compressResolution); err != nil {
+				fmt.Fprintf(os.Stderr, "PDF 目录压缩失败：%v\n", err)
 				os.Exit(1)
 			}
 		} else {
-			if err := mergePDFs(*mergeInputDir, *mergeInputList, *mergeGlob, *outputDir, *mergeChunkSize, *mergeDivider, *progressEnabled, *mergeCompress, *quality, false); err != nil {
-				fmt.Fprintf(os.Stderr, "合并失败：%v\n", err)
+			// 单文件模式
+			if err := compressPDF(*inputFile, *outputDir, *compressPreset, *compressJPEGQ, *compressResolution); err != nil {
+				fmt.Fprintf(os.Stderr, "PDF 压缩失败：%v\n", err)
 				os.Exit(1)
 			}
 		}
-		globalImageMetaCollector.flush()
 		return
 	}
 
@@ -329,13 +297,157 @@ flag.BoolVar(timing, "t", false, "打印每个阶段的耗时信息")
 }
 
 // mergePDFs 负责按参数收集输入文件，并在需要时分批合并，避免一次性处理过多文件。
-func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize int, dividerPage, progressEnabled, compress bool, quality int, precompress bool) error {
+// 当 mergeCompress 为 true 时，在合并前使用 Ghostscript 压缩每个 PDF 文件。
+func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize int, dividerPage, progressEnabled, mergeCompress bool, preset string, jpegQuality, resolution int) error {
 	files, err := collectMergeInputs(inputDir, inputList, globPattern)
 	if err != nil {
 		return err
 	}
 	if len(files) == 0 {
 		return fmt.Errorf("no pdf files found for merge")
+	}
+
+	// 合并前压缩
+	if mergeCompress {
+		// 检查 Ghostscript
+		if _, err := exec.LookPath("gs"); err != nil {
+			return fmt.Errorf("需要安装 Ghostscript (gs) 才能启用合并前压缩，请先安装后重试或使用 -merge-compress=false 关闭")
+		}
+
+		// 映射预设名称
+		presetMap := map[string]string{
+			"screen":   "/screen",
+			"ebook":    "/ebook",
+			"printer":  "/printer",
+			"prepress": "/prepress",
+			"high":     "",
+		}
+		gsPreset := "/" + preset
+		disableDownsample := false
+		if mapped, ok := presetMap[preset]; ok {
+			gsPreset = mapped
+			if mapped == "" {
+				disableDownsample = true
+			}
+		}
+
+		// 创建临时压缩目录
+		outDir := filepath.Dir(outputFile)
+		compressDir, err := os.MkdirTemp(outDir, "pdf-tool-merge-compress-*")
+		if err != nil {
+			return fmt.Errorf("创建压缩临时目录: %w", err)
+		}
+		defer os.RemoveAll(compressDir)
+
+		log.Printf("merge-compress: 开始压缩 %d 个 PDF 文件", len(files))
+
+		// 并发压缩
+		numWorkers := computeWorkerCount()
+		type compResult struct {
+			idx        int
+			compressed string
+			inputSize  int64
+			outputSize int64
+			err        error
+		}
+		results := make(chan compResult, len(files))
+
+		var wg sync.WaitGroup
+		sem := make(chan struct{}, numWorkers)
+		for i, f := range files {
+			wg.Add(1)
+			sem <- struct{}{}
+			go func(idx int, inputPath string) {
+				defer wg.Done()
+				defer func() { <-sem }()
+				base := filepath.Base(inputPath)
+				outPath := filepath.Join(compressDir, base)
+				inputInfo, _ := os.Stat(inputPath)
+				inputSize := int64(0)
+				if inputInfo != nil {
+					inputSize = inputInfo.Size()
+				}
+
+				args := []string{
+					"-sDEVICE=pdfwrite",
+					"-dNOPAUSE", "-dSAFER", "-dBATCH",
+					"-dQUIET",
+				}
+				if gsPreset != "" {
+					args = append(args, fmt.Sprintf("-dPDFSETTINGS=%s", gsPreset))
+				}
+				if disableDownsample {
+					args = append(args,
+						"-dDownsampleColorImages=false",
+						"-dDownsampleGrayImages=false",
+						"-dDownsampleMonoImages=false",
+						"-dColorImageResolution=1200",
+						"-dGrayImageResolution=1200",
+						"-dMonoImageResolution=2400",
+					)
+				}
+				// 用户指定降采样 DPI（覆盖预设，也覆盖 high 预设的默认 1200）
+				if resolution > 0 {
+					args = append(args,
+						fmt.Sprintf("-dColorImageResolution=%d", resolution),
+						fmt.Sprintf("-dGrayImageResolution=%d", resolution),
+						fmt.Sprintf("-dMonoImageResolution=%d", resolution*2),
+					)
+				}
+				if jpegQuality > 0 && jpegQuality <= 100 {
+					args = append(args, fmt.Sprintf("-dJPEGQ=%d", jpegQuality))
+				}
+				args = append(args,
+					"-dAutoFilterColorImages=false",
+					"-dColorImageFilter=/DCTEncode",
+					"-dAutoFilterGrayImages=false",
+					"-dGrayImageFilter=/DCTEncode",
+					"-dSubsetFonts=true", "-dMaxSubsetPct=100",
+					"-dCompressPages=true", "-dUseFlateCompression=true",
+					fmt.Sprintf("-sOutputFile=%s", outPath),
+					inputPath,
+				)
+
+				cmd := exec.Command("gs", args...)
+				if err := cmd.Run(); err != nil {
+					results <- compResult{idx: idx, err: fmt.Errorf("压缩 %s 失败: %w", inputPath, err)}
+					return
+				}
+
+				outputInfo, _ := os.Stat(outPath)
+				outputSize := int64(0)
+				if outputInfo != nil {
+					outputSize = outputInfo.Size()
+				}
+
+				results <- compResult{idx: idx, compressed: outPath, inputSize: inputSize, outputSize: outputSize}
+			}(i, f)
+		}
+
+		// 等待完成
+		wg.Wait()
+
+		// 收集结果
+		compressedFiles := make([]string, len(files))
+		var totalInputSize, totalOutputSize int64
+		close(results)
+		for r := range results {
+			if r.err != nil {
+				return r.err
+			}
+			compressedFiles[r.idx] = r.compressed
+			totalInputSize += r.inputSize
+			totalOutputSize += r.outputSize
+		}
+
+		// 替换文件列表为压缩版本
+		files = compressedFiles
+
+		ratio := float64(totalOutputSize) / float64(totalInputSize) * 100
+		reduction := (1 - float64(totalOutputSize)/float64(totalInputSize)) * 100
+		traceProgress(progressEnabled, 0)
+		log.Printf("merge-compress: 完成 输入=%s 输出=%s 压缩比=%.1f%% (减少 %.1f%%)",
+			formatSize(totalInputSize), formatSize(totalOutputSize), ratio, reduction)
 	}
 
 	log.Printf("merge: start files=%d output=%s", len(files), outputFile)
@@ -351,80 +463,11 @@ func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize in
 		}
 	}
 
-	// 预压缩阶段自己管理进度条
-	if !precompress {
-		traceProgress(progressEnabled, 0)
-	}
-
-	// 预压缩：合并前先并行压缩所有 PDF
-	if precompress {
-		compressTempDir, err := os.MkdirTemp(outDir, "pdf-tool-precompress-*")
-		if err != nil {
-			return fmt.Errorf("创建预压缩临时目录: %w", err)
-		}
-		defer os.RemoveAll(compressTempDir)
-
-		workers := computeWorkerCount() * 2
-		log.Printf("merge: precompress files=%d workers=%d quality=%d", len(files), workers, quality)
-
-		compressedFiles := compressDirFiles(files, compressTempDir, quality, false, workers, func(done, total int) {
-			if progressEnabled {
-				// 压缩阶段进度映射到 0-70%
-				pct := done * 70 / total
-				fmt.Fprintf(os.Stderr, "\rmerge: precompress %d/%d (%d%%)", done, total, pct)
-			}
-		})
-
-		// 过滤成功压缩的文件
-		validFiles := make([]string, 0, len(compressedFiles))
-		for _, f := range compressedFiles {
-			if f != "" {
-				validFiles = append(validFiles, f)
-			}
-		}
-		if len(validFiles) == 0 {
-			return fmt.Errorf("预压缩后没有可用文件，全部失败")
-		}
-		if len(validFiles) < len(files) {
-			log.Printf("merge: %d 个文件压缩失败，使用剩余 %d 个文件继续合并", len(files)-len(validFiles), len(validFiles))
-		}
-		files = validFiles
-
-		if progressEnabled {
-			fmt.Fprintf(os.Stderr, "\rmerge: precompress %d/%d done (100%%)\n", len(files), len(files))
-		}
-	}
-
 	traceProgress(progressEnabled, 0)
-
-	// 快速合并配置：跳过优化，仅做对象合并，速度极快
-	fastMergeConf := model.NewDefaultConfiguration()
-	fastMergeConf.Cmd = model.MERGECREATE
-	fastMergeConf.Optimize = false
-	fastMergeConf.OptimizeBeforeWriting = false
-
 	if len(files) <= chunkSize {
 		log.Printf("merge: single pass files=%d", len(files))
-		// 单批次批量合并所有文件（跳过优化）
-		tmpOut := filepath.Join(outDir, ".merge_batch_tmp.pdf")
-		if err := api.MergeCreateFile(files, tmpOut, dividerPage, fastMergeConf); err != nil {
-			os.Remove(tmpOut)
-			return fmt.Errorf("merge batch: %w", err)
-		}
-		if compress {
-			traceProgress(progressEnabled, 90)
-			// 完整优化输出（体积小，速度慢）
-			if err := api.MergeCreateFile([]string{tmpOut}, outputFile, false, nil); err != nil {
-				os.Remove(tmpOut)
-				return fmt.Errorf("merge final optimize: %w", err)
-			}
-			os.Remove(tmpOut)
-		} else {
-			// 直接输出（体积大，速度快）
-			if err := os.Rename(tmpOut, outputFile); err != nil {
-				os.Remove(tmpOut)
-				return fmt.Errorf("rename to output: %w", err)
-			}
+		if err := api.MergeCreateFile(files, outputFile, dividerPage, nil); err != nil {
+			return fmt.Errorf("merge pdfs: %w", err)
 		}
 		log.Printf("merge: done output=%s", outputFile)
 		traceProgress(progressEnabled, 100)
@@ -438,306 +481,32 @@ func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize in
 	defer os.RemoveAll(tempDir)
 
 	chunkFiles := make([]string, 0, (len(files)+chunkSize-1)/chunkSize)
-	totalChunks := (len(files) + chunkSize - 1) / chunkSize
-	for ci, index := 0, 0; index < len(files); ci, index = ci+1, index+chunkSize {
+	for index := 0; index < len(files); index += chunkSize {
 		end := index + chunkSize
 		if end > len(files) {
 			end = len(files)
 		}
-		log.Printf("merge: chunk %d start files=%d", ci+1, end-index)
-		chunkOut := filepath.Join(tempDir, fmt.Sprintf("chunk_%04d.pdf", ci+1))
-		// 批量合并整个 chunk（跳过优化），比逐文件快很多
-		if err := api.MergeCreateFile(files[index:end], chunkOut, dividerPage, fastMergeConf); err != nil {
-			return fmt.Errorf("merge chunk %d: %w", ci+1, err)
+		log.Printf("merge: chunk %d start files=%d", len(chunkFiles)+1, end-index)
+		chunkOut := filepath.Join(tempDir, fmt.Sprintf("chunk_%04d.pdf", len(chunkFiles)+1))
+		if err := api.MergeCreateFile(files[index:end], chunkOut, dividerPage, nil); err != nil {
+			return fmt.Errorf("merge chunk %d: %w", len(chunkFiles)+1, err)
 		}
 		chunkFiles = append(chunkFiles, chunkOut)
-		log.Printf("merge: chunk %d done output=%s", ci+1, chunkOut)
-		traceProgress(progressEnabled, (ci+1)*99/totalChunks)
+		log.Printf("merge: chunk %d done output=%s", len(chunkFiles), chunkOut)
+		progress := len(chunkFiles) * 100 / ((len(files) + chunkSize - 1) / chunkSize)
+		if progress > 99 {
+			progress = 99
+		}
+		traceProgress(progressEnabled, progress)
 	}
 
-	// 最终合并各 chunk：是否压缩由 -merge-compress 控制
-	mergeConf := fastMergeConf
-	if compress {
-		mergeConf = nil
-	}
-	log.Printf("merge: final pass chunks=%d compress=%v", len(chunkFiles), compress)
-	if err := api.MergeCreateFile(chunkFiles, outputFile, dividerPage, mergeConf); err != nil {
+	log.Printf("merge: final pass chunks=%d", len(chunkFiles))
+	if err := api.MergeCreateFile(chunkFiles, outputFile, dividerPage, nil); err != nil {
 		return fmt.Errorf("merge final output: %w", err)
 	}
 	log.Printf("merge: done output=%s", outputFile)
 	traceProgress(progressEnabled, 100)
 	return nil
-}
-
-// compressPDF 压缩单个 PDF 文件：先进行结构优化（pdfcpu），再重压缩 FlateDecode 图片为 JPEG。
-// 输入：inFile — 源 PDF 路径
-// 输出：outFile — 压缩后 PDF 路径
-// quality — JPEG 编码质量 1-100
-// verbose — 是否打印日志
-func compressPDF(inFile, outFile string, quality int, verbose bool) error {
-	if quality < 1 || quality > 100 {
-		quality = 85
-	}
-
-	// Step 1: 结构优化
-	optFile := outFile + ".opt_tmp"
-	if err := api.OptimizeFile(inFile, optFile, nil); err != nil {
-		os.Remove(optFile)
-		return fmt.Errorf("结构优化: %w", err)
-	}
-	defer os.Remove(optFile)
-
-	// Step 2: 打开优化后的 PDF
-	f, err := os.Open(optFile)
-	if err != nil {
-		return fmt.Errorf("打开优化文件: %w", err)
-	}
-	defer f.Close()
-
-	conf := model.NewDefaultConfiguration()
-	conf.Optimize = false
-	conf.OptimizeBeforeWriting = false
-	ctx, err := api.ReadAndValidate(f, conf)
-	if err != nil {
-		return fmt.Errorf("读取 PDF: %w", err)
-	}
-
-	// Step 3: 遍历所有图片，重压缩 FlateDecode 为 JPEG
-	recompressed := 0
-	for objNr, entry := range ctx.Table {
-		if entry.Free || entry.Object == nil {
-			continue
-		}
-		sd, ok := entry.Object.(types.StreamDict)
-		if !ok {
-			continue
-		}
-		subtype := sd.NameEntry("Subtype")
-		if subtype == nil || *subtype != "Image" {
-			continue
-		}
-		// 只处理 FlateDecode 图片（PNG 编码）
-		isFlate := false
-		for _, pl := range sd.FilterPipeline {
-			if pl.Name == "FlateDecode" {
-				isFlate = true
-				break
-			}
-		}
-		if !isFlate {
-			continue
-		}
-
-		wPtr := sd.IntEntry("Width")
-		hPtr := sd.IntEntry("Height")
-		if wPtr == nil || hPtr == nil {
-			continue
-		}
-		w, h := *wPtr, *hPtr
-
-		if err := sd.Decode(); err != nil {
-			continue
-		}
-		if len(sd.Content) == 0 {
-			continue
-		}
-
-		csPtr := sd.NameEntry("ColorSpace")
-		cs := ""
-		if csPtr != nil {
-			cs = *csPtr
-		}
-		components := 3
-		switch cs {
-		case "DeviceGray", "G":
-			components = 1
-		case "DeviceCMYK":
-			// CMYK 图片跳过重压缩，保持原样
-			continue
-		}
-
-		expectedSize := w * h * components
-		if len(sd.Content) < expectedSize {
-			continue
-		}
-
-		var img image.Image
-		switch components {
-		case 1:
-			gray := image.NewGray(image.Rect(0, 0, w, h))
-			copy(gray.Pix, sd.Content[:w*h])
-			img = gray
-		case 3:
-			rgb := image.NewRGBA(image.Rect(0, 0, w, h))
-			for y := 0; y < h; y++ {
-				for x := 0; x < w; x++ {
-					srcIdx := y*w*3 + x*3
-					dstIdx := y*rgb.Stride + x*4
-					rgb.Pix[dstIdx+0] = sd.Content[srcIdx+0]
-					rgb.Pix[dstIdx+1] = sd.Content[srcIdx+1]
-					rgb.Pix[dstIdx+2] = sd.Content[srcIdx+2]
-					rgb.Pix[dstIdx+3] = 255
-				}
-			}
-			img = rgb
-		default:
-			continue
-		}
-
-		var jpegBuf bytes.Buffer
-		if err := jpeg.Encode(&jpegBuf, img, &jpeg.Options{Quality: quality}); err != nil {
-			continue
-		}
-
-		// 更新 StreamDict 和 Dict 条目
-		sd.Raw = jpegBuf.Bytes()
-		sd.Content = nil
-		sd.FilterPipeline = []types.PDFFilter{{Name: "DCTDecode"}}
-		l := int64(len(sd.Raw))
-		sd.StreamLength = &l
-		sd.StreamLengthObjNr = nil
-		sd.Update("Filter", types.Name("DCTDecode"))
-		sd.Update("Length", types.Integer(l))
-		sd.Delete("DecodeParms")
-
-		entry.Object = sd
-		ctx.Table[objNr] = entry
-		recompressed++
-	}
-
-	if verbose {
-		log.Printf("compress: %d 张 FlateDecode 图片重压缩为 JPEG Q%d", recompressed, quality)
-	}
-
-	// Step 4: 写出
-	if err := api.WriteContextFile(ctx, outFile); err != nil {
-		return fmt.Errorf("写出 PDF: %w", err)
-	}
-
-	if verbose {
-		src, _ := os.Stat(inFile)
-		dst, _ := os.Stat(outFile)
-		log.Printf("compress: %s (%.1f MB) → %s (%.1f MB, %.1f%%)",
-			inFile,
-			float64(src.Size())/1024/1024,
-			outFile,
-			float64(dst.Size())/1024/1024,
-			float64(dst.Size())*100/float64(src.Size()),
-		)
-	}
-
-	return nil
-}
-
-// compressDirFiles 并行压缩所有 PDF 文件。
-// 使用 workers 个 goroutine 并发处理，progressFn 回调报告进度 (done, total)。
-// 返回压缩后的文件路径列表。
-func compressDirFiles(files []string, outputDir string, quality int, verbose bool, workers int, progressFn func(done, total int)) []string {
-	if len(files) == 0 {
-		fmt.Fprintf(os.Stderr, "compress-dir: 未提供 PDF 文件\n")
-		os.Exit(1)
-	}
-
-	if workers < 1 {
-		workers = 1
-	}
-
-	compressed := make([]string, len(files))
-	type job struct {
-		index int
-		in    string
-	}
-	jobs := make(chan job, len(files))
-	results := make(chan struct {
-		index int
-		out   string
-		err   error
-	}, len(files))
-
-	// 启动 worker 池
-	var wg sync.WaitGroup
-	for w := 0; w < workers; w++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			for j := range jobs {
-				outPath := filepath.Join(outputDir, filepath.Base(j.in))
-				if err := compressPDF(j.in, outPath, quality, verbose); err != nil {
-					results <- struct {
-						index int
-						out   string
-						err   error
-					}{j.index, "", err}
-				} else {
-					results <- struct {
-						index int
-						out   string
-						err   error
-					}{j.index, outPath, nil}
-				}
-			}
-		}()
-	}
-
-	// 发送任务
-	for i, f := range files {
-		jobs <- job{index: i, in: f}
-	}
-	close(jobs)
-
-	// 等待所有 worker 完成
-	go func() {
-		wg.Wait()
-		close(results)
-	}()
-
-	// 收集结果并报告进度
-	var failed int
-	done := 0
-	total := len(files)
-	for r := range results {
-		done++
-		if r.err != nil {
-			failed++
-			if verbose {
-				fmt.Fprintf(os.Stderr, "compress-dir: %s 失败: %v\n", files[r.index], r.err)
-			}
-		} else {
-			compressed[r.index] = r.out
-		}
-		progressFn(done, total)
-	}
-
-	if verbose {
-		if failed > 0 {
-			log.Printf("compress-dir: 完成 %d/%d，%d 个失败", done-failed, total, failed)
-		} else {
-			log.Printf("compress-dir: 全部完成 %d/%d", done, total)
-		}
-		// 输出总体积对比
-		var srcSize, dstSize int64
-		for _, f := range files {
-			if fi, err := os.Stat(f); err == nil {
-				srcSize += fi.Size()
-			}
-		}
-		for _, f := range compressed {
-			if f != "" {
-				if fi, err := os.Stat(f); err == nil {
-					dstSize += fi.Size()
-				}
-			}
-		}
-		if srcSize > 0 {
-			log.Printf("compress-dir: %.1f MB → %.1f MB (%.1f%%)",
-				float64(srcSize)/1024/1024,
-				float64(dstSize)/1024/1024,
-				float64(dstSize)*100/float64(srcSize),
-			)
-		}
-	}
-
-	return compressed
 }
 
 // collectMergeInputs 根据目录或显式列表收集合并输入，并保持稳定排序。
@@ -3483,3 +3252,322 @@ func isDirectCopyableImageType(fileType string) bool {
 		return false
 	}
 }
+
+// ─── PDF 压缩功能（基于 Ghostscript）──
+
+// compressPDF 使用 Ghostscript 压缩 PDF 文件。
+// preset: 压缩预设 (screen/ebook/printer/prepress)
+// jpegQuality: JPEG 质量 1-100
+func compressPDF(inputFile, outputFile, preset string, jpegQuality, resolution int) error {
+	// 检查输入文件
+	if _, err := os.Stat(inputFile); err != nil {
+		return fmt.Errorf("输入文件不存在: %s", inputFile)
+	}
+
+	// 检查 Ghostscript
+	if _, err := exec.LookPath("gs"); err != nil {
+		return fmt.Errorf("需要安装 Ghostscript (gs)，请先安装后重试")
+	}
+
+	// 映射预设名称
+	presetMap := map[string]string{
+		"screen":   "/screen",
+		"ebook":    "/ebook",
+		"printer":  "/printer",
+		"prepress": "/prepress",
+		"high":     "",
+	}
+	gsPreset := "/" + preset
+	disableDownsample := false
+	if mapped, ok := presetMap[preset]; ok {
+		gsPreset = mapped
+		if mapped == "" {
+			disableDownsample = true
+		}
+	}
+
+	// 获取输入文件大小
+	inputInfo, _ := os.Stat(inputFile)
+	inputSize := inputInfo.Size()
+
+	// 构建 Ghostscript 参数
+	args := []string{
+		"-sDEVICE=pdfwrite",
+		"-dNOPAUSE", "-dSAFER", "-dBATCH",
+		"-dQUIET",
+	}
+
+	// PDF 预设
+	if gsPreset != "" {
+		args = append(args, fmt.Sprintf("-dPDFSETTINGS=%s", gsPreset))
+	}
+	if disableDownsample {
+		args = append(args,
+			"-dDownsampleColorImages=false",
+			"-dDownsampleGrayImages=false",
+			"-dDownsampleMonoImages=false",
+			"-dColorImageResolution=1200",
+			"-dGrayImageResolution=1200",
+			"-dMonoImageResolution=2400",
+		)
+	}
+
+	// 用户指定降采样 DPI（覆盖预设，也覆盖 high 预设的默认 1200）
+	if resolution > 0 {
+		args = append(args,
+			fmt.Sprintf("-dColorImageResolution=%d", resolution),
+			fmt.Sprintf("-dGrayImageResolution=%d", resolution),
+			fmt.Sprintf("-dMonoImageResolution=%d", resolution*2),
+		)
+	}
+
+	// JPEG 质量
+	if jpegQuality > 0 && jpegQuality <= 100 {
+		args = append(args, fmt.Sprintf("-dJPEGQ=%d", jpegQuality))
+	}
+
+	// 强制 JPEG 编码
+	args = append(args,
+		"-dAutoFilterColorImages=false",
+		"-dColorImageFilter=/DCTEncode",
+		"-dAutoFilterGrayImages=false",
+		"-dGrayImageFilter=/DCTEncode",
+	)
+
+	// 字体子集化
+	args = append(args, "-dSubsetFonts=true", "-dMaxSubsetPct=100")
+
+	// 流压缩
+	args = append(args, "-dCompressPages=true", "-dUseFlateCompression=true")
+
+	// 输入输出
+	args = append(args,
+		fmt.Sprintf("-sOutputFile=%s", outputFile),
+		inputFile,
+	)
+
+	// 执行 Ghostscript
+	cmd := exec.Command("gs", args...)
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("Ghostscript 压缩失败: %w", err)
+	}
+
+	// 获取输出文件大小并打印结果
+	outputInfo, err := os.Stat(outputFile)
+	if err != nil {
+		return fmt.Errorf("读取输出文件失败: %w", err)
+	}
+	outputSize := outputInfo.Size()
+
+	ratio := float64(outputSize) / float64(inputSize) * 100
+	reduction := (1 - float64(outputSize)/float64(inputSize)) * 100
+
+	fmt.Printf("PDF 压缩完成\n")
+	fmt.Printf("  输入: %s (%s)\n", inputFile, formatSize(inputSize))
+	fmt.Printf("  输出: %s (%s)\n", outputFile, formatSize(outputSize))
+	fmt.Printf("  压缩比: %.1f%% (减少了 %.1f%%)\n", ratio, reduction)
+
+	return nil
+}
+
+// formatSize 将字节数格式化为人类可读的大小字符串。
+func formatSize(bytes int64) string {
+	const unit = 1024
+	if bytes < unit {
+		return fmt.Sprintf("%d B", bytes)
+	}
+	kb := float64(bytes) / unit
+	if kb < unit {
+		return fmt.Sprintf("%.2f KB", kb)
+	}
+	mb := kb / unit
+	if mb < unit {
+		return fmt.Sprintf("%.2f MB", mb)
+	}
+	gb := mb / unit
+	return fmt.Sprintf("%.2f GB", gb)
+}
+
+// compressPDFDir 压缩目录下所有 PDF 文件，支持并发处理。
+func compressPDFDir(inputDir, outputDir, preset string, jpegQuality, resolution int) error {
+	// 检查输入目录
+	info, err := os.Stat(inputDir)
+	if err != nil || !info.IsDir() {
+		return fmt.Errorf("输入目录不存在: %s", inputDir)
+	}
+
+	// 创建输出目录
+	if err := os.MkdirAll(outputDir, 0755); err != nil {
+		return fmt.Errorf("创建输出目录失败: %w", err)
+	}
+
+	// 检查 Ghostscript
+	if _, err := exec.LookPath("gs"); err != nil {
+		return fmt.Errorf("需要安装 Ghostscript (gs)，请先安装后重试")
+	}
+
+	// 收集 PDF 文件
+	files, err := filepath.Glob(filepath.Join(inputDir, "*.pdf"))
+	if err != nil {
+		return fmt.Errorf("扫描目录失败: %w", err)
+	}
+	if len(files) == 0 {
+		return fmt.Errorf("目录下没有找到 PDF 文件")
+	}
+
+	// 排序文件
+	sort.Slice(files, func(i, j int) bool {
+		return naturalLess(filepath.Base(files[i]), filepath.Base(files[j]))
+	})
+
+	numWorkers := computeWorkerCount()
+	fmt.Printf("找到 %d 个 PDF 文件，开始并发压缩 (%d 线程)...", len(files), numWorkers)
+	startTime := time.Now()
+
+	// 映射预设名称
+	presetMap := map[string]string{
+		"screen":   "/screen",
+		"ebook":    "/ebook",
+		"printer":  "/printer",
+		"prepress": "/prepress",
+		"high":     "",
+	}
+	gsPreset := "/" + preset
+	disableDownsample := false
+	if mapped, ok := presetMap[preset]; ok {
+		gsPreset = mapped
+		if mapped == "" {
+			disableDownsample = true
+		}
+	}
+
+	// 并发控制
+	sem := make(chan struct{}, numWorkers)
+	var wg sync.WaitGroup
+	var mu sync.Mutex
+	var totalInputSize int64
+	var totalOutputSize int64
+	successCount := 0
+	failCount := 0
+
+	for _, inputFile := range files {
+		wg.Add(1)
+		sem <- struct{}{} // 获取信号量
+
+		go func(inputFile string) {
+			defer wg.Done()
+			defer func() { <-sem }() // 释放信号量
+
+			// 生成输出文件名
+			base := filepath.Base(inputFile)
+			name := base[:len(base)-4] // 去掉 .pdf
+			outputFile := filepath.Join(outputDir, name+"_compressed.pdf")
+
+			// 获取输入文件大小
+			inputInfo, err := os.Stat(inputFile)
+			if err != nil {
+				mu.Lock()
+				failCount++
+				mu.Unlock()
+				return
+			}
+			inputSize := inputInfo.Size()
+
+			// 构建 Ghostscript 参数
+			args := []string{
+				"-sDEVICE=pdfwrite",
+				"-dNOPAUSE", "-dSAFER", "-dBATCH",
+				"-dQUIET",
+			}
+			if gsPreset != "" {
+				args = append(args, fmt.Sprintf("-dPDFSETTINGS=%s", gsPreset))
+			}
+			if disableDownsample {
+				args = append(args,
+					"-dDownsampleColorImages=false",
+					"-dDownsampleGrayImages=false",
+					"-dDownsampleMonoImages=false",
+					"-dColorImageResolution=1200",
+					"-dGrayImageResolution=1200",
+					"-dMonoImageResolution=2400",
+				)
+			}
+
+			// 用户指定降采样 DPI（覆盖预设，也覆盖 high 预设的默认 1200）
+			if resolution > 0 {
+				args = append(args,
+					fmt.Sprintf("-dColorImageResolution=%d", resolution),
+					fmt.Sprintf("-dGrayImageResolution=%d", resolution),
+					fmt.Sprintf("-dMonoImageResolution=%d", resolution*2),
+				)
+			}
+
+			if jpegQuality > 0 && jpegQuality <= 100 {
+				args = append(args, fmt.Sprintf("-dJPEGQ=%d", jpegQuality))
+			}
+
+			args = append(args,
+				"-dAutoFilterColorImages=false",
+				"-dColorImageFilter=/DCTEncode",
+				"-dAutoFilterGrayImages=false",
+				"-dGrayImageFilter=/DCTEncode",
+				"-dSubsetFonts=true", "-dMaxSubsetPct=100",
+				"-dCompressPages=true", "-dUseFlateCompression=true",
+				fmt.Sprintf("-sOutputFile=%s", outputFile),
+				inputFile,
+			)
+
+			// 执行压缩
+			cmd := exec.Command("gs", args...)
+			if err := cmd.Run(); err != nil {
+				mu.Lock()
+				failCount++
+				mu.Unlock()
+				return
+			}
+
+			// 获取输出文件大小
+			outputInfo, err := os.Stat(outputFile)
+			if err != nil {
+				mu.Lock()
+				failCount++
+				mu.Unlock()
+				return
+			}
+			outputSize := outputInfo.Size()
+
+			// 更新统计
+			mu.Lock()
+			totalInputSize += inputSize
+			totalOutputSize += outputSize
+			successCount++
+			mu.Unlock()
+		}(inputFile)
+	}
+
+	wg.Wait()
+
+	elapsed := time.Since(startTime)
+
+	// 打印结果
+	fmt.Printf("\n压缩完成！\n")
+	fmt.Printf("  成功: %d 个文件\n", successCount)
+	if failCount > 0 {
+		fmt.Printf("  失败: %d 个文件\n", failCount)
+	}
+	fmt.Printf("  总耗时: %.1f 秒\n", elapsed.Seconds())
+	fmt.Printf("  输入总量: %s\n", formatSize(totalInputSize))
+	fmt.Printf("  输出总量: %s\n", formatSize(totalOutputSize))
+	if totalInputSize > 0 {
+		ratio := float64(totalOutputSize) / float64(totalInputSize) * 100
+		fmt.Printf("  压缩比: %.1f%% (减少了 %.1f%%)\n", ratio, 100-ratio)
+	}
+
+	return nil
+}
+
+
+
+
+
+
