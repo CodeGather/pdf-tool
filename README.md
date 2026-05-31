@@ -66,7 +66,18 @@ go build -o pdf-tool .
 | `-merge-glob` | `*.pdf` | 合并模式下的文件匹配模式 |
 | `-merge-chunk-size` | `50` | 每批合并的 PDF 数量 |
 | `-merge-divider` | `false` | 在合并文件之间插入空白分隔页 |
+| `-merge-compress` | `true` | 合并前用 Ghostscript 压缩每个文件，大幅减小输出体积 |
 | `-p` | `false` | 打印合并进度 0-100 |
+
+### 压缩模式
+
+| 参数 | 默认值 | 说明 |
+|------|--------|------|
+| `-compress` | `false` | 压缩单个 PDF 文件（与 `-i` `-o` 配合） |
+| `-compress-dir` | `""` | 压缩目录下所有 PDF 文件 |
+| `-compress-preset` | `prepress` | 压缩预设：`screen`(72dpi) / `ebook`(150dpi) / `printer`(300dpi) / `prepress` / `high`(不降采样) |
+| `-compress-resolution` | `1200` | 覆盖预设的降采样 DPI，默认 1200 配合 prepress 达到高质量 |
+| `-compress-jpegq` | `95` | JPEG 质量 1-100 |
 
 ### 已废弃（保留兼容）
 
@@ -134,6 +145,33 @@ go build -o pdf-tool .
 ./pdf-tool -merge -merge-dir ./pdfs -o merged.pdf -p
 ```
 
+### 压缩 PDF
+
+```bash
+# 压缩单个文件（默认 prepress + 1200 DPI）
+./pdf-tool -compress -i input.pdf -o compressed.pdf
+
+# 自定义预设和分辨率
+./pdf-tool -compress -compress-preset prepress -compress-resolution 600 -i input.pdf -o compressed.pdf
+
+# 不降采样（最大质量）
+./pdf-tool -compress -compress-preset high -i input.pdf -o compressed.pdf
+```
+
+### 合并前压缩（默认开启）
+
+```bash
+# 合并目录中所有 PDF，并先压缩每个文件
+./pdf-tool -merge -merge-dir ./pdfs -o merged.pdf
+# 等价于：-merge-compress=true -compress-preset prepress -compress-resolution 1200
+
+# 关闭合并前压缩
+./pdf-tool -merge -merge-compress=false -merge-dir ./pdfs -o merged.pdf
+
+# 指定压缩预设
+./pdf-tool -merge -merge-dir ./pdfs -o merged.pdf -compress-preset ebook -compress-resolution 150
+```
+
 ## 架构概览
 
 详见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) 完整架构文档。
@@ -179,7 +217,8 @@ go build -o pdf-tool .
 
 **依赖**：
 
-- **mutool**（MuPDF）：需在 PATH 中，或安装在 `/opt/homebrew/bin/mutool`，或放在同级 `bund/` 目录
+- **mutool**（MuPDF）：需在 PATH 中，或安装在 `/opt/homebrew/bin/mutool`，或放在同级 `bund/` 或 `dist/darwin/` 目录
+- **Ghostscript**（gs）：压缩/合并前压缩功能需要。查找顺序：PATH → 同目录 → `bund/` → Homebrew。编译后的 `dist/darwin/` 中可附带 `bund/darwin-universal/gs`
 - **Go 模块**：自动下载（pdfcpu, go-fitz, tiff）
 
 ### 交叉编译

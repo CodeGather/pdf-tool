@@ -74,6 +74,16 @@ build_darwin() {
     else
         echo "  ⚠ darwin-arm64/amd64 mutool 缺失（跳过，运行 build-mutool.sh 补充）"
     fi
+
+    # 5. 拷贝 gs（Ghostscript）— 从 bund/darwin-universal/ 取通用二进制
+    if [ -f "$BUND_DIR/darwin-universal/gs" ]; then
+        cp "$BUND_DIR/darwin-universal/gs" "$out_dir/gs"
+        chmod +x "$out_dir/gs"
+        echo "  gs:       $out_dir/gs"
+        file "$out_dir/gs" | awk '{print "    " $0}'
+    else
+        echo "  ⚠ darwin-universal/gs 缺失（跳过，手动放到 bund/darwin-universal/ 目录补充）"
+    fi
 }
 
 # ———————————————————————————————————————
@@ -100,6 +110,16 @@ build_win() {
         file "$out_dir/mutool.exe" | awk '{print "    " $0}'
     else
         echo "  ⚠ windows-amd64 mutool.exe 缺失（跳过，运行 build-mutool.sh 补充）"
+    fi
+
+    # 拷贝 gs.exe（Ghostscript）— 从 bund/ 取二进制
+    if [ -f "$BUND_DIR/windows-amd64/gs.exe" ]; then
+        cp "$BUND_DIR/windows-amd64/gs.exe" "$out_dir/gs.exe"
+        chmod +x "$out_dir/gs.exe"
+        echo "  gs.exe:   $out_dir/gs.exe"
+        file "$out_dir/gs.exe" | awk '{print "    " $0}'
+    else
+        echo "  ⚠ windows-amd64 gs.exe 缺失（跳过，手动放到 bund/ 目录补充）"
     fi
 }
 

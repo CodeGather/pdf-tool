@@ -310,7 +310,7 @@ func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize in
 	// 合并前压缩
 	if mergeCompress {
 		// 检查 Ghostscript
-		if _, err := exec.LookPath("gs"); err != nil {
+		if findGS() == "" {
 			return fmt.Errorf("需要安装 Ghostscript (gs) 才能启用合并前压缩，请先安装后重试或使用 -merge-compress=false 关闭")
 		}
 
@@ -408,7 +408,7 @@ func mergePDFs(inputDir, inputList, globPattern, outputFile string, chunkSize in
 					inputPath,
 				)
 
-				cmd := exec.Command("gs", args...)
+cmd := exec.Command(findGS(), args...)
 				if err := cmd.Run(); err != nil {
 					results <- compResult{idx: idx, err: fmt.Errorf("压缩 %s 失败: %w", inputPath, err)}
 					return
@@ -2953,6 +2953,69 @@ func findMutool() string {
 	return "" // 最终回退到 go-fitz
 }
 
+// findGS 查找 Ghostscript (gs) 可执行文件路径，优先使用捆绑版本。
+// 查找顺序：
+//
+//	1. PATH 环境变量（系统安装的 gs）
+//	2. 程序同级目录 gs（dist 打包后 gs 和 pdf-tool 放在一起）
+//	3. 程序同级 bund/<os>-<arch>/gs（跨平台捆绑）
+//	4. 程序同级 bund/gs（简单捆绑）
+//	5. /opt/homebrew/bin/gs（Homebrew）
+//	6. /usr/local/bin/gs
+//
+// 结果缓存在全局变量中，避免重复查找。
+var gsPath string
+
+func findGS() string {
+	if gsPath != "" {
+		return gsPath
+	}
+	// 1. 检查 PATH 中是否有 gs
+	path, err := exec.LookPath("gs")
+	if err == nil {
+		gsPath = path
+		return path
+	}
+	// 2. 检查程序同级目录（gs 和 pdf-tool 放在一起时）
+	exe, err := os.Executable()
+	if err == nil {
+		exeDir := filepath.Dir(exe)
+		sameDirPath := filepath.Join(exeDir, "gs")
+		if fi, err := os.Stat(sameDirPath); err == nil && !fi.IsDir() {
+			gsPath = sameDirPath
+			return sameDirPath
+		}
+		// 3. 跨平台捆绑：bund/<os>-<arch>/gs
+		platformDir := filepath.Join(exeDir, "bund", runtime.GOOS+"-"+runtime.GOARCH)
+		// Windows 用 gs.exe，其他用 gs
+		platformPath := filepath.Join(platformDir, "gs")
+		if runtime.GOOS == "windows" {
+			platformPath = filepath.Join(platformDir, "gswin64c.exe")
+		}
+		if fi, err := os.Stat(platformPath); err == nil && !fi.IsDir() {
+			gsPath = platformPath
+			return platformPath
+		}
+		// 简单捆绑：bund/gs
+		simplePath := filepath.Join(exeDir, "bund", "gs")
+		if fi, err := os.Stat(simplePath); err == nil && !fi.IsDir() {
+			gsPath = simplePath
+			return simplePath
+		}
+	}
+	// 4. Homebrew / 系统路径
+	for _, c := range []string{
+		"/opt/homebrew/bin/gs",
+		"/usr/local/bin/gs",
+	} {
+		if fi, err := os.Stat(c); err == nil && !fi.IsDir() {
+			gsPath = c
+			return c
+		}
+	}
+	return ""
+}
+
 // getPageCount 获取 PDF 页数，多源回退保证不因为单一工具不可用而失败。
 // 优先级：mutool info（最快，轻量子进程）→ go-fitz（CGo 回退）
 // 不依赖 pdfcpu，避免 "missing required resource subdict: Properties" 等解析失败。
@@ -3265,8 +3328,8 @@ func compressPDF(inputFile, outputFile, preset string, jpegQuality, resolution i
 	}
 
 	// 检查 Ghostscript
-	if _, err := exec.LookPath("gs"); err != nil {
-		return fmt.Errorf("需要安装 Ghostscript (gs)，请先安装后重试")
+	if findGS() == "" {
+		return fmt.Errorf("Ghostscript (gs) 未找到，请先安装")
 	}
 
 	// 映射预设名称
@@ -3347,7 +3410,7 @@ func compressPDF(inputFile, outputFile, preset string, jpegQuality, resolution i
 	)
 
 	// 执行 Ghostscript
-	cmd := exec.Command("gs", args...)
+	cmd := exec.Command(findGS(), args...)
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("Ghostscript 压缩失败: %w", err)
 	}
@@ -3402,8 +3465,8 @@ func compressPDFDir(inputDir, outputDir, preset string, jpegQuality, resolution 
 	}
 
 	// 检查 Ghostscript
-	if _, err := exec.LookPath("gs"); err != nil {
-		return fmt.Errorf("需要安装 Ghostscript (gs)，请先安装后重试")
+	if findGS() == "" {
+		return fmt.Errorf("Ghostscript (gs) 未找到，请先安装")
 	}
 
 	// 收集 PDF 文件
@@ -3518,7 +3581,7 @@ func compressPDFDir(inputDir, outputDir, preset string, jpegQuality, resolution 
 			)
 
 			// 执行压缩
-			cmd := exec.Command("gs", args...)
+			cmd := exec.Command(findGS(), args...)
 			if err := cmd.Run(); err != nil {
 				mu.Lock()
 				failCount++

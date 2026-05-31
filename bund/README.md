@@ -1,28 +1,38 @@
-# bund/ — MuPDF mutool 捆绑二进制
+# bund/ — 捆绑二进制（mutool + Ghostscript）
 
 ## 目录结构
 
 ```
 bund/
-├── darwin-arm64/mutool        # macOS Apple Silicon (arm64)
-├── darwin-amd64/mutool        # macOS Intel (x86_64)
-├── linux-amd64/mutool         # Linux x86_64
-├── windows-amd64/mutool.exe   # Windows x86_64
-└── README.md                  # 本文件
+├── darwin-arm64/mutool          # macOS Apple Silicon (arm64) mutool
+├── darwin-amd64/mutool          # macOS Intel (x86_64) mutool
+├── darwin-universal/gs          # macOS 通用二进制 (arm64+x86_64) Ghostscript
+├── linux-amd64/mutool           # Linux x86_64 mutool
+├── windows-amd64/mutool.exe     # Windows x86_64 mutool
+├── windows-amd64/gs.exe         # Windows x86_64 Ghostscript (gswin64c.exe)
+└── README.md                    # 本文件
 ```
 
-## 用途
+## mutool 查找方式
 
-pdf-tool 的 `findMutool()` 函数会自动按以下顺序查找 mutool：
+pdf-tool 的 `findMutool()` 函数自动按以下顺序查找：
 
 1. PATH 环境变量（系统安装的 mutool）
 2. **程序同级 `bund/<os>-<arch>/mutool`**（本目录的跨平台版本）
 3. **程序同级 `bund/mutool`**（简单捆绑回退）
 4. `/opt/homebrew/bin/mutool`（Homebrew）
 
-因此将二进制放在对应平台的子目录中即可自动使用，无需手动配置。
+## Ghostscript 查找方式
 
-## 编译说明
+pdf-tool 的 `findGS()` 函数自动按以下顺序查找：
+
+1. PATH 环境变量（系统安装的 gs）
+2. **程序同级目录 `gs`**（和 pdf-tool 放一起）
+3. **程序同级 `bund/<os>-<arch>/gs`**（跨平台捆绑）
+4. **程序同级 `bund/gs`**（简单捆绑回退）
+5. `/opt/homebrew/bin/gs`（Homebrew）
+
+## 构建说明
 
 ### 状态
 
