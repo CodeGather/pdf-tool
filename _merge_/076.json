@@ -1,0 +1,744 @@
+{
+  "shopName": "郑州丹尼斯百货大卫城(2F)BD精品店",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "A": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC03131658",
+      "柜台名称": "郑州丹尼斯百货大卫城(2F)BD精品店",
+      "灯位编号": "A",
+      "灯位备注": "26YJul-彩妆架-1",
+      "画面位置": "新彩妆架-1",
+      "材质": "灯片",
+      "可见宽": 492,
+      "": "*",
+      "可见长": 396,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.24242424242424,
+      "比例H/W": 0.804878048780488,
+      "备注": "出血尺寸：W506mm×H410mm",
+      "isNew": true,
+      "灯位位置": "新彩妆架-1"
+    },
+    "B": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC03131658",
+      "柜台名称": "郑州丹尼斯百货大卫城(2F)BD精品店",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-彩妆架-2",
+      "画面位置": "新彩妆架-2",
+      "材质": "灯片",
+      "可见宽": 492,
+      "": "*",
+      "可见长": 396,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.24242424242424,
+      "比例H/W": 0.804878048780488,
+      "备注": "出血尺寸：W506mm×H410mm",
+      "isNew": true,
+      "灯位位置": "新彩妆架-2"
+    },
+    "C": {
+      "渠道": "BD",
+      "柜台编号": "GC03131658",
+      "柜台名称": "郑州丹尼斯百货大卫城(2F)BD精品店",
+      "灯位编号": "C",
+      "灯位备注": "玉龙茶香大灯箱",
+      "画面位置": "柜台外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 2772,
+      "": "*",
+      "可见长": 1977,
+      "柜台数量(张)": 1,
+      "比例W/H": 1.40212443095599,
+      "比例H/W": 0.713203463203463,
+      "备注": "不含胶条尺寸",
+      "isNew": false,
+      "灯位位置": "柜台外不挡"
+    },
+    "D": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC03131658",
+      "柜台名称": "郑州丹尼斯百货大卫城(2F)BD精品店",
+      "灯位编号": "D",
+      "灯位备注": "26YJul-护肤大灯箱",
+      "画面位置": "护肤吧墙上灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 1612,
+      "": "*",
+      "可见长": 1196,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.34782608695652,
+      "比例H/W": 0.741935483870968,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "护肤吧墙上灯箱"
+    },
+    "E": {
+      "渠道": "BD",
+      "柜台编号": "GC03131658",
+      "柜台名称": "郑州丹尼斯百货大卫城(2F)BD精品店",
+      "灯位编号": "E",
+      "灯位备注": "2509-护肤背墙",
+      "画面位置": "护肤背墙",
+      "材质": "灯片",
+      "可见宽": 1300,
+      "": "*",
+      "可见长": 320,
+      "柜台数量(张)": 1,
+      "比例W/H": 4.0625,
+      "比例H/W": 0.246153846153846,
+      "备注": "出血尺寸：W1330mm×H330mm",
+      "isNew": false,
+      "灯位位置": "护肤背墙"
+    },
+    "F": {
+      "渠道": "BD",
+      "柜台编号": "GC03131658",
+      "柜台名称": "郑州丹尼斯百货大卫城(2F)BD精品店",
+      "灯位编号": "F",
+      "灯位备注": "26YMar-MYWAY大灯箱",
+      "画面位置": "香水吧墙上灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 1612,
+      "": "*",
+      "可见长": 1196,
+      "柜台数量(张)": 1,
+      "比例W/H": 1.34782608695652,
+      "比例H/W": 0.741935483870968,
+      "备注": "不含胶条尺寸",
+      "isNew": false,
+      "灯位位置": "香水吧墙上灯箱"
+    },
+    "G": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC03131658",
+      "柜台名称": "郑州丹尼斯百货大卫城(2F)BD精品店",
+      "灯位编号": "G",
+      "灯位备注": "26YJul-Hallmark",
+      "画面位置": "桌面橱窗",
+      "材质": "软膜灯箱布",
+      "可见宽": 1142,
+      "": "*",
+      "可见长": 1196,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.954849498327759,
+      "比例H/W": 1.04728546409807,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "桌面橱窗"
+    }
+  },
+  "db-data": {
+    "id": 648,
+    "品牌": "Gac",
+    "店铺名称": "郑州丹尼斯百货大卫城(2F)BD精品店",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 509,
+        "品牌": "Gac",
+        "店铺名称": "郑州丹尼斯百货大卫城(2F)BD精品店",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/郑州丹尼斯百货大卫城(2F)BD精品店_76.pdf",
+        "PDF标题": "郑州丹尼斯百货大卫城(2F)BD精品店灯位图",
+        "编号列表": "[{\"distance\":22.0592,\"hasMatch\":true,\"id\":\"18824-g_d116_img_p61_1\",\"image\":{\"dataUrl\":null,\"disHeight\":59,\"disWidth\":117,\"height\":244,\"id\":\"18824-g_d116_img_p61_1\",\"index\":18824,\"originalTransform\":{\"height\":59,\"width\":117,\"x\":90,\"y\":332},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":488,\"x\":90,\"y\":332},\"imageId\":\"18824-g_d116_img_p61_1\",\"num\":{\"distance\":22.0592,\"isInside\":false,\"str\":\"E\",\"x\":198.7356,\"y\":305.5284},\"nums\":[{\"distance\":22.0592,\"isInside\":false,\"str\":\"E\",\"x\":198.7356,\"y\":305.5284},{\"distance\":295.8209,\"isInside\":false,\"str\":\"D\",\"x\":333.8081,\"y\":161.3192},{\"distance\":335.5037,\"isInside\":false,\"str\":\"B\",\"x\":459.0296,\"y\":246.5279},{\"distance\":360.7781,\"isInside\":false,\"str\":\"C\",\"x\":302.7898,\"y\":65.3437},{\"distance\":472.6981,\"isInside\":false,\"str\":\"F\",\"x\":611.442,\"y\":261.4099},{\"distance\":474.038,\"isInside\":false,\"str\":\"A\",\"x\":458.5075,\"y\":107.4715},{\"distance\":557.9068,\"isInside\":false,\"str\":\"G\",\"x\":602.6447,\"y\":168.4059}]},{\"distance\":0.9068,\"hasMatch\":true,\"id\":\"18812-img_p75_6\",\"image\":{\"dataUrl\":null,\"disHeight\":71,\"disWidth\":80,\"height\":297,\"id\":\"18812-img_p75_6\",\"index\":18812,\"originalTransform\":{\"height\":71,\"width\":80,\"x\":607,\"y\":104},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":332,\"x\":607,\"y\":104},\"imageId\":\"18812-img_p75_6\",\"num\":{\"distance\":0.9068,\"isInside\":false,\"str\":\"G\",\"x\":602.6447,\"y\":168.4059},\"nums\":[{\"distance\":0.9068,\"isInside\":false,\"str\":\"G\",\"x\":602.6447,\"y\":168.4059},{\"distance\":92.5179,\"isInside\":false,\"str\":\"F\",\"x\":611.442,\"y\":261.4099},{\"distance\":145.669,\"isInside\":false,\"str\":\"A\",\"x\":458.5075,\"y\":107.4715},{\"distance\":221.4963,\"isInside\":false,\"str\":\"B\",\"x\":459.0296,\"y\":246.5279},{\"distance\":269.4407,\"isInside\":false,\"str\":\"D\",\"x\":333.8081,\"y\":161.3192},{\"distance\":332.5345,\"isInside\":false,\"str\":\"C\",\"x\":302.7898,\"y\":65.3437},{\"distance\":540.7908,\"isInside\":false,\"str\":\"E\",\"x\":198.7356,\"y\":305.5284}]},{\"distance\":14.6963,\"hasMatch\":true,\"id\":\"18800-img_p75_5\",\"image\":{\"dataUrl\":null,\"disHeight\":43,\"disWidth\":49,\"height\":181,\"id\":\"18800-img_p75_5\",\"index\":18800,\"originalTransform\":{\"height\":43,\"width\":49,\"x\":477,\"y\":226},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":203,\"x\":477,\"y\":226},\"imageId\":\"18800-img_p75_5\",\"num\":{\"distance\":14.6963,\"isInside\":false,\"str\":\"B\",\"x\":459.0296,\"y\":246.5279},\"nums\":[{\"distance\":14.6963,\"isInside\":false,\"str\":\"B\",\"x\":459.0296,\"y\":246.5279},{\"distance\":89.6679,\"isInside\":false,\"str\":\"F\",\"x\":611.442,\"y\":261.4099},{\"distance\":127.019,\"isInside\":false,\"str\":\"A\",\"x\":458.5075,\"y\":107.4715},{\"distance\":132.9068,\"isInside\":false,\"str\":\"G\",\"x\":602.6447,\"y\":168.4059},{\"distance\":197.5407,\"isInside\":false,\"str\":\"D\",\"x\":333.8081,\"y\":161.3192},{\"distance\":316.7908,\"isInside\":false,\"str\":\"E\",\"x\":198.7356,\"y\":305.5284},{\"distance\":324.5345,\"isInside\":false,\"str\":\"C\",\"x\":302.7898,\"y\":65.3437}]},{\"distance\":1.538,\"hasMatch\":true,\"id\":\"18788-g_d116_img_p75_4\",\"image\":{\"dataUrl\":null,\"disHeight\":43,\"disWidth\":49,\"height\":181,\"id\":\"18788-g_d116_img_p75_4\",\"index\":18788,\"originalTransform\":{\"height\":43,\"width\":49,\"x\":437,\"y\":71},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":203,\"x\":437,\"y\":71},\"imageId\":\"18788-g_d116_img_p75_4\",\"num\":{\"distance\":1.538,\"isInside\":false,\"str\":\"A\",\"x\":458.5075,\"y\":107.4715},\"nums\":[{\"distance\":1.538,\"isInside\":false,\"str\":\"A\",\"x\":458.5075,\"y\":107.4715},{\"distance\":130.2219,\"isInside\":false,\"str\":\"C\",\"x\":302.7898,\"y\":65.3437},{\"distance\":139.4463,\"isInside\":false,\"str\":\"B\",\"x\":459.0296,\"y\":246.5279},{\"distance\":152.1791,\"isInside\":false,\"str\":\"D\",\"x\":333.8081,\"y\":161.3192},{\"distance\":181.7186,\"isInside\":false,\"str\":\"G\",\"x\":602.6447,\"y\":168.4059},{\"distance\":282.5179,\"isInside\":false,\"str\":\"F\",\"x\":611.442,\"y\":261.4099},{\"distance\":431.7908,\"isInside\":false,\"str\":\"E\",\"x\":198.7356,\"y\":305.5284}]},{\"distance\":10.2321,\"hasMatch\":true,\"id\":\"18776-img_p75_3\",\"image\":{\"dataUrl\":null,\"disHeight\":65,\"disWidth\":94,\"height\":270,\"id\":\"18776-img_p75_3\",\"index\":18776,\"originalTransform\":{\"height\":65,\"width\":94,\"x\":625,\"y\":245},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":390,\"x\":625,\"y\":245},\"imageId\":\"18776-img_p75_3\",\"num\":{\"distance\":10.2321,\"isInside\":false,\"str\":\"F\",\"x\":611.442,\"y\":261.4099},\"nums\":[{\"distance\":10.2321,\"isInside\":false,\"str\":\"F\",\"x\":611.442,\"y\":261.4099},{\"distance\":88.2814,\"isInside\":false,\"str\":\"G\",\"x\":602.6447,\"y\":168.4059},{\"distance\":162.9963,\"isInside\":false,\"str\":\"B\",\"x\":459.0296,\"y\":246.5279},{\"distance\":294.019,\"isInside\":false,\"str\":\"A\",\"x\":458.5075,\"y\":107.4715},{\"distance\":364.5407,\"isInside\":false,\"str\":\"D\",\"x\":333.8081,\"y\":161.3192},{\"distance\":423.7908,\"isInside\":false,\"str\":\"E\",\"x\":198.7356,\"y\":305.5284},{\"distance\":491.5345,\"isInside\":false,\"str\":\"C\",\"x\":302.7898,\"y\":65.3437}]},{\"distance\":26.1209,\"hasMatch\":true,\"id\":\"18764-img_p75_2\",\"image\":{\"dataUrl\":null,\"disHeight\":65,\"disWidth\":94,\"height\":270,\"id\":\"18764-img_p75_2\",\"index\":18764,\"originalTransform\":{\"height\":65,\"width\":94,\"x\":332,\"y\":192},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":390,\"x\":332,\"y\":192},\"imageId\":\"18764-img_p75_2\",\"num\":{\"distance\":26.1209,\"isInside\":false,\"str\":\"D\",\"x\":333.8081,\"y\":161.3192},\"nums\":[{\"distance\":26.1209,\"isInside\":false,\"str\":\"D\",\"x\":333.8081,\"y\":161.3192},{\"distance\":38.2537,\"isInside\":false,\"str\":\"B\",\"x\":459.0296,\"y\":246.5279},{\"distance\":115.038,\"isInside\":false,\"str\":\"A\",\"x\":458.5075,\"y\":107.4715},{\"distance\":145.5345,\"isInside\":false,\"str\":\"C\",\"x\":302.7898,\"y\":65.3437},{\"distance\":183.7908,\"isInside\":false,\"str\":\"E\",\"x\":198.7356,\"y\":305.5284},{\"distance\":198.9068,\"isInside\":false,\"str\":\"G\",\"x\":602.6447,\"y\":168.4059},{\"distance\":199.5179,\"isInside\":false,\"str\":\"F\",\"x\":611.442,\"y\":261.4099}]},{\"distance\":11.8655,\"hasMatch\":true,\"id\":\"18752-img_p75_1\",\"image\":{\"dataUrl\":null,\"disHeight\":74,\"disWidth\":117,\"height\":308,\"id\":\"18752-img_p75_1\",\"index\":18752,\"originalTransform\":{\"height\":74,\"width\":117,\"x\":179,\"y\":41},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":489,\"x\":179,\"y\":41},\"imageId\":\"18752-img_p75_1\",\"num\":{\"distance\":11.8655,\"isInside\":false,\"str\":\"C\",\"x\":302.7898,\"y\":65.3437},\"nums\":[{\"distance\":11.8655,\"isInside\":false,\"str\":\"C\",\"x\":302.7898,\"y\":65.3437},{\"distance\":94.4593,\"isInside\":false,\"str\":\"D\",\"x\":333.8081,\"y\":161.3192},{\"distance\":168.038,\"isInside\":false,\"str\":\"A\",\"x\":458.5075,\"y\":107.4715},{\"distance\":196.866,\"isInside\":false,\"str\":\"E\",\"x\":198.7356,\"y\":305.5284},{\"distance\":304.5595,\"isInside\":false,\"str\":\"B\",\"x\":459.0296,\"y\":246.5279},{\"distance\":370.7186,\"isInside\":false,\"str\":\"G\",\"x\":602.6447,\"y\":168.4059},{\"distance\":471.5179,\"isInside\":false,\"str\":\"F\",\"x\":611.442,\"y\":261.4099}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-彩妆架-1.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆架-1.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 17,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆架-1.pdf/1_Im0_obj17.png",
+              "source": "direct-fast",
+              "time": "8.25µs",
+              "type": "image-meta",
+              "width": 553
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆架-2.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆架-2.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1017,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆架-2.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 927
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-玉龙茶香大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-玉龙茶香大灯箱.pdf",
+      "totalPages": 2,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 2,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_002_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 1172
+            },
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 2110
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-护肤大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-护肤大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 160,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-护肤大灯箱.pdf/1_Im0_obj10.png",
+              "source": "direct-fallback",
+              "time": "1.71075ms",
+              "type": "image-meta",
+              "width": 294
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "2509-护肤背墙.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC4月上市比例档/2509-护肤背墙.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 500,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/2509-护肤背墙.pdf/1_Im0_obj10.png",
+              "source": "direct-fast",
+              "time": "6.333µs",
+              "type": "image-meta",
+              "width": 1000
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Mar-MY WAY大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC4月上市比例档/26Y Mar-MY WAY大灯箱.pdf",
+      "totalPages": 20,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "jpg",
+              "height": 852,
+              "object": 113,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/01_Im0_obj113.jpg",
+              "source": "direct-fast",
+              "time": "1.834µs",
+              "type": "image-meta",
+              "width": 341
+            },
+            {
+              "ext": "jpg",
+              "height": 852,
+              "object": 4,
+              "page": 2,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/02_image_obj4.jpg",
+              "source": "direct-fast",
+              "time": "1µs",
+              "type": "image-meta",
+              "width": 596
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 8,
+              "page": 3,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/03_image_obj8.jpg",
+              "source": "direct-fast",
+              "time": "750ns",
+              "type": "image-meta",
+              "width": 682
+            },
+            {
+              "ext": "jpg",
+              "height": 852,
+              "object": 12,
+              "page": 4,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/04_image_obj12.jpg",
+              "source": "direct-fast",
+              "time": "625ns",
+              "type": "image-meta",
+              "width": 383
+            },
+            {
+              "ext": "jpg",
+              "height": 852,
+              "object": 16,
+              "page": 5,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/05_image_obj16.jpg",
+              "source": "direct-fast",
+              "time": "542ns",
+              "type": "image-meta",
+              "width": 469
+            },
+            {
+              "ext": "jpg",
+              "height": 852,
+              "object": 20,
+              "page": 6,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/06_image_obj20.jpg",
+              "source": "direct-fast",
+              "time": "542ns",
+              "type": "image-meta",
+              "width": 512
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 24,
+              "page": 7,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/07_image_obj24.jpg",
+              "source": "direct-fast",
+              "time": "500ns",
+              "type": "image-meta",
+              "width": 638
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 28,
+              "page": 8,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/08_image_obj28.jpg",
+              "source": "direct-fast",
+              "time": "500ns",
+              "type": "image-meta",
+              "width": 724
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 32,
+              "page": 9,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/09_image_obj32.jpg",
+              "source": "direct-fast",
+              "time": "458ns",
+              "type": "image-meta",
+              "width": 809
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 36,
+              "page": 10,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/10_image_obj36.jpg",
+              "source": "direct-fast",
+              "time": "500ns",
+              "type": "image-meta",
+              "width": 936
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 40,
+              "page": 11,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/11_image_obj40.jpg",
+              "source": "direct-fast",
+              "time": "500ns",
+              "type": "image-meta",
+              "width": 1022
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 44,
+              "page": 12,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/12_image_obj44.jpg",
+              "source": "direct-fast",
+              "time": "459ns",
+              "type": "image-meta",
+              "width": 1106
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 48,
+              "page": 13,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/13_image_obj48.jpg",
+              "source": "direct-fast",
+              "time": "1.584µs",
+              "type": "image-meta",
+              "width": 1191
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 52,
+              "page": 14,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/14_image_obj52.jpg",
+              "source": "direct-fast",
+              "time": "917ns",
+              "type": "image-meta",
+              "width": 1277
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 56,
+              "page": 15,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/15_image_obj56.jpg",
+              "source": "direct-fast",
+              "time": "625ns",
+              "type": "image-meta",
+              "width": 894
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 60,
+              "page": 16,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/16_image_obj60.jpg",
+              "source": "direct-fast",
+              "time": "583ns",
+              "type": "image-meta",
+              "width": 1361
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 64,
+              "page": 17,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/17_image_obj64.jpg",
+              "source": "direct-fast",
+              "time": "500ns",
+              "type": "image-meta",
+              "width": 979
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 68,
+              "page": 18,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/18_image_obj68.jpg",
+              "source": "direct-fast",
+              "time": "542ns",
+              "type": "image-meta",
+              "width": 1064
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 72,
+              "page": 19,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/19_image_obj72.jpg",
+              "source": "direct-fast",
+              "time": "500ns",
+              "type": "image-meta",
+              "width": 1150
+            },
+            {
+              "ext": "jpg",
+              "height": 851,
+              "object": 76,
+              "page": 20,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YMar-MYWAY大灯箱.pdf/20_image_obj76.jpg",
+              "source": "direct-fast",
+              "time": "458ns",
+              "type": "image-meta",
+              "width": 1489
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-Hallmark.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-Hallmark.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1017,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-Hallmark.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 927
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    }
+  }
+}

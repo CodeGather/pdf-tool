@@ -256,12 +256,19 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int) error {
 			log.Printf("  [警告] 灯位 %s(obj=%d) 无位置信息，跳过边框", item.name, item.objNr)
 			continue
 		}
-		lw := bc.BorderSize
+		lw := 1.0
+		borderR, borderG, borderB := 1.0, 0.0, 0.0
+		if bc.Guide != nil {
+			lw = bc.Guide.BorderSize
+			borderR = bc.Guide.BorderColor.Red
+			borderG = bc.Guide.BorderColor.Green
+			borderB = bc.Guide.BorderColor.Blue
+		}
 		if lw < 1 {
 			lw = 1
 		}
 		if err := tmpl.DrawRectBorder(*imgPos, lw,
-			bc.BorderColor.Red, bc.BorderColor.Green, bc.BorderColor.Blue); err != nil {
+			borderR, borderG, borderB); err != nil {
 			log.Printf("  [警告] 灯位 %s 边框失败: %v", item.name, err)
 		}
 	}
@@ -297,12 +304,20 @@ func processImageDirect(srcPath string, lampItem model.LampItem, bc model.BrandC
 
 	// 上市备注文字
 	if lampItem.LaunchNote != "" {
-		fontPt := bc.DescFontSize
+		fontPt := 16.0
+		descR, descG, descB, descA := 1.0, 0.0, 0.0, 1.0
+		if bc.Guide != nil {
+			fontPt = bc.Guide.DescFontSize
+			descR = bc.Guide.DescColor.Red
+			descG = bc.Guide.DescColor.Green
+			descB = bc.Guide.DescColor.Blue
+			descA = bc.Guide.DescColor.Opacity
+		}
 		if fontPt <= 0 {
 			fontPt = 16
 		}
 		img = pdf.DrawTextOnTop(img, lampItem.LaunchNote,
-			bc.DescColor.Red, bc.DescColor.Green, bc.DescColor.Blue, bc.DescColor.Opacity,
+			descR, descG, descB, descA,
 			fontPt, fontPath)
 	}
 

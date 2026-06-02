@@ -1,0 +1,374 @@
+{
+  "shopName": "贵阳南国花锦春天百货BD精品店",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "A": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02130457",
+      "柜台名称": "贵阳南国花锦春天百货BD精品店",
+      "灯位编号": "A",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "柜台内不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1535,
+      "": "*",
+      "可见长": 2765,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.555153707052441,
+      "比例H/W": 1.80130293159609,
+      "isNew": true,
+      "灯位位置": "柜台内不挡"
+    },
+    "B": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02130457",
+      "柜台名称": "贵阳南国花锦春天百货BD精品店",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "护肤咨询区墙面灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 1785,
+      "": "*",
+      "可见长": 1115,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.60089686098655,
+      "比例H/W": 0.624649859943978,
+      "isNew": true,
+      "灯位位置": "护肤咨询区墙面灯箱"
+    },
+    "C": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02130457",
+      "柜台名称": "贵阳南国花锦春天百货BD精品店",
+      "灯位编号": "C",
+      "灯位备注": "26YJul-护肤大灯箱",
+      "画面位置": "靠墙护肤吧大灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 1500,
+      "": "*",
+      "可见长": 1115,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.34529147982063,
+      "比例H/W": 0.743333333333333,
+      "isNew": true,
+      "灯位位置": "靠墙护肤吧大灯箱"
+    },
+    "D": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02130457",
+      "柜台名称": "贵阳南国花锦春天百货BD精品店",
+      "灯位编号": "D",
+      "灯位备注": "26YJul-玉龙茶香大灯箱",
+      "画面位置": "定香背墙墙上灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 2035,
+      "": "*",
+      "可见长": 1115,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.82511210762332,
+      "比例H/W": 0.547911547911548,
+      "isNew": true,
+      "灯位位置": "定香背墙墙上灯箱"
+    }
+  },
+  "db-data": {
+    "id": 736,
+    "品牌": "Gac",
+    "店铺名称": "贵阳南国花锦春天百货BD精品店",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 430,
+        "品牌": "Gac",
+        "店铺名称": "贵阳南国花锦春天百货BD精品店",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/贵阳南国花锦春天百货BD精品店_73.pdf",
+        "PDF标题": "贵阳南国花锦春天百货BD精品店灯位图",
+        "编号列表": "[{\"distance\":9.8757,\"hasMatch\":true,\"id\":\"34483-g_d40_img_p67_4\",\"image\":{\"dataUrl\":null,\"disHeight\":84,\"disWidth\":88,\"height\":500,\"id\":\"34483-g_d40_img_p67_4\",\"index\":34483,\"originalTransform\":{\"height\":84,\"width\":88,\"x\":573,\"y\":204},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":500,\"x\":573,\"y\":204},\"imageId\":\"34483-g_d40_img_p67_4\",\"num\":{\"distance\":9.8757,\"isInside\":false,\"str\":\"C\",\"x\":559.6008,\"y\":224.0077},\"nums\":[{\"distance\":9.8757,\"isInside\":false,\"str\":\"C\",\"x\":559.6008,\"y\":224.0077},{\"distance\":107.0194,\"isInside\":false,\"str\":\"D\",\"x\":540.9362,\"y\":118.7078},{\"distance\":166.8718,\"isInside\":false,\"str\":\"B\",\"x\":480.5154,\"y\":360.3883},{\"distance\":425.1025,\"isInside\":false,\"str\":\"A\",\"x\":231.8911,\"y\":109.9999}]},{\"distance\":10.7404,\"hasMatch\":true,\"id\":\"34472-img_p72_3\",\"image\":{\"dataUrl\":null,\"disHeight\":59,\"disWidth\":93,\"height\":244,\"id\":\"34472-img_p72_3\",\"index\":34472,\"originalTransform\":{\"height\":59,\"width\":93,\"x\":555,\"y\":106},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":388,\"x\":555,\"y\":106},\"imageId\":\"34472-img_p72_3\",\"num\":{\"distance\":10.7404,\"isInside\":false,\"str\":\"D\",\"x\":540.9362,\"y\":118.7078},\"nums\":[{\"distance\":10.7404,\"isInside\":false,\"str\":\"D\",\"x\":540.9362,\"y\":118.7078},{\"distance\":65.3757,\"isInside\":false,\"str\":\"C\",\"x\":559.6008,\"y\":224.0077},{\"distance\":271.8718,\"isInside\":false,\"str\":\"B\",\"x\":480.5154,\"y\":360.3883},{\"distance\":320.2577,\"isInside\":false,\"str\":\"A\",\"x\":231.8911,\"y\":109.9999}]},{\"distance\":21.1398,\"hasMatch\":true,\"id\":\"34461-img_p72_2\",\"image\":{\"dataUrl\":null,\"disHeight\":59,\"disWidth\":89,\"height\":244,\"id\":\"34461-img_p72_2\",\"index\":34461,\"originalTransform\":{\"height\":59,\"width\":89,\"x\":445,\"y\":387},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":371,\"x\":445,\"y\":387},\"imageId\":\"34461-img_p72_2\",\"num\":{\"distance\":21.1398,\"isInside\":false,\"str\":\"B\",\"x\":480.5154,\"y\":360.3883},\"nums\":[{\"distance\":21.1398,\"isInside\":false,\"str\":\"B\",\"x\":480.5154,\"y\":360.3883},{\"distance\":186.9243,\"isInside\":false,\"str\":\"C\",\"x\":559.6008,\"y\":224.0077},{\"distance\":273.5596,\"isInside\":false,\"str\":\"D\",\"x\":540.9362,\"y\":118.7078},{\"distance\":480.1025,\"isInside\":false,\"str\":\"A\",\"x\":231.8911,\"y\":109.9999}]},{\"distance\":8.1577,\"hasMatch\":true,\"id\":\"34450-img_p72_1\",\"image\":{\"dataUrl\":null,\"disHeight\":89,\"disWidth\":58,\"height\":370,\"id\":\"34450-img_p72_1\",\"index\":34450,\"originalTransform\":{\"height\":89,\"width\":58,\"x\":244,\"y\":67},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":242,\"x\":244,\"y\":67},\"imageId\":\"34450-img_p72_1\",\"num\":{\"distance\":8.1577,\"isInside\":false,\"str\":\"A\",\"x\":231.8911,\"y\":109.9999},\"nums\":[{\"distance\":8.1577,\"isInside\":false,\"str\":\"A\",\"x\":231.8911,\"y\":109.9999},{\"distance\":243.4096,\"isInside\":false,\"str\":\"D\",\"x\":540.9362,\"y\":118.7078},{\"distance\":335.9451,\"isInside\":false,\"str\":\"C\",\"x\":559.6008,\"y\":224.0077},{\"distance\":392.9102,\"isInside\":false,\"str\":\"B\",\"x\":480.5154,\"y\":360.3883}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-彩妆大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 606,
+              "object": 30,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im0_obj30.png",
+              "source": "direct-fast",
+              "time": "11.333µs",
+              "type": "image-meta",
+              "width": 345
+            },
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 31,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im1_obj31.png",
+              "source": "direct-fast",
+              "time": "8.958µs",
+              "type": "image-meta",
+              "width": 925
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-护肤大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-护肤大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 160,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-护肤大灯箱.pdf/1_Im0_obj10.png",
+              "source": "direct-fallback",
+              "time": "1.71075ms",
+              "type": "image-meta",
+              "width": 294
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-玉龙茶香大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-玉龙茶香大灯箱.pdf",
+      "totalPages": 2,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 2,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_002_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 1172
+            },
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 2110
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    }
+  }
+}

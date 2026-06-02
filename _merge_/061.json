@@ -1,0 +1,617 @@
+{
+  "shopName": "厦门万象城(欧莱雅直营店)",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "A": {
+      "渠道": "B",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01140799",
+      "柜台名称": "厦门万象城(欧莱雅直营店)",
+      "灯位编号": "A",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "柜台外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1218,
+      "": "*",
+      "可见长": 2265,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.537748344370861,
+      "比例H/W": 1.85960591133005,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "柜台外不挡"
+    },
+    "B": {
+      "渠道": "B",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01140799",
+      "柜台名称": "厦门万象城(欧莱雅直营店)",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-彩妆架+黑底-1",
+      "画面位置": "彩妆架-1",
+      "材质": "灯片",
+      "可见宽": 503,
+      "": "*",
+      "可见长": 540.5,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.930619796484736,
+      "比例H/W": 1.07455268389662,
+      "备注": "出血尺寸：W543mm×H580.5mm",
+      "isNew": true,
+      "灯位位置": "彩妆架-1"
+    },
+    "C": {
+      "渠道": "B",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01140799",
+      "柜台名称": "厦门万象城(欧莱雅直营店)",
+      "灯位编号": "C",
+      "灯位备注": "26YJul-彩妆架+黑底-2",
+      "画面位置": "彩妆架-2",
+      "材质": "灯片",
+      "可见宽": 503,
+      "": "*",
+      "可见长": 540.5,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.930619796484736,
+      "比例H/W": 1.07455268389662,
+      "备注": "出血尺寸：W543mm×H580.5mm",
+      "isNew": true,
+      "灯位位置": "彩妆架-2"
+    },
+    "D": {
+      "渠道": "B",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01140799",
+      "柜台名称": "厦门万象城(欧莱雅直营店)",
+      "灯位编号": "D",
+      "灯位备注": "26YJul-彩妆架+黑底-2",
+      "画面位置": "彩妆架-2",
+      "材质": "灯片",
+      "可见宽": 503,
+      "": "*",
+      "可见长": 540.5,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.930619796484736,
+      "比例H/W": 1.07455268389662,
+      "备注": "出血尺寸：W543mm×H580.5mm",
+      "isNew": true,
+      "灯位位置": "彩妆架-2"
+    },
+    "E": {
+      "渠道": "B",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01140799",
+      "柜台名称": "厦门万象城(欧莱雅直营店)",
+      "灯位编号": "E",
+      "灯位备注": "26YJul-彩妆架+黑底-1",
+      "画面位置": "彩妆架-1",
+      "材质": "灯片",
+      "可见宽": 503,
+      "": "*",
+      "可见长": 540.5,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.930619796484736,
+      "比例H/W": 1.07455268389662,
+      "备注": "出血尺寸：W543mm×H580.5mm",
+      "isNew": true,
+      "灯位位置": "彩妆架-1"
+    },
+    "F": {
+      "渠道": "B",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01140799",
+      "柜台名称": "厦门万象城(欧莱雅直营店)",
+      "灯位编号": "F",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "柜台外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 2411,
+      "": "*",
+      "可见长": 2891,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.833967485299204,
+      "比例H/W": 1.19908751555371,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "柜台外不挡"
+    },
+    "G": {
+      "渠道": "B",
+      "柜台编号": "GC01140799",
+      "柜台名称": "厦门万象城(欧莱雅直营店)",
+      "灯位编号": "G",
+      "灯位备注": "2509-护肤背墙",
+      "画面位置": "护肤背墙",
+      "材质": "80680写真全透（背胶）",
+      "可见宽": 2792,
+      "": "*",
+      "可见长": 745,
+      "柜台数量(张)": 1,
+      "比例W/H": 3.74765100671141,
+      "比例H/W": 0.266833810888252,
+      "备注": "出血尺寸：W2832mm×785mm",
+      "isNew": false,
+      "灯位位置": "护肤背墙"
+    },
+    "H": {
+      "渠道": "B",
+      "柜台编号": "GC01140799",
+      "柜台名称": "厦门万象城(欧莱雅直营店)",
+      "灯位编号": "H",
+      "灯位备注": "2408-护肤吧新品-1",
+      "画面位置": "护肤吧新品-左",
+      "材质": "透光灯箱片",
+      "可见宽": 219,
+      "": "*",
+      "可见长": 332,
+      "柜台数量(张)": 1,
+      "比例W/H": 0.659638554216867,
+      "比例H/W": 1.51598173515982,
+      "备注": "出血尺寸：W239mm×352mm",
+      "isNew": false,
+      "灯位位置": "护肤吧新品-左"
+    },
+    "I": {
+      "渠道": "B",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01140799",
+      "柜台名称": "厦门万象城(欧莱雅直营店)",
+      "灯位编号": "I",
+      "灯位备注": "2607-护肤吧新品-2",
+      "画面位置": "护肤吧新品-右",
+      "材质": "透光灯箱片",
+      "可见宽": 219,
+      "": "*",
+      "可见长": 332,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.659638554216867,
+      "比例H/W": 1.51598173515982,
+      "备注": "出血尺寸：W239mm×352mm",
+      "isNew": true,
+      "灯位位置": "护肤吧新品-右"
+    },
+    "J": {
+      "渠道": "B",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01140799",
+      "柜台名称": "厦门万象城(欧莱雅直营店)",
+      "灯位编号": "J",
+      "灯位备注": "26YJul-唇妆产品+文字",
+      "画面位置": "柜台外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 2411,
+      "": "*",
+      "可见长": 2891,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.833967485299204,
+      "比例H/W": 1.19908751555371,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "柜台外不挡"
+    }
+  },
+  "db-data": {
+    "id": 633,
+    "品牌": "Gac",
+    "店铺名称": "厦门万象城(欧莱雅直营店)",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 493,
+        "品牌": "Gac",
+        "店铺名称": "厦门万象城(欧莱雅直营店)",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/厦门万象城(欧莱雅直营店)_61.pdf",
+        "PDF标题": "厦门万象城(欧莱雅直营店)灯位图",
+        "编号列表": "[{\"distance\":8.9548,\"hasMatch\":true,\"id\":\"20485-img_p60_8\",\"image\":{\"dataUrl\":null,\"disHeight\":54,\"disWidth\":40,\"height\":225,\"id\":\"20485-img_p60_8\",\"index\":20485,\"originalTransform\":{\"height\":54,\"width\":40,\"x\":439,\"y\":326},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":167,\"x\":439,\"y\":326},\"imageId\":\"20485-img_p60_8\",\"num\":{\"distance\":8.9548,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.11281647834466},\"nums\":[{\"distance\":8.9548,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.11281647834466},{\"distance\":8.966,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.1352},{\"distance\":60.6749,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.8296164783447},{\"distance\":60.6861,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.85200000000003},{\"distance\":121.1442,\"isInside\":false,\"str\":\"D\",\"x\":493.1957,\"y\":217.3835},{\"distance\":123.7267,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.18501647834466},{\"distance\":123.7379,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.2074},{\"distance\":126.9706,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.40479999999997},{\"distance\":126.9709,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.4043432359112},{\"distance\":187.599,\"isInside\":false,\"str\":\"E\",\"x\":387.2411,\"y\":180.1579},{\"distance\":227.6589,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7019432359112},{\"distance\":227.6591,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7024},{\"distance\":239.2569,\"isInside\":false,\"str\":\"B\",\"x\":530.4812,\"y\":136.2263},{\"distance\":258.2846,\"isInside\":false,\"str\":\"C\",\"x\":405.8202,\"y\":90.5632},{\"distance\":458.5252,\"isInside\":false,\"str\":\"A\",\"x\":279.8604,\"y\":16.6124}]},{\"distance\":13.4843,\"hasMatch\":true,\"id\":\"20476-img_p60_7\",\"image\":{\"dataUrl\":null,\"disHeight\":54,\"disWidth\":40,\"height\":225,\"id\":\"20476-img_p60_7\",\"index\":20476,\"originalTransform\":{\"height\":54,\"width\":40,\"x\":326,\"y\":313},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":167,\"x\":326,\"y\":313},\"imageId\":\"20476-img_p60_7\",\"num\":{\"distance\":13.4843,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.8296164783447},\"nums\":[{\"distance\":13.4843,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.8296164783447},{\"distance\":13.4955,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.85200000000003},{\"distance\":64.534,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.1352},{\"distance\":64.5452,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.11281647834466},{\"distance\":72.6433,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.18501647834466},{\"distance\":72.6545,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.2074},{\"distance\":152.0852,\"isInside\":false,\"str\":\"E\",\"x\":387.2411,\"y\":180.1579},{\"distance\":221.1442,\"isInside\":false,\"str\":\"D\",\"x\":493.1957,\"y\":217.3835},{\"distance\":226.9706,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.40479999999997},{\"distance\":226.9709,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.4043432359112},{\"distance\":260.589,\"isInside\":false,\"str\":\"C\",\"x\":405.8202,\"y\":90.5632},{\"distance\":332.5252,\"isInside\":false,\"str\":\"A\",\"x\":279.8604,\"y\":16.6124},{\"distance\":339.2569,\"isInside\":false,\"str\":\"B\",\"x\":530.4812,\"y\":136.2263},{\"distance\":353.6589,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7019432359112},{\"distance\":353.6591,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7024}]},{\"distance\":15.1409,\"hasMatch\":true,\"id\":\"20464-img_p60_6\",\"image\":{\"dataUrl\":null,\"disHeight\":101,\"disWidth\":81,\"height\":422,\"id\":\"20464-img_p60_6\",\"index\":20464,\"originalTransform\":{\"height\":101,\"width\":81,\"x\":602,\"y\":419},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":338,\"x\":602,\"y\":419},\"imageId\":\"20464-img_p60_6\",\"num\":{\"distance\":15.1409,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7024},\"nums\":[{\"distance\":15.1409,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7024},{\"distance\":15.1411,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7019432359112},{\"distance\":120.2203,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.40479999999997},{\"distance\":120.2205,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.4043432359112},{\"distance\":232.5767,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.18501647834466},{\"distance\":232.5879,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.2074},{\"distance\":245.618,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.1352},{\"distance\":245.6292,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.11281647834466},{\"distance\":300.0888,\"isInside\":false,\"str\":\"D\",\"x\":493.1957,\"y\":217.3835},{\"distance\":315.0045,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.85200000000003},{\"distance\":315.0157,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.8296164783447},{\"distance\":344.2905,\"isInside\":false,\"str\":\"B\",\"x\":530.4812,\"y\":136.2263},{\"distance\":443.599,\"isInside\":false,\"str\":\"E\",\"x\":387.2411,\"y\":180.1579},{\"distance\":514.2846,\"isInside\":false,\"str\":\"C\",\"x\":405.8202,\"y\":90.5632},{\"distance\":714.5252,\"isInside\":false,\"str\":\"A\",\"x\":279.8604,\"y\":16.6124}]},{\"distance\":12.6291,\"hasMatch\":true,\"id\":\"20452-img_p60_5\",\"image\":{\"dataUrl\":null,\"disHeight\":101,\"disWidth\":77,\"height\":423,\"id\":\"20452-img_p60_5\",\"index\":20452,\"originalTransform\":{\"height\":101,\"width\":77,\"x\":602,\"y\":269},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":320,\"x\":602,\"y\":269},\"imageId\":\"20452-img_p60_5\",\"num\":{\"distance\":12.6291,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.4043432359112},\"nums\":[{\"distance\":12.6291,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.4043432359112},{\"distance\":12.6294,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.40479999999997},{\"distance\":140.7449,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7019432359112},{\"distance\":140.7452,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7024},{\"distance\":150.0888,\"isInside\":false,\"str\":\"D\",\"x\":493.1957,\"y\":217.3835},{\"distance\":172.1048,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.11281647834466},{\"distance\":172.116,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.1352},{\"distance\":194.2905,\"isInside\":false,\"str\":\"B\",\"x\":530.4812,\"y\":136.2263},{\"distance\":225.1249,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.8296164783447},{\"distance\":225.1361,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.85200000000003},{\"distance\":293.599,\"isInside\":false,\"str\":\"E\",\"x\":387.2411,\"y\":180.1579},{\"distance\":296.7267,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.18501647834466},{\"distance\":296.7379,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.2074},{\"distance\":364.2846,\"isInside\":false,\"str\":\"C\",\"x\":405.8202,\"y\":90.5632},{\"distance\":564.5252,\"isInside\":false,\"str\":\"A\",\"x\":279.8604,\"y\":16.6124}]},{\"distance\":21.6252,\"hasMatch\":true,\"id\":\"20441-img_p60_4\",\"image\":{\"dataUrl\":null,\"disHeight\":106,\"disWidth\":53,\"height\":441,\"id\":\"20441-img_p60_4\",\"index\":20441,\"originalTransform\":{\"height\":106,\"width\":53,\"x\":247,\"y\":44},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":221,\"x\":247,\"y\":44},\"imageId\":\"20441-img_p60_4\",\"num\":{\"distance\":21.6252,\"isInside\":false,\"str\":\"A\",\"x\":279.8604,\"y\":16.6124},\"nums\":[{\"distance\":21.6252,\"isInside\":false,\"str\":\"A\",\"x\":279.8604,\"y\":16.6124},{\"distance\":110.589,\"isInside\":false,\"str\":\"C\",\"x\":405.8202,\"y\":90.5632},{\"distance\":127.401,\"isInside\":false,\"str\":\"E\",\"x\":387.2411,\"y\":180.1579},{\"distance\":236.9569,\"isInside\":false,\"str\":\"B\",\"x\":530.4812,\"y\":136.2263},{\"distance\":255.9843,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.8296164783447},{\"distance\":255.9955,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.85200000000003},{\"distance\":270.9112,\"isInside\":false,\"str\":\"D\",\"x\":493.1957,\"y\":217.3835},{\"distance\":325.3708,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.11281647834466},{\"distance\":325.382,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.1352},{\"distance\":355.6433,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.18501647834466},{\"distance\":355.6545,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.2074},{\"distance\":450.7795,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.4043432359112},{\"distance\":450.7797,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.40479999999997},{\"distance\":636.6589,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7019432359112},{\"distance\":636.6591,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7024}]},{\"distance\":21.6852,\"hasMatch\":true,\"id\":\"20432-img_p60_3\",\"image\":{\"dataUrl\":null,\"disHeight\":45,\"disWidth\":49,\"height\":190,\"id\":\"20432-img_p60_3\",\"index\":20432,\"originalTransform\":{\"height\":45,\"width\":49,\"x\":361,\"y\":207},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":203,\"x\":361,\"y\":207},\"imageId\":\"20432-img_p60_3\",\"num\":{\"distance\":21.6852,\"isInside\":false,\"str\":\"E\",\"x\":387.2411,\"y\":180.1579},\"nums\":[{\"distance\":21.6852,\"isInside\":false,\"str\":\"E\",\"x\":387.2411,\"y\":180.1579},{\"distance\":75.8343,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.8296164783447},{\"distance\":75.8455,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.85200000000003},{\"distance\":88.1612,\"isInside\":false,\"str\":\"D\",\"x\":493.1957,\"y\":217.3835},{\"distance\":110.589,\"isInside\":false,\"str\":\"C\",\"x\":405.8202,\"y\":90.5632},{\"distance\":113.3708,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.11281647834466},{\"distance\":113.382,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.1352},{\"distance\":183.5267,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.18501647834466},{\"distance\":183.5379,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.2074},{\"distance\":189.2569,\"isInside\":false,\"str\":\"B\",\"x\":530.4812,\"y\":136.2263},{\"distance\":238.7795,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.4043432359112},{\"distance\":238.7797,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.40479999999997},{\"distance\":261.5252,\"isInside\":false,\"str\":\"A\",\"x\":279.8604,\"y\":16.6124},{\"distance\":424.6589,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7019432359112},{\"distance\":424.6591,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7024}]},{\"distance\":13.7905,\"hasMatch\":true,\"id\":\"20421-img_p60_3\",\"image\":{\"dataUrl\":null,\"disHeight\":45,\"disWidth\":49,\"height\":190,\"id\":\"20421-img_p60_3\",\"index\":20421,\"originalTransform\":{\"height\":45,\"width\":49,\"x\":548,\"y\":111},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":203,\"x\":548,\"y\":111},\"imageId\":\"20421-img_p60_3\",\"num\":{\"distance\":13.7905,\"isInside\":false,\"str\":\"B\",\"x\":530.4812,\"y\":136.2263},\"nums\":[{\"distance\":13.7905,\"isInside\":false,\"str\":\"B\",\"x\":530.4812,\"y\":136.2263},{\"distance\":117.8558,\"isInside\":false,\"str\":\"D\",\"x\":493.1957,\"y\":217.3835},{\"distance\":152.2846,\"isInside\":false,\"str\":\"C\",\"x\":405.8202,\"y\":90.5632},{\"distance\":155.1295,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.4043432359112},{\"distance\":155.1297,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.40479999999997},{\"distance\":186.9148,\"isInside\":false,\"str\":\"E\",\"x\":387.2411,\"y\":180.1579},{\"distance\":306.8548,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.11281647834466},{\"distance\":306.866,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.1352},{\"distance\":339.6749,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.8296164783447},{\"distance\":339.6861,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.85200000000003},{\"distance\":342.3949,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7019432359112},{\"distance\":342.3952,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7024},{\"distance\":352.5252,\"isInside\":false,\"str\":\"A\",\"x\":279.8604,\"y\":16.6124},{\"distance\":456.7267,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.18501647834466},{\"distance\":456.7379,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.2074}]},{\"distance\":23.3942,\"hasMatch\":true,\"id\":\"20409-img_p60_2\",\"image\":{\"dataUrl\":null,\"disHeight\":45,\"disWidth\":49,\"height\":189,\"id\":\"20409-img_p60_2\",\"index\":20409,\"originalTransform\":{\"height\":45,\"width\":49,\"x\":460,\"y\":246},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":203,\"x\":460,\"y\":246},\"imageId\":\"20409-img_p60_2\",\"num\":{\"distance\":23.3942,\"isInside\":false,\"str\":\"D\",\"x\":493.1957,\"y\":217.3835},\"nums\":[{\"distance\":23.3942,\"isInside\":false,\"str\":\"D\",\"x\":493.1957,\"y\":217.3835},{\"distance\":83.8548,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.11281647834466},{\"distance\":83.866,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.1352},{\"distance\":100.7795,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.4043432359112},{\"distance\":100.7797,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.40479999999997},{\"distance\":116.6749,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.8296164783447},{\"distance\":116.6861,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.85200000000003},{\"distance\":128.599,\"isInside\":false,\"str\":\"E\",\"x\":387.2411,\"y\":180.1579},{\"distance\":129.2569,\"isInside\":false,\"str\":\"B\",\"x\":530.4812,\"y\":136.2263},{\"distance\":199.2846,\"isInside\":false,\"str\":\"C\",\"x\":405.8202,\"y\":90.5632},{\"distance\":233.7267,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.18501647834466},{\"distance\":233.7379,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.2074},{\"distance\":286.6589,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7019432359112},{\"distance\":286.6591,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7024},{\"distance\":399.5252,\"isInside\":false,\"str\":\"A\",\"x\":279.8604,\"y\":16.6124}]},{\"distance\":4.1154,\"hasMatch\":true,\"id\":\"20398-img_p60_2\",\"image\":{\"dataUrl\":null,\"disHeight\":45,\"disWidth\":49,\"height\":189,\"id\":\"20398-img_p60_2\",\"index\":20398,\"originalTransform\":{\"height\":45,\"width\":49,\"x\":390,\"y\":48},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":203,\"x\":390,\"y\":48},\"imageId\":\"20398-img_p60_2\",\"num\":{\"distance\":4.1154,\"isInside\":false,\"str\":\"C\",\"x\":405.8202,\"y\":90.5632},\"nums\":[{\"distance\":4.1154,\"isInside\":false,\"str\":\"C\",\"x\":405.8202,\"y\":90.5632},{\"distance\":94.3648,\"isInside\":false,\"str\":\"E\",\"x\":387.2411,\"y\":180.1579},{\"distance\":131.5252,\"isInside\":false,\"str\":\"A\",\"x\":279.8604,\"y\":16.6124},{\"distance\":144.7095,\"isInside\":false,\"str\":\"B\",\"x\":530.4812,\"y\":136.2263},{\"distance\":188.9112,\"isInside\":false,\"str\":\"D\",\"x\":493.1957,\"y\":217.3835},{\"distance\":244.6749,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.8296164783447},{\"distance\":244.6861,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.85200000000003},{\"distance\":253.1708,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.11281647834466},{\"distance\":253.182,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.1352},{\"distance\":361.7267,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.18501647834466},{\"distance\":361.7379,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.2074},{\"distance\":368.7795,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.4043432359112},{\"distance\":368.7797,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.40479999999997},{\"distance\":554.6589,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7019432359112},{\"distance\":554.6591,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7024}]},{\"distance\":37.3621,\"hasMatch\":true,\"id\":\"20386-img_p60_1\",\"image\":{\"dataUrl\":null,\"disHeight\":59,\"disWidth\":117,\"height\":244,\"id\":\"20386-img_p60_1\",\"index\":20386,\"originalTransform\":{\"height\":59,\"width\":117,\"x\":286,\"y\":470},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":488,\"x\":286,\"y\":470},\"imageId\":\"20386-img_p60_1\",\"num\":{\"distance\":37.3621,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.2074},\"nums\":[{\"distance\":37.3621,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.2074},{\"distance\":37.3733,\"isInside\":false,\"str\":\"G\",\"x\":365.7903,\"y\":429.18501647834466},{\"distance\":143.6045,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.85200000000003},{\"distance\":143.6157,\"isInside\":false,\"str\":\"H\",\"x\":374.8227,\"y\":320.8296164783447},{\"distance\":152.134,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.1352},{\"distance\":152.1452,\"isInside\":false,\"str\":\"I\",\"x\":428.59,\"y\":339.11281647834466},{\"distance\":187.1089,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7019432359112},{\"distance\":187.1091,\"isInside\":false,\"str\":\"J\",\"x\":585.957,\"y\":491.7024},{\"distance\":283.899,\"isInside\":false,\"str\":\"E\",\"x\":387.2411,\"y\":180.1579},{\"distance\":341.1442,\"isInside\":false,\"str\":\"D\",\"x\":493.1957,\"y\":217.3835},{\"distance\":346.9706,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.40479999999997},{\"distance\":346.9709,\"isInside\":false,\"str\":\"F\",\"x\":586.7092,\"y\":304.4043432359112},{\"distance\":380.589,\"isInside\":false,\"str\":\"C\",\"x\":405.8202,\"y\":90.5632},{\"distance\":449.5252,\"isInside\":false,\"str\":\"A\",\"x\":279.8604,\"y\":16.6124},{\"distance\":459.2569,\"isInside\":false,\"str\":\"B\",\"x\":530.4812,\"y\":136.2263}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-彩妆大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 606,
+              "object": 30,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im0_obj30.png",
+              "source": "direct-fast",
+              "time": "11.333µs",
+              "type": "image-meta",
+              "width": 345
+            },
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 31,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im1_obj31.png",
+              "source": "direct-fast",
+              "time": "8.958µs",
+              "type": "image-meta",
+              "width": 925
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆架+黑底-1.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆架+黑底-1.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1838,
+              "object": 20,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆架+黑底-1.pdf/1_Im0_obj20.png",
+              "source": "direct-fast",
+              "time": "5.917µs",
+              "type": "image-meta",
+              "width": 1678
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆架+黑底-2.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆架+黑底-2.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 814,
+              "object": 11,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆架+黑底-2.pdf/1_Im0_obj11.png",
+              "source": "direct-fast",
+              "time": "1.195458ms",
+              "type": "image-meta",
+              "width": 770
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "2509-护肤背墙.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC4月上市比例档/2509-护肤背墙.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 500,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/2509-护肤背墙.pdf/1_Im0_obj10.png",
+              "source": "direct-fast",
+              "time": "6.333µs",
+              "type": "image-meta",
+              "width": 1000
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "2408-护肤吧新品-1.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC4月上市比例档/2408-护肤吧新品-1.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 636,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/2408-护肤吧新品-1.pdf/1_Im0_obj10.png",
+              "source": "direct-fast",
+              "time": "4.5µs",
+              "type": "image-meta",
+              "width": 473
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "2607-护肤吧新品-2.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/2607-护肤吧新品-2.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "jpg",
+              "height": 300,
+              "object": 11,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/2607-护肤吧新品-2.pdf/1_Im0_obj11.jpg",
+              "source": "direct-fast",
+              "time": "1.5µs",
+              "type": "image-meta",
+              "width": 271
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-唇妆产品+文字.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-唇妆产品+文字.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "jpg",
+              "height": 281,
+              "object": 11,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-唇妆产品+文字.pdf/1_Im0_obj11.jpg",
+              "source": "direct-fast",
+              "time": "1.542µs",
+              "type": "image-meta",
+              "width": 175
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    }
+  }
+}

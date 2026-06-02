@@ -1,0 +1,445 @@
+{
+  "shopName": "徐州金鹰国际购物中心",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "A": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02X11770",
+      "柜台名称": "徐州金鹰国际购物中心",
+      "灯位编号": "A",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "冲外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1094,
+      "": "*",
+      "可见长": 2582,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.423702556158017,
+      "比例H/W": 2.36014625228519,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "冲外不挡"
+    },
+    "B": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02X11770",
+      "柜台名称": "徐州金鹰国际购物中心",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-彩妆架+黑底-1",
+      "画面位置": "彩妆架-1",
+      "材质": "灯片",
+      "可见宽": 492,
+      "": "*",
+      "可见长": 540,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.911111111111111,
+      "比例H/W": 1.09756097560976,
+      "备注": "出血尺寸：W512mm×H560mm",
+      "isNew": true,
+      "灯位位置": "彩妆架-1"
+    },
+    "C": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02X11770",
+      "柜台名称": "徐州金鹰国际购物中心",
+      "灯位编号": "C",
+      "灯位备注": "26YJul-彩妆架+黑底-2",
+      "画面位置": "彩妆架-2",
+      "材质": "灯片",
+      "可见宽": 492,
+      "": "*",
+      "可见长": 540,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.911111111111111,
+      "比例H/W": 1.09756097560976,
+      "备注": "出血尺寸：W512mm×H560mm",
+      "isNew": true,
+      "灯位位置": "彩妆架-2"
+    },
+    "E": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02X11770",
+      "柜台名称": "徐州金鹰国际购物中心",
+      "灯位编号": "E",
+      "灯位备注": "26YJul-护肤大灯箱",
+      "画面位置": "护肤咨询墙上灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 1130,
+      "": "*",
+      "可见长": 1220,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.926229508196721,
+      "比例H/W": 1.07964601769911,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "护肤咨询墙上灯箱"
+    },
+    "F": {
+      "渠道": "DS",
+      "柜台编号": "GC02X11770",
+      "柜台名称": "徐州金鹰国际购物中心",
+      "灯位编号": "F",
+      "灯位备注": "绿色叶子背景",
+      "画面位置": "绿色叶子背景",
+      "材质": "灯片",
+      "可见宽": 180,
+      "": "*",
+      "可见长": 180,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：W210mm×H210mm，圆形",
+      "isNew": false,
+      "灯位位置": "绿色叶子背景"
+    }
+  },
+  "db-data": {
+    "id": 624,
+    "品牌": "Gac",
+    "店铺名称": "徐州金鹰国际购物中心",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 484,
+        "品牌": "Gac",
+        "店铺名称": "徐州金鹰国际购物中心",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/徐州金鹰国际购物中心_52.pdf",
+        "PDF标题": "徐州金鹰国际购物中心灯位图",
+        "编号列表": "[{\"distance\":15.7517,\"hasMatch\":true,\"id\":\"12885-img_p51_35\",\"image\":{\"dataUrl\":null,\"disHeight\":144,\"disWidth\":65,\"height\":599,\"id\":\"12885-img_p51_35\",\"index\":12885,\"originalTransform\":{\"height\":144,\"width\":65,\"x\":331,\"y\":374},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":271,\"x\":331,\"y\":374},\"imageId\":\"12885-img_p51_35\",\"num\":{\"distance\":15.7517,\"isInside\":false,\"str\":\"A\",\"x\":313.5732,\"y\":456.7269},\"nums\":[{\"distance\":15.7517,\"isInside\":false,\"str\":\"A\",\"x\":313.5732,\"y\":456.7269},{\"distance\":415.1703,\"isInside\":false,\"str\":\"C\",\"x\":117.5293,\"y\":161.97039999999998},{\"distance\":415.1724,\"isInside\":false,\"str\":\"C\",\"x\":117.5293,\"y\":161.9662885158388},{\"distance\":424.2696,\"isInside\":false,\"str\":\"B\",\"x\":204.2064,\"y\":66.5256},{\"distance\":424.2733,\"isInside\":false,\"str\":\"B\",\"x\":204.2064,\"y\":66.51828971958773},{\"distance\":443.7297,\"isInside\":false,\"str\":\"E\",\"x\":707.3394,\"y\":239.6119},{\"distance\":443.73,\"isInside\":false,\"str\":\"E\",\"x\":707.3394,\"y\":239.6114432359112},{\"distance\":633.7284,\"isInside\":false,\"str\":\"F\",\"x\":696.6107,\"y\":38.5485},{\"distance\":633.7287,\"isInside\":false,\"str\":\"F\",\"x\":696.6107,\"y\":38.54804323591122}]},{\"distance\":29.7284,\"hasMatch\":true,\"id\":\"12873-img_p51_34\",\"image\":{\"dataUrl\":null,\"disHeight\":34,\"disWidth\":34,\"height\":141,\"id\":\"12873-img_p51_34\",\"index\":12873,\"originalTransform\":{\"height\":34,\"width\":34,\"x\":683,\"y\":74},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":144,\"x\":683,\"y\":74},\"imageId\":\"12873-img_p51_34\",\"num\":{\"distance\":29.7284,\"isInside\":false,\"str\":\"F\",\"x\":696.6107,\"y\":38.5485},\"nums\":[{\"distance\":29.7284,\"isInside\":false,\"str\":\"F\",\"x\":696.6107,\"y\":38.5485},{\"distance\":29.7287,\"isInside\":false,\"str\":\"F\",\"x\":696.6107,\"y\":38.54804323591122},{\"distance\":138.17,\"isInside\":false,\"str\":\"E\",\"x\":707.3394,\"y\":239.6114432359112},{\"distance\":138.1703,\"isInside\":false,\"str\":\"E\",\"x\":707.3394,\"y\":239.6119},{\"distance\":476.2696,\"isInside\":false,\"str\":\"B\",\"x\":204.2064,\"y\":66.5256},{\"distance\":476.2733,\"isInside\":false,\"str\":\"B\",\"x\":204.2064,\"y\":66.51828971958773},{\"distance\":621.105,\"isInside\":false,\"str\":\"C\",\"x\":117.5293,\"y\":161.9662885158388},{\"distance\":621.107,\"isInside\":false,\"str\":\"C\",\"x\":117.5293,\"y\":161.97039999999998},{\"distance\":720.1517,\"isInside\":false,\"str\":\"A\",\"x\":313.5732,\"y\":456.7269}]},{\"distance\":13.047,\"hasMatch\":true,\"id\":\"12861-g_d116_img_p51_33\",\"image\":{\"dataUrl\":null,\"disHeight\":84,\"disWidth\":90,\"height\":500,\"id\":\"12861-g_d116_img_p51_33\",\"index\":12861,\"originalTransform\":{\"height\":84,\"width\":90,\"x\":724,\"y\":246},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":500,\"x\":724,\"y\":246},\"imageId\":\"12861-g_d116_img_p51_33\",\"num\":{\"distance\":13.047,\"isInside\":false,\"str\":\"E\",\"x\":707.3394,\"y\":239.6119},\"nums\":[{\"distance\":13.047,\"isInside\":false,\"str\":\"E\",\"x\":707.3394,\"y\":239.6119},{\"distance\":13.0472,\"isInside\":false,\"str\":\"E\",\"x\":707.3394,\"y\":239.6114432359112},{\"distance\":225.1751,\"isInside\":false,\"str\":\"F\",\"x\":696.6107,\"y\":38.5485},{\"distance\":225.1753,\"isInside\":false,\"str\":\"F\",\"x\":696.6107,\"y\":38.54804323591122},{\"distance\":539.1517,\"isInside\":false,\"str\":\"A\",\"x\":313.5732,\"y\":456.7269},{\"distance\":680.1703,\"isInside\":false,\"str\":\"C\",\"x\":117.5293,\"y\":161.97039999999998},{\"distance\":680.1724,\"isInside\":false,\"str\":\"C\",\"x\":117.5293,\"y\":161.9662885158388},{\"distance\":689.2696,\"isInside\":false,\"str\":\"B\",\"x\":204.2064,\"y\":66.5256},{\"distance\":689.2733,\"isInside\":false,\"str\":\"B\",\"x\":204.2064,\"y\":66.51828971958773}]},{\"distance\":12.5276,\"hasMatch\":true,\"id\":\"12849-img_p51_32\",\"image\":{\"dataUrl\":null,\"disHeight\":59,\"disWidth\":60,\"height\":246,\"id\":\"12849-img_p51_32\",\"index\":12849,\"originalTransform\":{\"height\":59,\"width\":60,\"x\":50,\"y\":126},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":252,\"x\":50,\"y\":126},\"imageId\":\"12849-img_p51_32\",\"num\":{\"distance\":12.5276,\"isInside\":false,\"str\":\"C\",\"x\":117.5293,\"y\":161.9662885158388},\"nums\":[{\"distance\":12.5276,\"isInside\":false,\"str\":\"C\",\"x\":117.5293,\"y\":161.9662885158388},{\"distance\":12.5297,\"isInside\":false,\"str\":\"C\",\"x\":117.5293,\"y\":161.97039999999998},{\"distance\":151.6865,\"isInside\":false,\"str\":\"B\",\"x\":204.2064,\"y\":66.5256},{\"distance\":151.6901,\"isInside\":false,\"str\":\"B\",\"x\":204.2064,\"y\":66.51828971958773},{\"distance\":485.3021,\"isInside\":false,\"str\":\"A\",\"x\":313.5732,\"y\":456.7269},{\"distance\":661.9528,\"isInside\":false,\"str\":\"E\",\"x\":707.3394,\"y\":239.6114432359112},{\"distance\":661.953,\"isInside\":false,\"str\":\"E\",\"x\":707.3394,\"y\":239.6119},{\"distance\":671.7284,\"isInside\":false,\"str\":\"F\",\"x\":696.6107,\"y\":38.5485},{\"distance\":671.7287,\"isInside\":false,\"str\":\"F\",\"x\":696.6107,\"y\":38.54804323591122}]},{\"distance\":4.3099,\"hasMatch\":true,\"id\":\"12837-img_p51_31\",\"image\":{\"dataUrl\":null,\"disHeight\":59,\"disWidth\":60,\"height\":246,\"id\":\"12837-img_p51_31\",\"index\":12837,\"originalTransform\":{\"height\":59,\"width\":60,\"x\":155,\"y\":10},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":252,\"x\":155,\"y\":10},\"imageId\":\"12837-img_p51_31\",\"num\":{\"distance\":4.3099,\"isInside\":false,\"str\":\"B\",\"x\":204.2064,\"y\":66.51828971958773},\"nums\":[{\"distance\":4.3099,\"isInside\":false,\"str\":\"B\",\"x\":204.2064,\"y\":66.51828971958773},{\"distance\":4.3135,\"isInside\":false,\"str\":\"B\",\"x\":204.2064,\"y\":66.5256},{\"distance\":132.105,\"isInside\":false,\"str\":\"C\",\"x\":117.5293,\"y\":161.9662885158388},{\"distance\":132.107,\"isInside\":false,\"str\":\"C\",\"x\":117.5293,\"y\":161.97039999999998},{\"distance\":486.1284,\"isInside\":false,\"str\":\"F\",\"x\":696.6107,\"y\":38.5485},{\"distance\":486.1287,\"isInside\":false,\"str\":\"F\",\"x\":696.6107,\"y\":38.54804323591122},{\"distance\":496.3021,\"isInside\":false,\"str\":\"A\",\"x\":313.5732,\"y\":456.7269},{\"distance\":672.9528,\"isInside\":false,\"str\":\"E\",\"x\":707.3394,\"y\":239.6114432359112},{\"distance\":672.953,\"isInside\":false,\"str\":\"E\",\"x\":707.3394,\"y\":239.6119}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-彩妆大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 606,
+              "object": 30,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im0_obj30.png",
+              "source": "direct-fast",
+              "time": "11.333µs",
+              "type": "image-meta",
+              "width": 345
+            },
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 31,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im1_obj31.png",
+              "source": "direct-fast",
+              "time": "8.958µs",
+              "type": "image-meta",
+              "width": 925
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆架+黑底-1.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆架+黑底-1.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1838,
+              "object": 20,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆架+黑底-1.pdf/1_Im0_obj20.png",
+              "source": "direct-fast",
+              "time": "5.917µs",
+              "type": "image-meta",
+              "width": 1678
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆架+黑底-2.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆架+黑底-2.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 814,
+              "object": 11,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆架+黑底-2.pdf/1_Im0_obj11.png",
+              "source": "direct-fast",
+              "time": "1.195458ms",
+              "type": "image-meta",
+              "width": 770
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-护肤大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-护肤大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 160,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-护肤大灯箱.pdf/1_Im0_obj10.png",
+              "source": "direct-fallback",
+              "time": "1.71075ms",
+              "type": "image-meta",
+              "width": 294
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "绿色叶子背景.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC4月上市比例档/绿色叶子背景.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 500,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/绿色叶子背景.pdf/1_Im0_obj10.png",
+              "source": "direct-fast",
+              "time": "4.833µs",
+              "type": "image-meta",
+              "width": 500
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    }
+  }
+}

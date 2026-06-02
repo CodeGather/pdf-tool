@@ -1,0 +1,343 @@
+{
+  "shopName": "乌鲁木齐汇嘉时代百货BD精品店",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "A": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02133948",
+      "柜台名称": "乌鲁木齐汇嘉时代百货BD精品店",
+      "灯位编号": "A",
+      "灯位备注": "26YJul-护肤大灯箱",
+      "画面位置": "护肤背墙墙上灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 2120,
+      "": "*",
+      "可见长": 1113,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.9047619047619,
+      "比例H/W": 0.525,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "护肤背墙墙上灯箱"
+    },
+    "B": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02133948",
+      "柜台名称": "乌鲁木齐汇嘉时代百货BD精品店",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-彩妆背柜-横版双拼",
+      "画面位置": "彩妆背柜大灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 2220,
+      "": "*",
+      "可见长": 1113,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.99460916442049,
+      "比例H/W": 0.501351351351351,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "彩妆背柜大灯箱"
+    },
+    "C": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02133948",
+      "柜台名称": "乌鲁木齐汇嘉时代百货BD精品店",
+      "灯位编号": "C",
+      "灯位备注": "26YJul-玉龙茶香大灯箱",
+      "画面位置": "定香背墙墙上灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 1484,
+      "": "*",
+      "可见长": 1113,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.33333333333333,
+      "比例H/W": 0.75,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "定香背墙墙上灯箱"
+    }
+  },
+  "db-data": {
+    "id": 708,
+    "品牌": "Gac",
+    "店铺名称": "乌鲁木齐汇嘉时代百货BD精品店",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 403,
+        "品牌": "Gac",
+        "店铺名称": "乌鲁木齐汇嘉时代百货BD精品店",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/乌鲁木齐汇嘉时代百货BD精品店_45.pdf",
+        "PDF标题": "乌鲁木齐汇嘉时代百货BD精品店灯位图",
+        "编号列表": "[{\"distance\":18.0046,\"hasMatch\":true,\"id\":\"51875-img_p44_3\",\"image\":{\"dataUrl\":null,\"disHeight\":56,\"disWidth\":71,\"height\":335,\"id\":\"51875-img_p44_3\",\"index\":51875,\"originalTransform\":{\"height\":56,\"width\":71,\"x\":312,\"y\":135},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":340,\"x\":312,\"y\":135},\"imageId\":\"51875-img_p44_3\",\"num\":{\"distance\":18.0046,\"isInside\":false,\"str\":\"C\",\"x\":342.455,\"y\":111.4619},\"nums\":[{\"distance\":18.0046,\"isInside\":false,\"str\":\"C\",\"x\":342.455,\"y\":111.4619},{\"distance\":249.935,\"isInside\":false,\"str\":\"B\",\"x\":461.2377,\"y\":352.69079999999997},{\"distance\":308.0867,\"isInside\":false,\"str\":\"A\",\"x\":238.0425,\"y\":423.1303}]},{\"distance\":22.748,\"hasMatch\":true,\"id\":\"51863-img_p44_2\",\"image\":{\"dataUrl\":null,\"disHeight\":57,\"disWidth\":96,\"height\":240,\"id\":\"51863-img_p44_2\",\"index\":51863,\"originalTransform\":{\"height\":57,\"width\":96,\"x\":435,\"y\":380},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":399,\"x\":435,\"y\":380},\"imageId\":\"51863-img_p44_2\",\"num\":{\"distance\":22.748,\"isInside\":false,\"str\":\"B\",\"x\":461.2377,\"y\":352.69079999999997},\"nums\":[{\"distance\":22.748,\"isInside\":false,\"str\":\"B\",\"x\":461.2377,\"y\":352.69079999999997},{\"distance\":193.6367,\"isInside\":false,\"str\":\"A\",\"x\":238.0425,\"y\":423.1303},{\"distance\":339.8546,\"isInside\":false,\"str\":\"C\",\"x\":342.455,\"y\":111.4619}]},{\"distance\":22.5207,\"hasMatch\":true,\"id\":\"51851-img_p44_1\",\"image\":{\"dataUrl\":null,\"disHeight\":57,\"disWidth\":106,\"height\":237,\"id\":\"51851-img_p44_1\",\"index\":51851,\"originalTransform\":{\"height\":57,\"width\":106,\"x\":195,\"y\":451},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":443,\"x\":195,\"y\":451},\"imageId\":\"51851-img_p44_1\",\"num\":{\"distance\":22.5207,\"isInside\":false,\"str\":\"A\",\"x\":238.0425,\"y\":423.1303},\"nums\":[{\"distance\":22.5207,\"isInside\":false,\"str\":\"A\",\"x\":238.0425,\"y\":423.1303},{\"distance\":256.548,\"isInside\":false,\"str\":\"B\",\"x\":461.2377,\"y\":352.69079999999997},{\"distance\":390.2162,\"isInside\":false,\"str\":\"C\",\"x\":342.455,\"y\":111.4619}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-护肤大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-护肤大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 160,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-护肤大灯箱.pdf/1_Im0_obj10.png",
+              "source": "direct-fallback",
+              "time": "1.71075ms",
+              "type": "image-meta",
+              "width": 294
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆背柜-横版双拼.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆背柜-横版双拼.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 609,
+              "object": 17,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆背柜-横版双拼.pdf/1_Im0_obj17.png",
+              "source": "direct-fast",
+              "time": "4.75µs",
+              "type": "image-meta",
+              "width": 751
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-玉龙茶香大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-玉龙茶香大灯箱.pdf",
+      "totalPages": 2,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 2,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_002_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 1172
+            },
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 2110
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    }
+  }
+}

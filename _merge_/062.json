@@ -1,0 +1,600 @@
+{
+  "shopName": "太原茂业天地店BD精品店",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "A": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01136193",
+      "柜台名称": "太原茂业天地店BD精品店",
+      "灯位编号": "A",
+      "灯位备注": "26YJul-彩妆架+黑底-2",
+      "画面位置": "彩妆架-2",
+      "材质": "灯片",
+      "可见宽": 503,
+      "": "*",
+      "可见长": 540.5,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.930619796484736,
+      "比例H/W": 1.07455268389662,
+      "备注": "出血尺寸：W543mm×H580.5mm",
+      "isNew": true,
+      "灯位位置": "彩妆架-2"
+    },
+    "B": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01136193",
+      "柜台名称": "太原茂业天地店BD精品店",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-彩妆架+黑底-1",
+      "画面位置": "彩妆架-1",
+      "材质": "灯片",
+      "可见宽": 503,
+      "": "*",
+      "可见长": 540.5,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.930619796484736,
+      "比例H/W": 1.07455268389662,
+      "备注": "出血尺寸：W543mm×H580.5mm",
+      "isNew": true,
+      "灯位位置": "彩妆架-1"
+    },
+    "C": {
+      "渠道": "BD",
+      "柜台编号": "GC01136193",
+      "柜台名称": "太原茂业天地店BD精品店",
+      "灯位编号": "C",
+      "灯位备注": "玉龙茶香大灯箱",
+      "画面位置": "柜台外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1142,
+      "": "*",
+      "可见长": 2127,
+      "柜台数量(张)": 1,
+      "比例W/H": 0.536906440996709,
+      "比例H/W": 1.86252189141856,
+      "备注": "C-C尺寸：W1142mmxH2127mm",
+      "isNew": false,
+      "灯位位置": "柜台外不挡"
+    },
+    "D": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01136193",
+      "柜台名称": "太原茂业天地店BD精品店",
+      "灯位编号": "D",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "柜台外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1855,
+      "": "*",
+      "可见长": 2522,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.735527359238699,
+      "比例H/W": 1.35956873315364,
+      "备注": "C-C尺寸：W1855mmxH2522mm",
+      "isNew": true,
+      "灯位位置": "柜台外不挡"
+    },
+    "E": {
+      "渠道": "BD",
+      "柜台编号": "GC01136193",
+      "柜台名称": "太原茂业天地店BD精品店",
+      "灯位编号": "E",
+      "灯位备注": "2509-护肤背墙",
+      "画面位置": "护肤背墙",
+      "材质": "80680写真全透（背胶）",
+      "可见宽": 2590,
+      "": "*",
+      "可见长": 746,
+      "柜台数量(张)": 1,
+      "比例W/H": 3.47184986595174,
+      "比例H/W": 0.288030888030888,
+      "备注": "出血尺寸：W2610mmXH766mm",
+      "isNew": false,
+      "灯位位置": "护肤背墙"
+    },
+    "F": {
+      "渠道": "BD",
+      "柜台编号": "GC01136193",
+      "柜台名称": "太原茂业天地店BD精品店",
+      "灯位编号": "F",
+      "灯位备注": "2408-护肤吧新品-1",
+      "画面位置": "护肤吧新品-左",
+      "材质": "透光灯箱片",
+      "可见宽": 219,
+      "": "*",
+      "可见长": 332,
+      "柜台数量(张)": 1,
+      "比例W/H": 0.659638554216867,
+      "比例H/W": 1.51598173515982,
+      "备注": "出血尺寸：W239mm×352mm",
+      "isNew": false,
+      "灯位位置": "护肤吧新品-左"
+    },
+    "G": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01136193",
+      "柜台名称": "太原茂业天地店BD精品店",
+      "灯位编号": "G",
+      "灯位备注": "2607-护肤吧新品-2",
+      "画面位置": "护肤吧新品-右",
+      "材质": "透光灯箱片",
+      "可见宽": 219,
+      "": "*",
+      "可见长": 332,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.659638554216867,
+      "比例H/W": 1.51598173515982,
+      "备注": "出血尺寸：W239mm×352mm",
+      "isNew": true,
+      "灯位位置": "护肤吧新品-右"
+    },
+    "H": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01136193",
+      "柜台名称": "太原茂业天地店BD精品店",
+      "灯位编号": "H",
+      "灯位备注": "26YJul-Hallmark",
+      "画面位置": "桌面橱窗",
+      "材质": "软膜灯箱布",
+      "可见宽": 1142,
+      "": "*",
+      "可见长": 1346,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.848439821693908,
+      "比例H/W": 1.17863397548161,
+      "备注": "C-C尺寸：W1142mmxH1346mm",
+      "isNew": true,
+      "灯位位置": "桌面橱窗"
+    }
+  },
+  "db-data": {
+    "id": 634,
+    "品牌": "Gac",
+    "店铺名称": "太原茂业天地店BD精品店",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 494,
+        "品牌": "Gac",
+        "店铺名称": "太原茂业天地店BD精品店",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/太原茂业天地店BD精品店_62.pdf",
+        "PDF标题": "太原茂业天地店BD精品店灯位图",
+        "编号列表": "[{\"distance\":14.261,\"hasMatch\":true,\"id\":\"29871-g_d116_img_p61_6\",\"image\":{\"dataUrl\":null,\"disHeight\":54,\"disWidth\":40,\"height\":225,\"id\":\"29871-g_d116_img_p61_6\",\"index\":29871,\"originalTransform\":{\"height\":54,\"width\":40,\"x\":512,\"y\":351},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":167,\"x\":512,\"y\":351},\"imageId\":\"29871-g_d116_img_p61_6\",\"num\":{\"distance\":14.261,\"isInside\":false,\"str\":\"G\",\"x\":493.8372,\"y\":345.7662164783447},\"nums\":[{\"distance\":14.261,\"isInside\":false,\"str\":\"G\",\"x\":493.8372,\"y\":345.7662164783447},{\"distance\":90.8842,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.2204},{\"distance\":93.9654,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.19801647834464},{\"distance\":152.6238,\"isInside\":false,\"str\":\"E\",\"x\":443.7929,\"y\":487.4187},{\"distance\":178.6779,\"isInside\":false,\"str\":\"B\",\"x\":527.1552,\"y\":167.1649},{\"distance\":262.9577,\"isInside\":false,\"str\":\"A\",\"x\":419.7267,\"y\":166.1709},{\"distance\":352.9351,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.3573},{\"distance\":352.9463,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.33491647834464},{\"distance\":503.2289,\"isInside\":false,\"str\":\"C\",\"x\":330.3039,\"y\":19.1352},{\"distance\":592.4215,\"isInside\":false,\"str\":\"D\",\"x\":168.6153,\"y\":91.6312}]},{\"distance\":15.0386,\"hasMatch\":true,\"id\":\"29859-g_d116_img_p61_5\",\"image\":{\"dataUrl\":null,\"disHeight\":54,\"disWidth\":40,\"height\":225,\"id\":\"29859-g_d116_img_p61_5\",\"index\":29859,\"originalTransform\":{\"height\":54,\"width\":40,\"x\":368,\"y\":343},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":167,\"x\":368,\"y\":343},\"imageId\":\"29859-g_d116_img_p61_5\",\"num\":{\"distance\":15.0386,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.19801647834464},\"nums\":[{\"distance\":15.0386,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.19801647834464},{\"distance\":17.6498,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.2204},{\"distance\":91.1714,\"isInside\":false,\"str\":\"G\",\"x\":493.8372,\"y\":345.7662164783447},{\"distance\":136.2136,\"isInside\":false,\"str\":\"E\",\"x\":443.7929,\"y\":487.4187},{\"distance\":190.7005,\"isInside\":false,\"str\":\"A\",\"x\":419.7267,\"y\":166.1709},{\"distance\":292.9923,\"isInside\":false,\"str\":\"B\",\"x\":527.1552,\"y\":167.1649},{\"distance\":351.2289,\"isInside\":false,\"str\":\"C\",\"x\":330.3039,\"y\":19.1352},{\"distance\":440.4215,\"isInside\":false,\"str\":\"D\",\"x\":168.6153,\"y\":91.6312},{\"distance\":488.9351,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.3573},{\"distance\":488.9463,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.33491647834464}]},{\"distance\":23.5507,\"hasMatch\":true,\"id\":\"29847-g_d116_img_p61_4\",\"image\":{\"dataUrl\":null,\"disHeight\":98,\"disWidth\":49,\"height\":392,\"id\":\"29847-g_d116_img_p61_4\",\"index\":29847,\"originalTransform\":{\"height\":98,\"width\":49,\"x\":307,\"y\":48},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":255,\"x\":307,\"y\":48},\"imageId\":\"29847-g_d116_img_p61_4\",\"num\":{\"distance\":23.5507,\"isInside\":false,\"str\":\"C\",\"x\":330.3039,\"y\":19.1352},\"nums\":[{\"distance\":23.5507,\"isInside\":false,\"str\":\"C\",\"x\":330.3039,\"y\":19.1352},{\"distance\":98.0423,\"isInside\":false,\"str\":\"A\",\"x\":419.7267,\"y\":166.1709},{\"distance\":134.6839,\"isInside\":false,\"str\":\"D\",\"x\":168.6153,\"y\":91.6312},{\"distance\":202.3221,\"isInside\":false,\"str\":\"B\",\"x\":527.1552,\"y\":167.1649},{\"distance\":267.0346,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.19801647834464},{\"distance\":270.1158,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.2204},{\"distance\":294.9351,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.3573},{\"distance\":294.9463,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.33491647834464},{\"distance\":348.2714,\"isInside\":false,\"str\":\"G\",\"x\":493.8372,\"y\":345.7662164783447},{\"distance\":439.2136,\"isInside\":false,\"str\":\"E\",\"x\":443.7929,\"y\":487.4187}]},{\"distance\":11.6661,\"hasMatch\":true,\"id\":\"29836-img_p61_3\",\"image\":{\"dataUrl\":null,\"disHeight\":101,\"disWidth\":76,\"height\":422,\"id\":\"29836-img_p61_3\",\"index\":29836,\"originalTransform\":{\"height\":101,\"width\":76,\"x\":86,\"y\":63},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":316,\"x\":86,\"y\":63},\"imageId\":\"29836-img_p61_3\",\"num\":{\"distance\":11.6661,\"isInside\":false,\"str\":\"D\",\"x\":168.6153,\"y\":91.6312},\"nums\":[{\"distance\":11.6661,\"isInside\":false,\"str\":\"D\",\"x\":168.6153,\"y\":91.6312},{\"distance\":210.5007,\"isInside\":false,\"str\":\"C\",\"x\":330.3039,\"y\":19.1352},{\"distance\":274.0423,\"isInside\":false,\"str\":\"A\",\"x\":419.7267,\"y\":166.1709},{\"distance\":378.3221,\"isInside\":false,\"str\":\"B\",\"x\":527.1552,\"y\":167.1649},{\"distance\":443.0346,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.19801647834464},{\"distance\":446.1158,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.2204},{\"distance\":490.2851,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.3573},{\"distance\":490.2963,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.33491647834464},{\"distance\":524.2714,\"isInside\":false,\"str\":\"G\",\"x\":493.8372,\"y\":345.7662164783447},{\"distance\":615.2136,\"isInside\":false,\"str\":\"E\",\"x\":443.7929,\"y\":487.4187}]},{\"distance\":19.8227,\"hasMatch\":true,\"id\":\"29828-g_d116_img_p61_2\",\"image\":{\"dataUrl\":null,\"disHeight\":87,\"disWidth\":65,\"height\":363,\"id\":\"29828-g_d116_img_p61_2\",\"index\":29828,\"originalTransform\":{\"height\":87,\"width\":65,\"x\":669,\"y\":67},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":273,\"x\":669,\"y\":67},\"imageId\":\"29828-g_d116_img_p61_2\",\"num\":{\"distance\":19.8227,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.3573},\"nums\":[{\"distance\":19.8227,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.3573},{\"distance\":19.8339,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.33491647834464},{\"distance\":157.0077,\"isInside\":false,\"str\":\"B\",\"x\":527.1552,\"y\":167.1649},{\"distance\":259.2995,\"isInside\":false,\"str\":\"A\",\"x\":419.7267,\"y\":166.1709},{\"distance\":368.261,\"isInside\":false,\"str\":\"G\",\"x\":493.8372,\"y\":345.7662164783447},{\"distance\":376.2289,\"isInside\":false,\"str\":\"C\",\"x\":330.3039,\"y\":19.1352},{\"distance\":437.7502,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.2204},{\"distance\":440.3614,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.19801647834464},{\"distance\":496.2339,\"isInside\":false,\"str\":\"D\",\"x\":168.6153,\"y\":91.6312},{\"distance\":560.6238,\"isInside\":false,\"str\":\"E\",\"x\":443.7929,\"y\":487.4187}]},{\"distance\":3.8495,\"hasMatch\":true,\"id\":\"29819-g_d116_img_p59_1\",\"image\":{\"dataUrl\":null,\"disHeight\":45,\"disWidth\":49,\"height\":189,\"id\":\"29819-g_d116_img_p59_1\",\"index\":29819,\"originalTransform\":{\"height\":45,\"width\":49,\"x\":382,\"y\":124},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":203,\"x\":382,\"y\":124},\"imageId\":\"29819-g_d116_img_p59_1\",\"num\":{\"distance\":3.8495,\"isInside\":false,\"str\":\"A\",\"x\":419.7267,\"y\":166.1709},\"nums\":[{\"distance\":3.8495,\"isInside\":false,\"str\":\"A\",\"x\":419.7267,\"y\":166.1709},{\"distance\":104.3221,\"isInside\":false,\"str\":\"B\",\"x\":527.1552,\"y\":167.1649},{\"distance\":146.2289,\"isInside\":false,\"str\":\"C\",\"x\":330.3039,\"y\":19.1352},{\"distance\":178.8346,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.19801647834464},{\"distance\":179.4658,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.2204},{\"distance\":235.4215,\"isInside\":false,\"str\":\"D\",\"x\":168.6153,\"y\":91.6312},{\"distance\":246.9351,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.3573},{\"distance\":246.9463,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.33491647834464},{\"distance\":250.2714,\"isInside\":false,\"str\":\"G\",\"x\":493.8372,\"y\":345.7662164783447},{\"distance\":341.2136,\"isInside\":false,\"str\":\"E\",\"x\":443.7929,\"y\":487.4187}]},{\"distance\":2.3577,\"hasMatch\":true,\"id\":\"29807-g_d116_img_p59_2\",\"image\":{\"dataUrl\":null,\"disHeight\":45,\"disWidth\":49,\"height\":190,\"id\":\"29807-g_d116_img_p59_2\",\"index\":29807,\"originalTransform\":{\"height\":45,\"width\":49,\"x\":525,\"y\":127},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":203,\"x\":525,\"y\":127},\"imageId\":\"29807-g_d116_img_p59_2\",\"num\":{\"distance\":2.3577,\"isInside\":false,\"str\":\"B\",\"x\":527.1552,\"y\":167.1649},\"nums\":[{\"distance\":2.3577,\"isInside\":false,\"str\":\"B\",\"x\":527.1552,\"y\":167.1649},{\"distance\":97.2995,\"isInside\":false,\"str\":\"A\",\"x\":419.7267,\"y\":166.1709},{\"distance\":106.9351,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.3573},{\"distance\":106.9463,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.33491647834464},{\"distance\":206.261,\"isInside\":false,\"str\":\"G\",\"x\":493.8372,\"y\":345.7662164783447},{\"distance\":275.7502,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.2204},{\"distance\":278.3614,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.19801647834464},{\"distance\":292.2289,\"isInside\":false,\"str\":\"C\",\"x\":330.3039,\"y\":19.1352},{\"distance\":381.4215,\"isInside\":false,\"str\":\"D\",\"x\":168.6153,\"y\":91.6312},{\"distance\":398.6238,\"isInside\":false,\"str\":\"E\",\"x\":443.7929,\"y\":487.4187}]},{\"distance\":27.7636,\"hasMatch\":true,\"id\":\"29795-g_d116_img_p61_1\",\"image\":{\"dataUrl\":null,\"disHeight\":59,\"disWidth\":117,\"height\":244,\"id\":\"29795-g_d116_img_p61_1\",\"index\":29795,\"originalTransform\":{\"height\":59,\"width\":117,\"x\":304,\"y\":460},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":488,\"x\":304,\"y\":460},\"imageId\":\"29795-g_d116_img_p61_1\",\"num\":{\"distance\":27.7636,\"isInside\":false,\"str\":\"E\",\"x\":443.7929,\"y\":487.4187},\"nums\":[{\"distance\":27.7636,\"isInside\":false,\"str\":\"E\",\"x\":443.7929,\"y\":487.4187},{\"distance\":113.6386,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.19801647834464},{\"distance\":116.2498,\"isInside\":false,\"str\":\"F\",\"x\":418.1706,\"y\":341.2204},{\"distance\":185.739,\"isInside\":false,\"str\":\"G\",\"x\":493.8372,\"y\":345.7662164783447},{\"distance\":294.7005,\"isInside\":false,\"str\":\"A\",\"x\":419.7267,\"y\":166.1709},{\"distance\":396.9923,\"isInside\":false,\"str\":\"B\",\"x\":527.1552,\"y\":167.1649},{\"distance\":436.2507,\"isInside\":false,\"str\":\"C\",\"x\":330.3039,\"y\":19.1352},{\"distance\":493.4215,\"isInside\":false,\"str\":\"D\",\"x\":168.6153,\"y\":91.6312},{\"distance\":592.9351,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.3573},{\"distance\":592.9463,\"isInside\":false,\"str\":\"H\",\"x\":645.9492,\"y\":90.33491647834464}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-彩妆架+黑底-2.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆架+黑底-2.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 814,
+              "object": 11,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆架+黑底-2.pdf/1_Im0_obj11.png",
+              "source": "direct-fast",
+              "time": "1.195458ms",
+              "type": "image-meta",
+              "width": 770
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆架+黑底-1.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆架+黑底-1.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1838,
+              "object": 20,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆架+黑底-1.pdf/1_Im0_obj20.png",
+              "source": "direct-fast",
+              "time": "5.917µs",
+              "type": "image-meta",
+              "width": 1678
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-玉龙茶香大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-玉龙茶香大灯箱.pdf",
+      "totalPages": 2,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 2,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_002_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 1172
+            },
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 2110
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 606,
+              "object": 30,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im0_obj30.png",
+              "source": "direct-fast",
+              "time": "11.333µs",
+              "type": "image-meta",
+              "width": 345
+            },
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 31,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im1_obj31.png",
+              "source": "direct-fast",
+              "time": "8.958µs",
+              "type": "image-meta",
+              "width": 925
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "2509-护肤背墙.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC4月上市比例档/2509-护肤背墙.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 500,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/2509-护肤背墙.pdf/1_Im0_obj10.png",
+              "source": "direct-fast",
+              "time": "6.333µs",
+              "type": "image-meta",
+              "width": 1000
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "2408-护肤吧新品-1.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC4月上市比例档/2408-护肤吧新品-1.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 636,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/2408-护肤吧新品-1.pdf/1_Im0_obj10.png",
+              "source": "direct-fast",
+              "time": "4.5µs",
+              "type": "image-meta",
+              "width": 473
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "2607-护肤吧新品-2.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/2607-护肤吧新品-2.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "jpg",
+              "height": 300,
+              "object": 11,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/2607-护肤吧新品-2.pdf/1_Im0_obj11.jpg",
+              "source": "direct-fast",
+              "time": "1.5µs",
+              "type": "image-meta",
+              "width": 271
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-Hallmark.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-Hallmark.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1017,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-Hallmark.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 927
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    }
+  }
+}

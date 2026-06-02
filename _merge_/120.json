@@ -1,0 +1,407 @@
+{
+  "shopName": "上海市第一百货商店",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "A": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02135117",
+      "柜台名称": "上海市第一百货商店",
+      "灯位编号": "A",
+      "灯位备注": "26YJul-玉龙茶香大灯箱",
+      "画面位置": "冲外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1409.5,
+      "": "*",
+      "可见长": 2526,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.557996832937451,
+      "比例H/W": 1.7921248669741,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "冲外不挡"
+    },
+    "B": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02135117",
+      "柜台名称": "上海市第一百货商店",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "冲外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1407,
+      "": "*",
+      "可见长": 2526,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.557007125890736,
+      "比例H/W": 1.7953091684435,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "冲外不挡"
+    },
+    "C": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02135117",
+      "柜台名称": "上海市第一百货商店",
+      "灯位编号": "C",
+      "灯位备注": "26YJul-护肤大灯箱",
+      "画面位置": "护肤咨询区墙面灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 1182,
+      "": "*",
+      "可见长": 963.5,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.22677737415672,
+      "比例H/W": 0.815143824027073,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "护肤咨询区墙面灯箱"
+    },
+    "D": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02135117",
+      "柜台名称": "上海市第一百货商店",
+      "灯位编号": "D",
+      "灯位备注": "26YJul-唇妆产品+文字",
+      "画面位置": "主上市壁龛灯箱-2",
+      "材质": "软膜灯箱布",
+      "可见宽": 1182,
+      "": "*",
+      "可见长": 963.5,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.22677737415672,
+      "比例H/W": 0.815143824027073,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "主上市壁龛灯箱-2"
+    }
+  },
+  "db-data": {
+    "id": 692,
+    "品牌": "Gac",
+    "店铺名称": "上海市第一百货商店",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 387,
+        "品牌": "Gac",
+        "店铺名称": "上海市第一百货商店",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/上海市第一百货商店_28.pdf",
+        "PDF标题": "上海市第一百货商店灯位图无墙体",
+        "编号列表": "[{\"distance\":33.9758,\"hasMatch\":true,\"id\":\"54789-img_p27_5\",\"image\":{\"dataUrl\":null,\"disHeight\":106,\"disWidth\":56,\"height\":443,\"id\":\"54789-img_p27_5\",\"index\":54789,\"originalTransform\":{\"height\":106,\"width\":56,\"x\":90,\"y\":264},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":235,\"x\":90,\"y\":264},\"imageId\":\"54789-img_p27_5\",\"num\":{\"distance\":33.9758,\"isInside\":false,\"str\":\"A\",\"x\":152.3997,\"y\":298.1706},\"nums\":[{\"distance\":33.9758,\"isInside\":false,\"str\":\"A\",\"x\":152.3997,\"y\":298.1706},{\"distance\":142.0201,\"isInside\":false,\"str\":\"C\",\"x\":281.9671,\"y\":318.0164},{\"distance\":435.3876,\"isInside\":false,\"str\":\"D\",\"x\":575.4182,\"y\":288.16179999999997},{\"distance\":530.9759,\"isInside\":false,\"str\":\"B\",\"x\":672.9318,\"y\":289.8376}]},{\"distance\":11.2241,\"hasMatch\":true,\"id\":\"54778-img_p27_4\",\"image\":{\"dataUrl\":null,\"disHeight\":125,\"disWidth\":66,\"height\":521,\"id\":\"54778-img_p27_4\",\"index\":54778,\"originalTransform\":{\"height\":125,\"width\":66,\"x\":686,\"y\":248},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":276,\"x\":686,\"y\":248},\"imageId\":\"54778-img_p27_4\",\"num\":{\"distance\":11.2241,\"isInside\":false,\"str\":\"B\",\"x\":672.9318,\"y\":289.8376},\"nums\":[{\"distance\":11.2241,\"isInside\":false,\"str\":\"B\",\"x\":672.9318,\"y\":289.8376},{\"distance\":108.6624,\"isInside\":false,\"str\":\"D\",\"x\":575.4182,\"y\":288.16179999999997},{\"distance\":400.7181,\"isInside\":false,\"str\":\"C\",\"x\":281.9671,\"y\":318.0164},{\"distance\":508.3276,\"isInside\":false,\"str\":\"A\",\"x\":152.3997,\"y\":298.1706}]},{\"distance\":1.0834,\"hasMatch\":true,\"id\":\"54767-img_p27_3\",\"image\":{\"dataUrl\":null,\"disHeight\":50,\"disWidth\":53,\"height\":207,\"id\":\"54767-img_p27_3\",\"index\":54767,\"originalTransform\":{\"height\":50,\"width\":53,\"x\":527,\"y\":245},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":219,\"x\":527,\"y\":245},\"imageId\":\"54767-img_p27_3\",\"num\":{\"distance\":1.0834,\"isInside\":false,\"str\":\"D\",\"x\":575.4182,\"y\":288.16179999999997},\"nums\":[{\"distance\":1.0834,\"isInside\":false,\"str\":\"D\",\"x\":575.4182,\"y\":288.16179999999997},{\"distance\":97.7759,\"isInside\":false,\"str\":\"B\",\"x\":672.9318,\"y\":289.8376},{\"distance\":269.7181,\"isInside\":false,\"str\":\"C\",\"x\":281.9671,\"y\":318.0164},{\"distance\":358.4242,\"isInside\":false,\"str\":\"A\",\"x\":152.3997,\"y\":298.1706}]},{\"distance\":20.8799,\"hasMatch\":true,\"id\":\"54756-img_p27_2\",\"image\":{\"dataUrl\":null,\"disHeight\":59,\"disWidth\":62,\"height\":246,\"id\":\"54756-img_p27_2\",\"index\":54756,\"originalTransform\":{\"height\":59,\"width\":62,\"x\":250,\"y\":344},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":261,\"x\":250,\"y\":344},\"imageId\":\"54756-img_p27_2\",\"num\":{\"distance\":20.8799,\"isInside\":false,\"str\":\"C\",\"x\":281.9671,\"y\":318.0164},\"nums\":[{\"distance\":20.8799,\"isInside\":false,\"str\":\"C\",\"x\":281.9671,\"y\":318.0164},{\"distance\":112.0776,\"isInside\":false,\"str\":\"A\",\"x\":152.3997,\"y\":298.1706},{\"distance\":317.5876,\"isInside\":false,\"str\":\"D\",\"x\":575.4182,\"y\":288.16179999999997},{\"distance\":413.0953,\"isInside\":false,\"str\":\"B\",\"x\":672.9318,\"y\":289.8376}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-玉龙茶香大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-玉龙茶香大灯箱.pdf",
+      "totalPages": 2,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 2,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_002_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 1172
+            },
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 2110
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 606,
+              "object": 30,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im0_obj30.png",
+              "source": "direct-fast",
+              "time": "11.333µs",
+              "type": "image-meta",
+              "width": 345
+            },
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 31,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im1_obj31.png",
+              "source": "direct-fast",
+              "time": "8.958µs",
+              "type": "image-meta",
+              "width": 925
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-护肤大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-护肤大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 160,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-护肤大灯箱.pdf/1_Im0_obj10.png",
+              "source": "direct-fallback",
+              "time": "1.71075ms",
+              "type": "image-meta",
+              "width": 294
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-唇妆产品+文字.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-唇妆产品+文字.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "jpg",
+              "height": 281,
+              "object": 11,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-唇妆产品+文字.pdf/1_Im0_obj11.jpg",
+              "source": "direct-fast",
+              "time": "1.542µs",
+              "type": "image-meta",
+              "width": 175
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    }
+  }
+}

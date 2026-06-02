@@ -1,0 +1,292 @@
+{
+  "shopName": "北京SKP百货",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "A": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC05X11381",
+      "柜台名称": "北京SKP百货",
+      "灯位编号": "A",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "柜台内被挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 823,
+      "": "*",
+      "可见长": 2155,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.381902552204176,
+      "比例H/W": 2.61846901579587,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "柜台内被挡"
+    },
+    "B": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC05X11381",
+      "柜台名称": "北京SKP百货",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-护肤大灯箱",
+      "画面位置": "护肤咨询区墙面灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 717,
+      "": "*",
+      "可见长": 957,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.749216300940439,
+      "比例H/W": 1.3347280334728,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "护肤咨询区墙面灯箱"
+    }
+  },
+  "db-data": {
+    "id": 695,
+    "品牌": "Gac",
+    "店铺名称": "北京SKP百货",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 391,
+        "品牌": "Gac",
+        "店铺名称": "北京SKP百货",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/北京SKP百货_31.pdf",
+        "PDF标题": "北京SKP百货灯位图无墙体",
+        "编号列表": "[{\"distance\":9.3668,\"hasMatch\":true,\"id\":\"38597-img_p30_38\",\"image\":{\"dataUrl\":null,\"disHeight\":75,\"disWidth\":57,\"height\":312,\"id\":\"38597-img_p30_38\",\"index\":38597,\"originalTransform\":{\"height\":75,\"width\":57,\"x\":312,\"y\":207},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":239,\"x\":312,\"y\":207},\"imageId\":\"38597-img_p30_38\",\"num\":{\"distance\":9.3668,\"isInside\":false,\"str\":\"B\",\"x\":374.3141,\"y\":264.6984},\"nums\":[{\"distance\":9.3668,\"isInside\":false,\"str\":\"B\",\"x\":374.3141,\"y\":264.6984},{\"distance\":103.3879,\"isInside\":false,\"str\":\"A\",\"x\":395.7289,\"y\":348.6525}]},{\"distance\":19.7275,\"hasMatch\":true,\"id\":\"38586-img_p30_37\",\"image\":{\"dataUrl\":null,\"disHeight\":92,\"disWidth\":61,\"height\":382,\"id\":\"38586-img_p30_37\",\"index\":38586,\"originalTransform\":{\"height\":92,\"width\":61,\"x\":377,\"y\":373},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":256,\"x\":377,\"y\":373},\"imageId\":\"38586-img_p30_37\",\"num\":{\"distance\":19.7275,\"isInside\":false,\"str\":\"A\",\"x\":395.7289,\"y\":348.6525},\"nums\":[{\"distance\":19.7275,\"isInside\":false,\"str\":\"A\",\"x\":395.7289,\"y\":348.6525},{\"distance\":103.6168,\"isInside\":false,\"str\":\"B\",\"x\":374.3141,\"y\":264.6984}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-彩妆大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 606,
+              "object": 30,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im0_obj30.png",
+              "source": "direct-fast",
+              "time": "11.333µs",
+              "type": "image-meta",
+              "width": 345
+            },
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 31,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im1_obj31.png",
+              "source": "direct-fast",
+              "time": "8.958µs",
+              "type": "image-meta",
+              "width": 925
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-护肤大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-护肤大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 160,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-护肤大灯箱.pdf/1_Im0_obj10.png",
+              "source": "direct-fallback",
+              "time": "1.71075ms",
+              "type": "image-meta",
+              "width": 294
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    }
+  }
+}

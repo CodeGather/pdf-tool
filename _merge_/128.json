@@ -1,0 +1,372 @@
+{
+  "shopName": "广州天河城广场(欧莱雅直营店)",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "A": {
+      "渠道": "B",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02133392",
+      "柜台名称": "广州天河城广场(欧莱雅直营店)",
+      "灯位编号": "A",
+      "灯位备注": "26YJul-玉龙茶香大灯箱",
+      "画面位置": "冲外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1045,
+      "": "*",
+      "可见长": 2389,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.437421515278359,
+      "比例H/W": 2.28612440191388,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "冲外不挡"
+    },
+    "B": {
+      "渠道": "B",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02133392",
+      "柜台名称": "广州天河城广场(欧莱雅直营店)",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "柜台内被挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1125,
+      "": "*",
+      "可见长": 2615,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.430210325047801,
+      "比例H/W": 2.32444444444444,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "柜台内被挡"
+    },
+    "C": {
+      "渠道": "B",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02133392",
+      "柜台名称": "广州天河城广场(欧莱雅直营店)",
+      "灯位编号": "C",
+      "灯位备注": "26YJul-护肤大灯箱",
+      "画面位置": "护肤背墙墙上灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 1872,
+      "": "*",
+      "可见长": 958,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.95407098121086,
+      "比例H/W": 0.511752136752137,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "护肤背墙墙上灯箱"
+    },
+    "D": {
+      "渠道": "B",
+      "柜台编号": "GC02133392",
+      "柜台名称": "广州天河城广场(欧莱雅直营店)",
+      "灯位编号": "D",
+      "灯位备注": "玉龙茶香大灯箱",
+      "画面位置": "柜台外不挡",
+      "材质": "UV内光3P布",
+      "可见宽": 3700,
+      "": "*",
+      "可见长": 5730,
+      "柜台数量(张)": 1,
+      "比例W/H": 0.645724258289703,
+      "比例H/W": 1.54864864864865,
+      "备注": "内光，每边出血1.4cm缝胶条；注意：画面下面要有安全距离",
+      "isNew": false,
+      "灯位位置": "柜台外不挡"
+    }
+  },
+  "db-data": {
+    "id": 700,
+    "品牌": "Gac",
+    "店铺名称": "广州天河城广场(欧莱雅直营店)",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 395,
+        "品牌": "Gac",
+        "店铺名称": "广州天河城广场(欧莱雅直营店)",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/广州天河城广场(欧莱雅直营店)_36.pdf",
+        "PDF标题": "广州天河城广场(欧莱雅直营店)灯位图",
+        "编号列表": "[{\"distance\":11.1715,\"hasMatch\":true,\"id\":\"26393-img_p35_5\",\"image\":{\"dataUrl\":null,\"disHeight\":50,\"disWidth\":84,\"height\":208,\"id\":\"26393-img_p35_5\",\"index\":26393,\"originalTransform\":{\"height\":50,\"width\":84,\"x\":203,\"y\":338},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":349,\"x\":203,\"y\":338},\"imageId\":\"26393-img_p35_5\",\"num\":{\"distance\":11.1715,\"isInside\":false,\"str\":\"C\",\"x\":292.9524,\"y\":348.6121},\"nums\":[{\"distance\":11.1715,\"isInside\":false,\"str\":\"C\",\"x\":292.9524,\"y\":348.6121},{\"distance\":81.0904,\"isInside\":false,\"str\":\"B\",\"x\":359.8723,\"y\":386.2116},{\"distance\":123.1809,\"isInside\":false,\"str\":\"D\",\"x\":334.4102,\"y\":450.4341},{\"distance\":376.6733,\"isInside\":false,\"str\":\"A\",\"x\":617.6127,\"y\":424.0541}]},{\"distance\":12.3267,\"hasMatch\":true,\"id\":\"26382-g_d40_img_p21_1\",\"image\":{\"dataUrl\":null,\"disHeight\":80,\"disWidth\":53,\"height\":392,\"id\":\"26382-g_d40_img_p21_1\",\"index\":26382,\"originalTransform\":{\"height\":80,\"width\":53,\"x\":632,\"y\":408},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":255,\"x\":632,\"y\":408},\"imageId\":\"26382-g_d40_img_p21_1\",\"num\":{\"distance\":12.3267,\"isInside\":false,\"str\":\"A\",\"x\":617.6127,\"y\":424.0541},\"nums\":[{\"distance\":12.3267,\"isInside\":false,\"str\":\"A\",\"x\":617.6127,\"y\":424.0541},{\"distance\":283.9096,\"isInside\":false,\"str\":\"B\",\"x\":359.8723,\"y\":386.2116},{\"distance\":290.6927,\"isInside\":false,\"str\":\"D\",\"x\":334.4102,\"y\":450.4341},{\"distance\":388.0989,\"isInside\":false,\"str\":\"C\",\"x\":292.9524,\"y\":348.6121}]},{\"distance\":24.3073,\"hasMatch\":true,\"id\":\"26371-img_p35_4\",\"image\":{\"dataUrl\":null,\"disHeight\":80,\"disWidth\":53,\"height\":332,\"id\":\"26371-img_p35_4\",\"index\":26371,\"originalTransform\":{\"height\":80,\"width\":53,\"x\":271,\"y\":463},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":223,\"x\":271,\"y\":463},\"imageId\":\"26371-img_p35_4\",\"num\":{\"distance\":24.3073,\"isInside\":false,\"str\":\"D\",\"x\":334.4102,\"y\":450.4341},\"nums\":[{\"distance\":24.3073,\"isInside\":false,\"str\":\"D\",\"x\":334.4102,\"y\":450.4341},{\"distance\":108.5989,\"isInside\":false,\"str\":\"C\",\"x\":292.9524,\"y\":348.6121},{\"distance\":110.6618,\"isInside\":false,\"str\":\"B\",\"x\":359.8723,\"y\":386.2116},{\"distance\":330.5597,\"isInside\":false,\"str\":\"A\",\"x\":617.6127,\"y\":424.0541}]},{\"distance\":11.9096,\"hasMatch\":true,\"id\":\"26361-img_p35_4\",\"image\":{\"dataUrl\":null,\"disHeight\":80,\"disWidth\":53,\"height\":332,\"id\":\"26361-img_p35_4\",\"index\":26361,\"originalTransform\":{\"height\":80,\"width\":53,\"x\":375,\"y\":337},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":223,\"x\":375,\"y\":337},\"imageId\":\"26361-img_p35_4\",\"num\":{\"distance\":11.9096,\"isInside\":false,\"str\":\"B\",\"x\":359.8723,\"y\":386.2116},\"nums\":[{\"distance\":11.9096,\"isInside\":false,\"str\":\"B\",\"x\":359.8723,\"y\":386.2116},{\"distance\":72.6927,\"isInside\":false,\"str\":\"D\",\"x\":334.4102,\"y\":450.4341},{\"distance\":79.3285,\"isInside\":false,\"str\":\"C\",\"x\":292.9524,\"y\":348.6121},{\"distance\":206.6733,\"isInside\":false,\"str\":\"A\",\"x\":617.6127,\"y\":424.0541}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-玉龙茶香大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-玉龙茶香大灯箱.pdf",
+      "totalPages": 2,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 2,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_002_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 1172
+            },
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 2110
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 606,
+              "object": 30,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im0_obj30.png",
+              "source": "direct-fast",
+              "time": "11.333µs",
+              "type": "image-meta",
+              "width": 345
+            },
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 31,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im1_obj31.png",
+              "source": "direct-fast",
+              "time": "8.958µs",
+              "type": "image-meta",
+              "width": 925
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-护肤大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-护肤大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 160,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-护肤大灯箱.pdf/1_Im0_obj10.png",
+              "source": "direct-fallback",
+              "time": "1.71075ms",
+              "type": "image-meta",
+              "width": 294
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    }
+  }
+}

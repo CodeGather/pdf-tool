@@ -25,15 +25,73 @@ type TableColumn struct {
 
 // -------- Brand Config --------
 
+// BrandConfig isNew 表格和边框样式配置
 type BrandConfig struct {
+	// 顶层控制字段
+	AddCatalogue    bool         `json:"addCatalogue,omitempty"`
+	AddGuide        bool         `json:"addGuide,omitempty"`
+	AddInstallDir   bool         `json:"addInstallDir,omitempty"`
+	AddPageNumber   bool         `json:"addPageNumber,omitempty"`
+	AddPageNumbers  []int        `json:"addPageNumbers,omitempty"`
+	AddShopName     bool         `json:"addShopName,omitempty"`
+	BrandName       string       `json:"brandName,omitempty"`
+	Catalogue       *CatCfg      `json:"catalogue,omitempty"`
+	CustomTexts     []string     `json:"customTexts,omitempty"`
+	Guide           *GuideCfg    `json:"guide,omitempty"`
+	Header          []string     `json:"header,omitempty"`
+	ID              int          `json:"id,omitempty"`
+	LastPageNumber  bool         `json:"lastPageNumber,omitempty"`
+	PageNumber      *PageNumCfg  `json:"pageNumber,omitempty"`
+	ShopName        *ShopNameCfg `json:"shopName,omitempty"`
+	SplitSeparator  []string     `json:"splitSeparator,omitempty"`
+}
+
+// GuideCfg 引导线/辅助绘制的样式配置
+type GuideCfg struct {
 	BorderColor  Color   `json:"borderColor"`
 	BorderSize   float64 `json:"borderSize"`
 	Color        Color   `json:"color"`
 	DescColor    Color   `json:"descColor"`
 	DescFontSize float64 `json:"descFontSize"`
-	FontData     string  `json:"fontData"`
-	FontFamily   string  `json:"fontFamily"`
+	FontData     string  `json:"fontData,omitempty"`
+	FontFamily   string  `json:"fontFamily,omitempty"`
 	FontSize     float64 `json:"fontSize"`
+}
+
+// CatCfg 目录配置
+type CatCfg struct {
+	Background   string  `json:"background,omitempty"`
+	Color        Color   `json:"color"`
+	FontData     string  `json:"fontData,omitempty"`
+	FontFamily   string  `json:"fontFamily,omitempty"`
+	IndentSize   float64 `json:"indentSize"`
+	Left         float64 `json:"left"`
+	LineHeight   float64 `json:"lineHeight"`
+	OneFontSize  float64 `json:"oneFontSize"`
+	TitleFontSize float64 `json:"titleFontSize"`
+	Top          float64 `json:"top"`
+	TwoFontSize  float64 `json:"twoFontSize"`
+}
+
+// PageNumCfg 页码配置
+type PageNumCfg struct {
+	Bottom   float64 `json:"bottom"`
+	Color    Color   `json:"color"`
+	FontData string  `json:"fontData,omitempty"`
+	FontFamily string `json:"fontFamily,omitempty"`
+	FontSize float64 `json:"fontSize"`
+	Left     float64 `json:"left"`
+}
+
+// ShopNameCfg 店铺名称配置
+type ShopNameCfg struct {
+	Background Color   `json:"background"`
+	Bottom     float64 `json:"bottom"`
+	Color      Color   `json:"color"`
+	FontFamily string  `json:"fontFamily,omitempty"`
+	FontSize   float64 `json:"fontSize"`
+	Left       float64 `json:"left"`
+	Width      float64 `json:"width"`
 }
 
 type Color struct {

@@ -1,0 +1,497 @@
+{
+  "shopName": "长沙步步高星城购物中心BD精品店",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "A": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01141058",
+      "柜台名称": "长沙步步高星城购物中心BD精品店",
+      "灯位编号": "A",
+      "灯位备注": "26YJul-彩妆架+黑底-1",
+      "画面位置": "彩妆架-1",
+      "材质": "灯片",
+      "可见宽": 503,
+      "": "*",
+      "可见长": 540.5,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.930619796484736,
+      "比例H/W": 1.07455268389662,
+      "备注": "出血尺寸：W543mm×H580.5mm",
+      "isNew": true,
+      "灯位位置": "彩妆架-1"
+    },
+    "B": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01141058",
+      "柜台名称": "长沙步步高星城购物中心BD精品店",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-彩妆架+黑底-2",
+      "画面位置": "彩妆架-2",
+      "材质": "灯片",
+      "可见宽": 503,
+      "": "*",
+      "可见长": 540.5,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.930619796484736,
+      "比例H/W": 1.07455268389662,
+      "备注": "出血尺寸：W543mm×H580.5mm",
+      "isNew": true,
+      "灯位位置": "彩妆架-2"
+    },
+    "C": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01141058",
+      "柜台名称": "长沙步步高星城购物中心BD精品店",
+      "灯位编号": "C",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "柜台外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1200,
+      "": "*",
+      "可见长": 2127,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.564174894217207,
+      "比例H/W": 1.7725,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "柜台外不挡"
+    },
+    "D": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01141058",
+      "柜台名称": "长沙步步高星城购物中心BD精品店",
+      "灯位编号": "D",
+      "灯位备注": "26YJul-Hallmark",
+      "画面位置": "桌面橱窗",
+      "材质": "软膜灯箱布",
+      "可见宽": 842,
+      "": "*",
+      "可见长": 1346,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.62555720653789,
+      "比例H/W": 1.59857482185273,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "桌面橱窗"
+    },
+    "E": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01141058",
+      "柜台名称": "长沙步步高星城购物中心BD精品店",
+      "灯位编号": "E",
+      "灯位备注": "26YJul-护肤大灯箱",
+      "画面位置": "护肤吧墙上灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 1612,
+      "": "*",
+      "可见长": 1346,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.19762258543834,
+      "比例H/W": 0.834987593052109,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "护肤吧墙上灯箱"
+    },
+    "F": {
+      "渠道": "BD",
+      "柜台编号": "GC01141058",
+      "柜台名称": "长沙步步高星城购物中心BD精品店",
+      "灯位编号": "F",
+      "灯位备注": "2509-护肤背墙",
+      "画面位置": "护肤背墙",
+      "材质": "80680写真全透（背胶）",
+      "可见宽": 1942,
+      "": "*",
+      "可见长": 746,
+      "柜台数量(张)": 1,
+      "比例W/H": 2.60321715817694,
+      "比例H/W": 0.384140061791967,
+      "备注": "出血尺寸：W1962mm×H766mm",
+      "isNew": false,
+      "灯位位置": "护肤背墙"
+    }
+  },
+  "db-data": {
+    "id": 641,
+    "品牌": "Gac",
+    "店铺名称": "长沙步步高星城购物中心BD精品店",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 502,
+        "品牌": "Gac",
+        "店铺名称": "长沙步步高星城购物中心BD精品店",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/长沙步步高星城购物中心BD精品店_69.pdf",
+        "PDF标题": "长沙步步高星城购物中心BD精品店灯位图",
+        "编号列表": "[{\"distance\":15.12,\"hasMatch\":true,\"id\":\"15752-img_p68_4\",\"image\":{\"dataUrl\":null,\"disHeight\":77,\"disWidth\":91,\"height\":320,\"id\":\"15752-img_p68_4\",\"index\":15752,\"originalTransform\":{\"height\":77,\"width\":91,\"x\":632,\"y\":133},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":381,\"x\":632,\"y\":133},\"imageId\":\"15752-img_p68_4\",\"num\":{\"distance\":15.12,\"isInside\":false,\"str\":\"E\",\"x\":614.7332,\"y\":155.9448},\"nums\":[{\"distance\":15.12,\"isInside\":false,\"str\":\"E\",\"x\":614.7332,\"y\":155.9448},{\"distance\":153.159,\"isInside\":false,\"str\":\"B\",\"x\":482.6383,\"y\":211.7993},{\"distance\":220.3466,\"isInside\":false,\"str\":\"A\",\"x\":407.8218,\"y\":192.2796},{\"distance\":432.0621,\"isInside\":false,\"str\":\"D\",\"x\":236.1102,\"y\":86.4957},{\"distance\":509.0604,\"isInside\":false,\"str\":\"C\",\"x\":215.4173,\"y\":30.1903},{\"distance\":526.532,\"isInside\":false,\"str\":\"F\",\"x\":378.9317,\"y\":481.1297432359112},{\"distance\":526.5323,\"isInside\":false,\"str\":\"F\",\"x\":378.9317,\"y\":481.1302}]},{\"distance\":3.0534,\"hasMatch\":true,\"id\":\"15740-g_d116_img_p59_2\",\"image\":{\"dataUrl\":null,\"disHeight\":45,\"disWidth\":49,\"height\":190,\"id\":\"15740-g_d116_img_p59_2\",\"index\":15740,\"originalTransform\":{\"height\":45,\"width\":49,\"x\":389,\"y\":151},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":203,\"x\":389,\"y\":151},\"imageId\":\"15740-g_d116_img_p59_2\",\"num\":{\"distance\":3.0534,\"isInside\":false,\"str\":\"A\",\"x\":407.8218,\"y\":192.2796},\"nums\":[{\"distance\":3.0534,\"isInside\":false,\"str\":\"A\",\"x\":407.8218,\"y\":192.2796},{\"distance\":70.4396,\"isInside\":false,\"str\":\"B\",\"x\":482.6383,\"y\":211.7993},{\"distance\":181.0404,\"isInside\":false,\"str\":\"E\",\"x\":614.7332,\"y\":155.9448},{\"distance\":207.0621,\"isInside\":false,\"str\":\"D\",\"x\":236.1102,\"y\":86.4957},{\"distance\":284.0604,\"isInside\":false,\"str\":\"C\",\"x\":215.4173,\"y\":30.1903},{\"distance\":297.532,\"isInside\":false,\"str\":\"F\",\"x\":378.9317,\"y\":481.1297432359112},{\"distance\":297.5323,\"isInside\":false,\"str\":\"F\",\"x\":378.9317,\"y\":481.1302}]},{\"distance\":2.659,\"hasMatch\":true,\"id\":\"15728-g_d116_img_p59_1\",\"image\":{\"dataUrl\":null,\"disHeight\":45,\"disWidth\":49,\"height\":189,\"id\":\"15728-g_d116_img_p59_1\",\"index\":15728,\"originalTransform\":{\"height\":45,\"width\":49,\"x\":463,\"y\":171},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":203,\"x\":463,\"y\":171},\"imageId\":\"15728-g_d116_img_p59_1\",\"num\":{\"distance\":2.659,\"isInside\":false,\"str\":\"B\",\"x\":482.6383,\"y\":211.7993},\"nums\":[{\"distance\":2.659,\"isInside\":false,\"str\":\"B\",\"x\":482.6383,\"y\":211.7993},{\"distance\":51.4558,\"isInside\":false,\"str\":\"A\",\"x\":407.8218,\"y\":192.2796},{\"distance\":115.7904,\"isInside\":false,\"str\":\"E\",\"x\":614.7332,\"y\":155.9448},{\"distance\":301.0621,\"isInside\":false,\"str\":\"D\",\"x\":236.1102,\"y\":86.4957},{\"distance\":351.532,\"isInside\":false,\"str\":\"F\",\"x\":378.9317,\"y\":481.1297432359112},{\"distance\":351.5323,\"isInside\":false,\"str\":\"F\",\"x\":378.9317,\"y\":481.1302},{\"distance\":378.0604,\"isInside\":false,\"str\":\"C\",\"x\":215.4173,\"y\":30.1903}]},{\"distance\":11.859,\"hasMatch\":true,\"id\":\"15716-img_p68_3\",\"image\":{\"dataUrl\":null,\"disHeight\":106,\"disWidth\":47,\"height\":441,\"id\":\"15716-img_p68_3\",\"index\":15716,\"originalTransform\":{\"height\":106,\"width\":47,\"x\":161,\"y\":31},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":197,\"x\":161,\"y\":31},\"imageId\":\"15716-img_p68_3\",\"num\":{\"distance\":11.859,\"isInside\":false,\"str\":\"C\",\"x\":215.4173,\"y\":30.1903},\"nums\":[{\"distance\":11.859,\"isInside\":false,\"str\":\"C\",\"x\":215.4173,\"y\":30.1903},{\"distance\":34.5465,\"isInside\":false,\"str\":\"D\",\"x\":236.1102,\"y\":86.4957},{\"distance\":265.1034,\"isInside\":false,\"str\":\"A\",\"x\":407.8218,\"y\":192.2796},{\"distance\":359.4396,\"isInside\":false,\"str\":\"B\",\"x\":482.6383,\"y\":211.7993},{\"distance\":435.68,\"isInside\":false,\"str\":\"E\",\"x\":614.7332,\"y\":155.9448},{\"distance\":524.7274,\"isInside\":false,\"str\":\"F\",\"x\":378.9317,\"y\":481.1297432359112},{\"distance\":524.7276,\"isInside\":false,\"str\":\"F\",\"x\":378.9317,\"y\":481.1302}]},{\"distance\":31.1035,\"hasMatch\":true,\"id\":\"15704-img_p68_2\",\"image\":{\"dataUrl\":null,\"disHeight\":71,\"disWidth\":47,\"height\":294,\"id\":\"15704-img_p68_2\",\"index\":15704,\"originalTransform\":{\"height\":71,\"width\":47,\"x\":270,\"y\":59},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":197,\"x\":270,\"y\":59},\"imageId\":\"15704-img_p68_2\",\"num\":{\"distance\":31.1035,\"isInside\":false,\"str\":\"D\",\"x\":236.1102,\"y\":86.4957},\"nums\":[{\"distance\":31.1035,\"isInside\":false,\"str\":\"D\",\"x\":236.1102,\"y\":86.4957},{\"distance\":73.0604,\"isInside\":false,\"str\":\"C\",\"x\":215.4173,\"y\":30.1903},{\"distance\":163.1034,\"isInside\":false,\"str\":\"A\",\"x\":407.8218,\"y\":192.2796},{\"distance\":257.4396,\"isInside\":false,\"str\":\"B\",\"x\":482.6383,\"y\":211.7993},{\"distance\":333.68,\"isInside\":false,\"str\":\"E\",\"x\":614.7332,\"y\":155.9448},{\"distance\":422.7274,\"isInside\":false,\"str\":\"F\",\"x\":378.9317,\"y\":481.1297432359112},{\"distance\":422.7276,\"isInside\":false,\"str\":\"F\",\"x\":378.9317,\"y\":481.1302}]},{\"distance\":23.832,\"hasMatch\":true,\"id\":\"15692-img_p68_1\",\"image\":{\"dataUrl\":null,\"disHeight\":51,\"disWidth\":101,\"height\":212,\"id\":\"15692-img_p68_1\",\"index\":15692,\"originalTransform\":{\"height\":51,\"width\":101,\"x\":353,\"y\":413},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":13.499998866021317,\"width\":423,\"x\":353,\"y\":413},\"imageId\":\"15692-img_p68_1\",\"num\":{\"distance\":23.832,\"isInside\":false,\"str\":\"F\",\"x\":378.9317,\"y\":481.1297432359112},\"nums\":[{\"distance\":23.832,\"isInside\":false,\"str\":\"F\",\"x\":378.9317,\"y\":481.1297432359112},{\"distance\":23.8323,\"isInside\":false,\"str\":\"F\",\"x\":378.9317,\"y\":481.1302},{\"distance\":216.4966,\"isInside\":false,\"str\":\"A\",\"x\":407.8218,\"y\":192.2796},{\"distance\":227.841,\"isInside\":false,\"str\":\"B\",\"x\":482.6383,\"y\":211.7993},{\"distance\":415.7904,\"isInside\":false,\"str\":\"E\",\"x\":614.7332,\"y\":155.9448},{\"distance\":433.0621,\"isInside\":false,\"str\":\"D\",\"x\":236.1102,\"y\":86.4957},{\"distance\":510.0604,\"isInside\":false,\"str\":\"C\",\"x\":215.4173,\"y\":30.1903}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-彩妆架+黑底-1.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆架+黑底-1.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1838,
+              "object": 20,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆架+黑底-1.pdf/1_Im0_obj20.png",
+              "source": "direct-fast",
+              "time": "5.917µs",
+              "type": "image-meta",
+              "width": 1678
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆架+黑底-2.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆架+黑底-2.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 814,
+              "object": 11,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆架+黑底-2.pdf/1_Im0_obj11.png",
+              "source": "direct-fast",
+              "time": "1.195458ms",
+              "type": "image-meta",
+              "width": 770
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 606,
+              "object": 30,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im0_obj30.png",
+              "source": "direct-fast",
+              "time": "11.333µs",
+              "type": "image-meta",
+              "width": 345
+            },
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 31,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im1_obj31.png",
+              "source": "direct-fast",
+              "time": "8.958µs",
+              "type": "image-meta",
+              "width": 925
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-Hallmark.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-Hallmark.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1017,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-Hallmark.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 927
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-护肤大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-护肤大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 160,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-护肤大灯箱.pdf/1_Im0_obj10.png",
+              "source": "direct-fallback",
+              "time": "1.71075ms",
+              "type": "image-meta",
+              "width": 294
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "2509-护肤背墙.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC4月上市比例档/2509-护肤背墙.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 500,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/2509-护肤背墙.pdf/1_Im0_obj10.png",
+              "source": "direct-fast",
+              "time": "6.333µs",
+              "type": "image-meta",
+              "width": 1000
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    }
+  }
+}

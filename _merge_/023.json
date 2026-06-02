@@ -1,0 +1,492 @@
+{
+  "shopName": "沈阳新玛特购物休闲广场",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "B": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02X10072",
+      "柜台名称": "沈阳新玛特购物休闲广场",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-护肤大灯箱",
+      "画面位置": "护肤咨询墙上灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 1332,
+      "": "*",
+      "可见长": 1084,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.22878228782288,
+      "比例H/W": 0.813813813813814,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "护肤咨询墙上灯箱"
+    },
+    "D": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02X10072",
+      "柜台名称": "沈阳新玛特购物休闲广场",
+      "灯位编号": "D",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "冲外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1500,
+      "": "*",
+      "可见长": 2405,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.623700623700624,
+      "比例H/W": 1.60333333333333,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "冲外不挡"
+    },
+    "E": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02X10072",
+      "柜台名称": "沈阳新玛特购物休闲广场",
+      "灯位编号": "E",
+      "灯位备注": "26YJul-彩妆架-2",
+      "画面位置": "彩妆架-小-2",
+      "材质": "灯片",
+      "可见宽": 297,
+      "": "*",
+      "可见长": 256,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.16015625,
+      "比例H/W": 0.861952861952862,
+      "备注": "出血尺寸：306*266",
+      "isNew": true,
+      "灯位位置": "彩妆架-小-2"
+    },
+    "F": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02X10072",
+      "柜台名称": "沈阳新玛特购物休闲广场",
+      "灯位编号": "F",
+      "灯位备注": "26YJul-彩妆架-1",
+      "画面位置": "彩妆架-小-1",
+      "材质": "灯片",
+      "可见宽": 297,
+      "": "*",
+      "可见长": 256,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.16015625,
+      "比例H/W": 0.861952861952862,
+      "备注": "出血尺寸：306*266",
+      "isNew": true,
+      "灯位位置": "彩妆架-小-1"
+    },
+    "Z": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC02X10072",
+      "柜台名称": "沈阳新玛特购物休闲广场",
+      "灯位编号": "Z",
+      "灯位备注": "26YJul-玉龙茶香大灯箱",
+      "画面位置": "定香吧墙上灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 1139,
+      "": "*",
+      "可见长": 1072,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.0625,
+      "比例H/W": 0.941176470588235,
+      "isNew": true,
+      "灯位位置": "定香吧墙上灯箱"
+    },
+    "G": {
+      "渠道": "DS",
+      "柜台编号": "GC02X10072",
+      "柜台名称": "沈阳新玛特购物休闲广场",
+      "灯位编号": "G",
+      "灯位备注": "2603-定香小画面-环形",
+      "画面位置": "定香圆桌小画面-21",
+      "材质": "PP相纸",
+      "可见宽": 1039,
+      "": "*",
+      "可见长": 1039,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "环形，内径尺寸为：W890mm×H890mm",
+      "isNew": false,
+      "灯位位置": "定香圆桌小画面-21"
+    }
+  },
+  "db-data": {
+    "id": 595,
+    "品牌": "Gac",
+    "店铺名称": "沈阳新玛特购物休闲广场",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 455,
+        "品牌": "Gac",
+        "店铺名称": "沈阳新玛特购物休闲广场",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/沈阳新玛特购物休闲广场_23.pdf",
+        "PDF标题": "沈阳新玛特购物休闲广场灯位图无墙体",
+        "编号列表": "[{\"distance\":9.7148,\"hasMatch\":true,\"id\":\"10243-g_d116_img_p14_12\",\"image\":{\"dataUrl\":null,\"disHeight\":67,\"disWidth\":66,\"height\":340,\"id\":\"10243-g_d116_img_p14_12\",\"index\":10243,\"originalTransform\":{\"height\":67,\"width\":66,\"x\":473,\"y\":258},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":340,\"x\":473,\"y\":258},\"imageId\":\"10243-g_d116_img_p14_12\",\"num\":{\"distance\":9.7148,\"isInside\":false,\"str\":\"Z\",\"x\":460.456,\"y\":274.6132},\"nums\":[{\"distance\":9.7148,\"isInside\":false,\"str\":\"Z\",\"x\":460.456,\"y\":274.6132},{\"distance\":48.6087,\"isInside\":false,\"str\":\"G\",\"x\":582.3881,\"y\":261.4974},{\"distance\":79.0753,\"isInside\":false,\"str\":\"B\",\"x\":390.0138,\"y\":309.0411},{\"distance\":201.2674,\"isInside\":false,\"str\":\"F\",\"x\":604.3665,\"y\":119.7651},{\"distance\":215.2936,\"isInside\":false,\"str\":\"E\",\"x\":518.9902,\"y\":37.1986},{\"distance\":240.9839,\"isInside\":false,\"str\":\"D\",\"x\":230.9426,\"y\":248.74149999999997}]},{\"distance\":24.0535,\"hasMatch\":true,\"id\":\"10230-img_p22_6\",\"image\":{\"dataUrl\":null,\"disHeight\":92,\"disWidth\":93,\"height\":384,\"id\":\"10230-img_p22_6\",\"index\":10230,\"originalTransform\":{\"height\":92,\"width\":93,\"x\":540,\"y\":244},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":387,\"x\":540,\"y\":244},\"imageId\":\"10230-img_p22_6\",\"num\":{\"distance\":24.0535,\"isInside\":false,\"str\":\"G\",\"x\":582.3881,\"y\":261.4974},\"nums\":[{\"distance\":24.0535,\"isInside\":false,\"str\":\"G\",\"x\":582.3881,\"y\":261.4974},{\"distance\":76.0648,\"isInside\":false,\"str\":\"Z\",\"x\":460.456,\"y\":274.6132},{\"distance\":119.9524,\"isInside\":false,\"str\":\"F\",\"x\":604.3665,\"y\":119.7651},{\"distance\":148.0253,\"isInside\":false,\"str\":\"B\",\"x\":390.0138,\"y\":309.0411},{\"distance\":217.8092,\"isInside\":false,\"str\":\"E\",\"x\":518.9902,\"y\":37.1986},{\"distance\":306.2669,\"isInside\":false,\"str\":\"D\",\"x\":230.9426,\"y\":248.74149999999997}]},{\"distance\":12.1908,\"hasMatch\":true,\"id\":\"10216-g_d116_img_p13_5\",\"image\":{\"dataUrl\":null,\"disHeight\":50,\"disWidth\":49,\"height\":209,\"id\":\"10216-g_d116_img_p13_5\",\"index\":10216,\"originalTransform\":{\"height\":50,\"width\":49,\"x\":462,\"y\":28},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":205,\"x\":462,\"y\":28},\"imageId\":\"10216-g_d116_img_p13_5\",\"num\":{\"distance\":12.1908,\"isInside\":false,\"str\":\"E\",\"x\":518.9902,\"y\":37.1986},\"nums\":[{\"distance\":12.1908,\"isInside\":false,\"str\":\"E\",\"x\":518.9902,\"y\":37.1986},{\"distance\":144.7976,\"isInside\":false,\"str\":\"F\",\"x\":604.3665,\"y\":119.7651},{\"distance\":202.9412,\"isInside\":false,\"str\":\"Z\",\"x\":460.456,\"y\":274.6132},{\"distance\":265.5535,\"isInside\":false,\"str\":\"G\",\"x\":582.3881,\"y\":261.4974},{\"distance\":305.0253,\"isInside\":false,\"str\":\"B\",\"x\":390.0138,\"y\":309.0411},{\"distance\":403.4669,\"isInside\":false,\"str\":\"D\",\"x\":230.9426,\"y\":248.74149999999997}]},{\"distance\":21.3524,\"hasMatch\":true,\"id\":\"10204-g_d116_img_p15_3\",\"image\":{\"dataUrl\":null,\"disHeight\":50,\"disWidth\":49,\"height\":209,\"id\":\"10204-g_d116_img_p15_3\",\"index\":10204,\"originalTransform\":{\"height\":50,\"width\":49,\"x\":591,\"y\":147},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":205,\"x\":591,\"y\":147},\"imageId\":\"10204-g_d116_img_p15_3\",\"num\":{\"distance\":21.3524,\"isInside\":false,\"str\":\"F\",\"x\":604.3665,\"y\":119.7651},\"nums\":[{\"distance\":21.3524,\"isInside\":false,\"str\":\"F\",\"x\":604.3665,\"y\":119.7651},{\"distance\":74.4413,\"isInside\":false,\"str\":\"G\",\"x\":582.3881,\"y\":261.4974},{\"distance\":171.8092,\"isInside\":false,\"str\":\"E\",\"x\":518.9902,\"y\":37.1986},{\"distance\":210.4912,\"isInside\":false,\"str\":\"Z\",\"x\":460.456,\"y\":274.6132},{\"distance\":315.0253,\"isInside\":false,\"str\":\"B\",\"x\":390.0138,\"y\":309.0411},{\"distance\":413.4669,\"isInside\":false,\"str\":\"D\",\"x\":230.9426,\"y\":248.74149999999997}]},{\"distance\":20.9747,\"hasMatch\":true,\"id\":\"10192-img_p22_5\",\"image\":{\"dataUrl\":null,\"disHeight\":48,\"disWidth\":76,\"height\":202,\"id\":\"10192-img_p22_5\",\"index\":10192,\"originalTransform\":{\"height\":48,\"width\":76,\"x\":356,\"y\":336},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":317,\"x\":356,\"y\":336},\"imageId\":\"10192-img_p22_5\",\"num\":{\"distance\":20.9747,\"isInside\":false,\"str\":\"B\",\"x\":390.0138,\"y\":309.0411},\"nums\":[{\"distance\":20.9747,\"isInside\":false,\"str\":\"B\",\"x\":390.0138,\"y\":309.0411},{\"distance\":87.5088,\"isInside\":false,\"str\":\"Z\",\"x\":460.456,\"y\":274.6132},{\"distance\":201.9839,\"isInside\":false,\"str\":\"D\",\"x\":230.9426,\"y\":248.74149999999997},{\"distance\":223.5587,\"isInside\":false,\"str\":\"G\",\"x\":582.3881,\"y\":261.4974},{\"distance\":383.7936,\"isInside\":false,\"str\":\"E\",\"x\":518.9902,\"y\":37.1986},{\"distance\":386.2674,\"isInside\":false,\"str\":\"F\",\"x\":604.3665,\"y\":119.7651}]},{\"distance\":11.6331,\"hasMatch\":true,\"id\":\"10180-img_p22_4\",\"image\":{\"dataUrl\":null,\"disHeight\":86,\"disWidth\":48,\"height\":358,\"id\":\"10180-img_p22_4\",\"index\":10180,\"originalTransform\":{\"height\":86,\"width\":48,\"x\":176,\"y\":225},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":202,\"x\":176,\"y\":225},\"imageId\":\"10180-img_p22_4\",\"num\":{\"distance\":11.6331,\"isInside\":false,\"str\":\"D\",\"x\":230.9426,\"y\":248.74149999999997},\"nums\":[{\"distance\":11.6331,\"isInside\":false,\"str\":\"D\",\"x\":230.9426,\"y\":248.74149999999997},{\"distance\":174.0569,\"isInside\":false,\"str\":\"B\",\"x\":390.0138,\"y\":309.0411},{\"distance\":240.4088,\"isInside\":false,\"str\":\"Z\",\"x\":460.456,\"y\":274.6132},{\"distance\":363.5587,\"isInside\":false,\"str\":\"G\",\"x\":582.3881,\"y\":261.4974},{\"distance\":480.7936,\"isInside\":false,\"str\":\"E\",\"x\":518.9902,\"y\":37.1986},{\"distance\":483.2674,\"isInside\":false,\"str\":\"F\",\"x\":604.3665,\"y\":119.7651}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-护肤大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-护肤大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 160,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-护肤大灯箱.pdf/1_Im0_obj10.png",
+              "source": "direct-fallback",
+              "time": "1.71075ms",
+              "type": "image-meta",
+              "width": 294
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 606,
+              "object": 30,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im0_obj30.png",
+              "source": "direct-fast",
+              "time": "11.333µs",
+              "type": "image-meta",
+              "width": 345
+            },
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 31,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im1_obj31.png",
+              "source": "direct-fast",
+              "time": "8.958µs",
+              "type": "image-meta",
+              "width": 925
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆架-2.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆架-2.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1017,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆架-2.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 927
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆架-1.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆架-1.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 17,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆架-1.pdf/1_Im0_obj17.png",
+              "source": "direct-fast",
+              "time": "8.25µs",
+              "type": "image-meta",
+              "width": 553
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-玉龙茶香大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-玉龙茶香大灯箱.pdf",
+      "totalPages": 2,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 2,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_002_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 1172
+            },
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 2110
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "2603-定香小画面-环形.png": {
+      "pages": [
+        {
+          "title": "2603-定香小画面-环形.png",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "width": 0,
+              "height": 1,
+              "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC4月上市比例档/2603-定香小画面-环形.png"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,948 @@
+{
+  "shopName": "西宁王府井大象城购物中心BD精品店",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "1": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "1",
+      "灯位备注": "定香小画面-19-1",
+      "画面位置": "定香小画面-19-1",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-1"
+    },
+    "2": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "2",
+      "灯位备注": "定香小画面-19-2",
+      "画面位置": "定香小画面-19-2",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-2"
+    },
+    "3": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "3",
+      "灯位备注": "定香小画面-19-3",
+      "画面位置": "定香小画面-19-3",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-3"
+    },
+    "4": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "4",
+      "灯位备注": "定香小画面-19-4",
+      "画面位置": "定香小画面-19-4",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-4"
+    },
+    "5": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "5",
+      "灯位备注": "定香小画面-19-5",
+      "画面位置": "定香小画面-19-5",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-5"
+    },
+    "6": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "6",
+      "灯位备注": "定香小画面-19-6",
+      "画面位置": "定香小画面-19-6",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-6"
+    },
+    "7": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "7",
+      "灯位备注": "定香小画面-19-7",
+      "画面位置": "定香小画面-19-7",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-7"
+    },
+    "8": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "8",
+      "灯位备注": "定香小画面-19-8",
+      "画面位置": "定香小画面-19-8",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-8"
+    },
+    "9": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "9",
+      "灯位备注": "定香小画面-19-9",
+      "画面位置": "定香小画面-19-9",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-9"
+    },
+    "10": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "10",
+      "灯位备注": "定香小画面-19-10",
+      "画面位置": "定香小画面-19-10",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-10"
+    },
+    "11": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "11",
+      "灯位备注": "定香小画面-19-11",
+      "画面位置": "定香小画面-19-11",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-11"
+    },
+    "12": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "12",
+      "灯位备注": "定香小画面-19-12",
+      "画面位置": "定香小画面-19-12",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-12"
+    },
+    "13": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "13",
+      "灯位备注": "定香小画面-19-13",
+      "画面位置": "定香小画面-19-13",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-13"
+    },
+    "14": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "14",
+      "灯位备注": "定香小画面-19-14",
+      "画面位置": "定香小画面-19-14",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-14"
+    },
+    "15": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "15",
+      "灯位备注": "定香小画面-19-15",
+      "画面位置": "定香小画面-19-15",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-15"
+    },
+    "16": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "16",
+      "灯位备注": "定香小画面-19-16",
+      "画面位置": "定香小画面-19-16",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-16"
+    },
+    "17": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "17",
+      "灯位备注": "定香小画面-19-17",
+      "画面位置": "定香小画面-19-17",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-17"
+    },
+    "18": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "18",
+      "灯位备注": "定香小画面-19-18",
+      "画面位置": "定香小画面-19-18",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-18"
+    },
+    "19": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "19",
+      "灯位备注": "定香小画面-19-19",
+      "画面位置": "定香小画面-19-19",
+      "材质": "灯片",
+      "可见宽": 70,
+      "": "*",
+      "可见长": 70,
+      "柜台数量(张)": 1,
+      "比例W/H": 1,
+      "比例H/W": 1,
+      "备注": "出血尺寸：80*80",
+      "isNew": false,
+      "灯位位置": "定香小画面-19-19"
+    },
+    "A": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "A",
+      "灯位备注": "26YJul-Hallmark",
+      "画面位置": "桌面橱窗",
+      "材质": "软膜灯箱布",
+      "可见宽": 1150,
+      "": "*",
+      "可见长": 1435,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.801393728222996,
+      "比例H/W": 1.24782608695652,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "桌面橱窗"
+    },
+    "B": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-彩妆架+黑底-1",
+      "画面位置": "彩妆架-1",
+      "材质": "灯片",
+      "可见宽": 492,
+      "": "*",
+      "可见长": 540,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.911111111111111,
+      "比例H/W": 1.09756097560976,
+      "备注": "出血尺寸：W512mm×H560mm",
+      "isNew": true,
+      "灯位位置": "彩妆架-1"
+    },
+    "C": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "C",
+      "灯位备注": "26YJul-彩妆架+黑底-2",
+      "画面位置": "彩妆架-2",
+      "材质": "灯片",
+      "可见宽": 492,
+      "": "*",
+      "可见长": 540,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.911111111111111,
+      "比例H/W": 1.09756097560976,
+      "备注": "出血尺寸：W512mm×H560mm",
+      "isNew": true,
+      "灯位位置": "彩妆架-2"
+    },
+    "D": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "D",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "冲外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1233,
+      "": "*",
+      "可见长": 2195,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.561731207289294,
+      "比例H/W": 1.78021086780211,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "冲外不挡"
+    },
+    "G": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "G",
+      "灯位备注": "定香壁龛大画面",
+      "画面位置": "定香壁龛大灯箱",
+      "材质": "透片",
+      "可见宽": 1604,
+      "": "*",
+      "可见长": 1416,
+      "柜台数量(张)": 1,
+      "比例W/H": 1.13276836158192,
+      "比例H/W": 0.882793017456359,
+      "备注": "出血尺寸：W1624mm×H1436mm",
+      "isNew": false,
+      "灯位位置": "定香壁龛大灯箱"
+    },
+    "H": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "H",
+      "灯位备注": "26YJul-玉龙茶香大灯箱",
+      "画面位置": "柜台外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 3881,
+      "": "*",
+      "可见长": 2195,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.76810933940774,
+      "比例H/W": 0.565575882504509,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "柜台外不挡"
+    },
+    "S1": {
+      "渠道": "BD",
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "S1",
+      "灯位备注": "2408-护肤吧新品-1",
+      "画面位置": "护肤吧新品-左",
+      "材质": "透光灯箱片",
+      "可见宽": 219,
+      "": "*",
+      "可见长": 332,
+      "柜台数量(张)": 1,
+      "比例W/H": 0.659638554216867,
+      "比例H/W": 1.51598173515982,
+      "备注": "出血尺寸：W228.1mm×H341.2mm",
+      "isNew": false,
+      "灯位位置": "护肤吧新品-左"
+    },
+    "S2": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01138074",
+      "柜台名称": "西宁王府井大象城购物中心BD精品店",
+      "灯位编号": "S2",
+      "灯位备注": "2607-护肤吧新品-2",
+      "画面位置": "护肤吧新品-右",
+      "材质": "透光灯箱片",
+      "可见宽": 219,
+      "": "*",
+      "可见长": 332,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.659638554216867,
+      "比例H/W": 1.51598173515982,
+      "备注": "出血尺寸：W228.1mm×H341.2mm",
+      "isNew": true,
+      "灯位位置": "护肤吧新品-右"
+    }
+  },
+  "db-data": {
+    "id": 610,
+    "品牌": "Gac",
+    "店铺名称": "西宁王府井大象城购物中心BD精品店",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 471,
+        "品牌": "Gac",
+        "店铺名称": "西宁王府井大象城购物中心BD精品店",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/西宁王府井大象城购物中心BD精品店_38.pdf",
+        "PDF标题": "西宁王府井大象城购物中心BD精品店灯位图",
+        "编号列表": "[{\"distance\":24.2957,\"hasMatch\":true,\"id\":\"15206-g_d116_img_p11_20\",\"image\":{\"dataUrl\":null,\"disHeight\":44,\"disWidth\":33,\"height\":183,\"id\":\"15206-g_d116_img_p11_20\",\"index\":15206,\"originalTransform\":{\"height\":44,\"width\":33,\"x\":496,\"y\":331},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":138,\"x\":496,\"y\":331},\"imageId\":\"15206-g_d116_img_p11_20\",\"num\":{\"distance\":24.2957,\"isInside\":false,\"str\":\"S2\",\"x\":499.8983,\"y\":301.9291},\"nums\":[{\"distance\":24.2957,\"isInside\":false,\"str\":\"S2\",\"x\":499.8983,\"y\":301.9291},{\"distance\":74.4274,\"isInside\":false,\"str\":\"S1\",\"x\":417.7434,\"y\":322.6027},{\"distance\":83.4302,\"isInside\":false,\"str\":\"19\",\"x\":575.9441,\"y\":296.1859},{\"distance\":84.267,\"isInside\":false,\"str\":\"G\",\"x\":600.2838,\"y\":316.6848},{\"distance\":156.4419,\"isInside\":false,\"str\":\"H\",\"x\":657.1399,\"y\":392.97},{\"distance\":214.5347,\"isInside\":false,\"str\":\"B\",\"x\":399.1734,\"y\":203.2899},{\"distance\":334.5983,\"isInside\":false,\"str\":\"D\",\"x\":552.6495,\"y\":18.3832},{\"distance\":339.5851,\"isInside\":false,\"str\":\"C\",\"x\":347.1339,\"y\":129.949},{\"distance\":557.5911,\"isInside\":false,\"str\":\"A\",\"x\":199.1694,\"y\":60.2375}]},{\"distance\":21.4672,\"hasMatch\":true,\"id\":\"15194-g_d116_img_p11_19\",\"image\":{\"dataUrl\":null,\"disHeight\":44,\"disWidth\":33,\"height\":183,\"id\":\"15194-g_d116_img_p11_19\",\"index\":15194,\"originalTransform\":{\"height\":44,\"width\":33,\"x\":414,\"y\":349},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":138,\"x\":414,\"y\":349},\"imageId\":\"15194-g_d116_img_p11_19\",\"num\":{\"distance\":21.4672,\"isInside\":false,\"str\":\"S1\",\"x\":417.7434,\"y\":322.6027},\"nums\":[{\"distance\":21.4672,\"isInside\":false,\"str\":\"S1\",\"x\":417.7434,\"y\":322.6027},{\"distance\":101.1957,\"isInside\":false,\"str\":\"S2\",\"x\":499.8983,\"y\":301.9291},{\"distance\":150.5347,\"isInside\":false,\"str\":\"B\",\"x\":399.1734,\"y\":203.2899},{\"distance\":183.4302,\"isInside\":false,\"str\":\"19\",\"x\":575.9441,\"y\":296.1859},{\"distance\":184.267,\"isInside\":false,\"str\":\"G\",\"x\":600.2838,\"y\":316.6848},{\"distance\":220.4419,\"isInside\":false,\"str\":\"H\",\"x\":657.1399,\"y\":392.97},{\"distance\":275.5851,\"isInside\":false,\"str\":\"C\",\"x\":347.1339,\"y\":129.949},{\"distance\":434.5983,\"isInside\":false,\"str\":\"D\",\"x\":552.6495,\"y\":18.3832},{\"distance\":493.5911,\"isInside\":false,\"str\":\"A\",\"x\":199.1694,\"y\":60.2375}]},{\"distance\":23.1019,\"hasMatch\":true,\"id\":\"15182-img_p37_7\",\"image\":{\"dataUrl\":null,\"disHeight\":74,\"disWidth\":147,\"height\":308,\"id\":\"15182-img_p37_7\",\"index\":15182,\"originalTransform\":{\"height\":74,\"width\":147,\"x\":632,\"y\":422},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":615,\"x\":632,\"y\":422},\"imageId\":\"15182-img_p37_7\",\"num\":{\"distance\":23.1019,\"isInside\":false,\"str\":\"H\",\"x\":657.1399,\"y\":392.97},\"nums\":[{\"distance\":23.1019,\"isInside\":false,\"str\":\"H\",\"x\":657.1399,\"y\":392.97},{\"distance\":126.3634,\"isInside\":false,\"str\":\"G\",\"x\":600.2838,\"y\":316.6848},{\"distance\":170.198,\"isInside\":false,\"str\":\"19\",\"x\":575.9441,\"y\":296.1859},{\"distance\":239.9461,\"isInside\":false,\"str\":\"S2\",\"x\":499.8983,\"y\":301.9291},{\"distance\":301.4274,\"isInside\":false,\"str\":\"S1\",\"x\":417.7434,\"y\":322.6027},{\"distance\":441.5347,\"isInside\":false,\"str\":\"B\",\"x\":399.1734,\"y\":203.2899},{\"distance\":472.6353,\"isInside\":false,\"str\":\"D\",\"x\":552.6495,\"y\":18.3832},{\"distance\":566.5851,\"isInside\":false,\"str\":\"C\",\"x\":347.1339,\"y\":129.949},{\"distance\":784.5911,\"isInside\":false,\"str\":\"A\",\"x\":199.1694,\"y\":60.2375}]},{\"distance\":11.7339,\"hasMatch\":true,\"id\":\"15170-img_p37_6\",\"image\":{\"dataUrl\":null,\"disHeight\":83,\"disWidth\":53,\"height\":347,\"id\":\"15170-img_p37_6\",\"index\":15170,\"originalTransform\":{\"height\":83,\"width\":53,\"x\":140,\"y\":18},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":222,\"x\":140,\"y\":18},\"imageId\":\"15170-img_p37_6\",\"num\":{\"distance\":11.7339,\"isInside\":false,\"str\":\"A\",\"x\":199.1694,\"y\":60.2375},\"nums\":[{\"distance\":11.7339,\"isInside\":false,\"str\":\"A\",\"x\":199.1694,\"y\":60.2375},{\"distance\":193.4149,\"isInside\":false,\"str\":\"C\",\"x\":347.1339,\"y\":129.949},{\"distance\":318.4653,\"isInside\":false,\"str\":\"B\",\"x\":399.1734,\"y\":203.2899},{\"distance\":365.8983,\"isInside\":false,\"str\":\"D\",\"x\":552.6495,\"y\":18.3832},{\"distance\":458.5726,\"isInside\":false,\"str\":\"S1\",\"x\":417.7434,\"y\":322.6027},{\"distance\":520.0539,\"isInside\":false,\"str\":\"S2\",\"x\":499.8983,\"y\":301.9291},{\"distance\":589.802,\"isInside\":false,\"str\":\"19\",\"x\":575.9441,\"y\":296.1859},{\"distance\":633.6366,\"isInside\":false,\"str\":\"G\",\"x\":600.2838,\"y\":316.6848},{\"distance\":766.4419,\"isInside\":false,\"str\":\"H\",\"x\":657.1399,\"y\":392.97}]},{\"distance\":15.6302,\"hasMatch\":true,\"id\":\"15158-img_p37_5\",\"image\":{\"dataUrl\":null,\"disHeight\":7,\"disWidth\":145,\"height\":31,\"id\":\"15158-img_p37_5\",\"index\":15158,\"originalTransform\":{\"height\":145,\"width\":7,\"x\":561,\"y\":395},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":270,\"width\":605,\"x\":561,\"y\":395},\"imageId\":\"15158-img_p37_5\",\"num\":{\"distance\":15.6302,\"isInside\":false,\"str\":\"19\",\"x\":575.9441,\"y\":296.1859},\"nums\":[{\"distance\":15.6302,\"isInside\":false,\"str\":\"19\",\"x\":575.9441,\"y\":296.1859},{\"distance\":38.217,\"isInside\":false,\"str\":\"G\",\"x\":600.2838,\"y\":316.6848},{\"distance\":55.2543,\"isInside\":false,\"str\":\"S2\",\"x\":499.8983,\"y\":301.9291},{\"distance\":136.7274,\"isInside\":false,\"str\":\"S1\",\"x\":417.7434,\"y\":322.6027},{\"distance\":155.4419,\"isInside\":false,\"str\":\"H\",\"x\":657.1399,\"y\":392.97},{\"distance\":198.5347,\"isInside\":false,\"str\":\"B\",\"x\":399.1734,\"y\":203.2899},{\"distance\":229.6353,\"isInside\":false,\"str\":\"D\",\"x\":552.6495,\"y\":18.3832},{\"distance\":323.5851,\"isInside\":false,\"str\":\"C\",\"x\":347.1339,\"y\":129.949},{\"distance\":541.5911,\"isInside\":false,\"str\":\"A\",\"x\":199.1694,\"y\":60.2375}]},{\"distance\":10.9851,\"hasMatch\":true,\"id\":\"15146-img_p37_4\",\"image\":{\"dataUrl\":null,\"disHeight\":44,\"disWidth\":43,\"height\":182,\"id\":\"15146-img_p37_4\",\"index\":15146,\"originalTransform\":{\"height\":44,\"width\":43,\"x\":362,\"y\":110},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":178,\"x\":362,\"y\":110},\"imageId\":\"15146-img_p37_4\",\"num\":{\"distance\":10.9851,\"isInside\":false,\"str\":\"C\",\"x\":347.1339,\"y\":129.949},\"nums\":[{\"distance\":10.9851,\"isInside\":false,\"str\":\"C\",\"x\":347.1339,\"y\":129.949},{\"distance\":55.6153,\"isInside\":false,\"str\":\"B\",\"x\":399.1734,\"y\":203.2899},{\"distance\":193.5726,\"isInside\":false,\"str\":\"S1\",\"x\":417.7434,\"y\":322.6027},{\"distance\":202.5911,\"isInside\":false,\"str\":\"A\",\"x\":199.1694,\"y\":60.2375},{\"distance\":237.5983,\"isInside\":false,\"str\":\"D\",\"x\":552.6495,\"y\":18.3832},{\"distance\":255.0539,\"isInside\":false,\"str\":\"S2\",\"x\":499.8983,\"y\":301.9291},{\"distance\":324.802,\"isInside\":false,\"str\":\"19\",\"x\":575.9441,\"y\":296.1859},{\"distance\":368.6366,\"isInside\":false,\"str\":\"G\",\"x\":600.2838,\"y\":316.6848},{\"distance\":501.4419,\"isInside\":false,\"str\":\"H\",\"x\":657.1399,\"y\":392.97}]},{\"distance\":10.9347,\"hasMatch\":true,\"id\":\"15134-img_p37_3\",\"image\":{\"dataUrl\":null,\"disHeight\":44,\"disWidth\":43,\"height\":182,\"id\":\"15134-img_p37_3\",\"index\":15134,\"originalTransform\":{\"height\":44,\"width\":43,\"x\":414,\"y\":183},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":178,\"x\":414,\"y\":183},\"imageId\":\"15134-img_p37_3\",\"num\":{\"distance\":10.9347,\"isInside\":false,\"str\":\"B\",\"x\":399.1734,\"y\":203.2899},\"nums\":[{\"distance\":10.9347,\"isInside\":false,\"str\":\"B\",\"x\":399.1734,\"y\":203.2899},{\"distance\":101.3828,\"isInside\":false,\"str\":\"S1\",\"x\":417.7434,\"y\":322.6027},{\"distance\":109.5851,\"isInside\":false,\"str\":\"C\",\"x\":347.1339,\"y\":129.949},{\"distance\":130.0539,\"isInside\":false,\"str\":\"S2\",\"x\":499.8983,\"y\":301.9291},{\"distance\":199.802,\"isInside\":false,\"str\":\"19\",\"x\":575.9441,\"y\":296.1859},{\"distance\":243.6366,\"isInside\":false,\"str\":\"G\",\"x\":600.2838,\"y\":316.6848},{\"distance\":258.5983,\"isInside\":false,\"str\":\"D\",\"x\":552.6495,\"y\":18.3832},{\"distance\":327.5911,\"isInside\":false,\"str\":\"A\",\"x\":199.1694,\"y\":60.2375},{\"distance\":376.4419,\"isInside\":false,\"str\":\"H\",\"x\":657.1399,\"y\":392.97}]},{\"distance\":16.633,\"hasMatch\":true,\"id\":\"15122-img_p37_2\",\"image\":{\"dataUrl\":null,\"disHeight\":67,\"disWidth\":75,\"height\":281,\"id\":\"15122-img_p37_2\",\"index\":15122,\"originalTransform\":{\"height\":67,\"width\":75,\"x\":621,\"y\":302},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":314,\"x\":621,\"y\":302},\"imageId\":\"15122-img_p37_2\",\"num\":{\"distance\":16.633,\"isInside\":false,\"str\":\"G\",\"x\":600.2838,\"y\":316.6848},\"nums\":[{\"distance\":16.633,\"isInside\":false,\"str\":\"G\",\"x\":600.2838,\"y\":316.6848},{\"distance\":30.7481,\"isInside\":false,\"str\":\"H\",\"x\":657.1399,\"y\":392.97},{\"distance\":39.198,\"isInside\":false,\"str\":\"19\",\"x\":575.9441,\"y\":296.1859},{\"distance\":115.6461,\"isInside\":false,\"str\":\"S2\",\"x\":499.8983,\"y\":301.9291},{\"distance\":197.2274,\"isInside\":false,\"str\":\"S1\",\"x\":417.7434,\"y\":322.6027},{\"distance\":310.5347,\"isInside\":false,\"str\":\"B\",\"x\":399.1734,\"y\":203.2899},{\"distance\":341.6353,\"isInside\":false,\"str\":\"D\",\"x\":552.6495,\"y\":18.3832},{\"distance\":435.5851,\"isInside\":false,\"str\":\"C\",\"x\":347.1339,\"y\":129.949},{\"distance\":653.5911,\"isInside\":false,\"str\":\"A\",\"x\":199.1694,\"y\":60.2375}]},{\"distance\":19.6353,\"hasMatch\":true,\"id\":\"15110-img_p37_1\",\"image\":{\"dataUrl\":null,\"disHeight\":93,\"disWidth\":46,\"height\":386,\"id\":\"15110-img_p37_1\",\"index\":15110,\"originalTransform\":{\"height\":93,\"width\":46,\"x\":535,\"y\":43},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":194,\"x\":535,\"y\":43},\"imageId\":\"15110-img_p37_1\",\"num\":{\"distance\":19.6353,\"isInside\":false,\"str\":\"D\",\"x\":552.6495,\"y\":18.3832},\"nums\":[{\"distance\":19.6353,\"isInside\":false,\"str\":\"D\",\"x\":552.6495,\"y\":18.3832},{\"distance\":166.802,\"isInside\":false,\"str\":\"19\",\"x\":575.9441,\"y\":296.1859},{\"distance\":183.5851,\"isInside\":false,\"str\":\"C\",\"x\":347.1339,\"y\":129.949},{\"distance\":199.8043,\"isInside\":false,\"str\":\"S2\",\"x\":499.8983,\"y\":301.9291},{\"distance\":205.1145,\"isInside\":false,\"str\":\"B\",\"x\":399.1734,\"y\":203.2899},{\"distance\":210.6366,\"isInside\":false,\"str\":\"G\",\"x\":600.2838,\"y\":316.6848},{\"distance\":302.6328,\"isInside\":false,\"str\":\"S1\",\"x\":417.7434,\"y\":322.6027},{\"distance\":331.8411,\"isInside\":false,\"str\":\"A\",\"x\":199.1694,\"y\":60.2375},{\"distance\":343.4419,\"isInside\":false,\"str\":\"H\",\"x\":657.1399,\"y\":392.97}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-Hallmark.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-Hallmark.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1017,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-Hallmark.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 927
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆架+黑底-1.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆架+黑底-1.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1838,
+              "object": 20,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆架+黑底-1.pdf/1_Im0_obj20.png",
+              "source": "direct-fast",
+              "time": "5.917µs",
+              "type": "image-meta",
+              "width": 1678
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆架+黑底-2.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆架+黑底-2.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 814,
+              "object": 11,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆架+黑底-2.pdf/1_Im0_obj11.png",
+              "source": "direct-fast",
+              "time": "1.195458ms",
+              "type": "image-meta",
+              "width": 770
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 606,
+              "object": 30,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im0_obj30.png",
+              "source": "direct-fast",
+              "time": "11.333µs",
+              "type": "image-meta",
+              "width": 345
+            },
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 31,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im1_obj31.png",
+              "source": "direct-fast",
+              "time": "8.958µs",
+              "type": "image-meta",
+              "width": 925
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "定香壁龛大画面.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC4月上市比例档/定香壁龛大画面.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1079,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/定香壁龛大画面.pdf/1_Im0_obj10.png",
+              "source": "direct-fast",
+              "time": "7.416µs",
+              "type": "image-meta",
+              "width": 1207
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-玉龙茶香大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-玉龙茶香大灯箱.pdf",
+      "totalPages": 2,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 2,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_002_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 1172
+            },
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 2110
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "2408-护肤吧新品-1.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC4月上市比例档/2408-护肤吧新品-1.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 636,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/2408-护肤吧新品-1.pdf/1_Im0_obj10.png",
+              "source": "direct-fast",
+              "time": "4.5µs",
+              "type": "image-meta",
+              "width": 473
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "2607-护肤吧新品-2.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/2607-护肤吧新品-2.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "jpg",
+              "height": 300,
+              "object": 11,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/2607-护肤吧新品-2.pdf/1_Im0_obj11.jpg",
+              "source": "direct-fast",
+              "time": "1.5µs",
+              "type": "image-meta",
+              "width": 271
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    }
+  }
+}

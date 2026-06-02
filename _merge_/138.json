@@ -1,0 +1,407 @@
+{
+  "shopName": "青岛海信奥林匹克广场",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "A": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC03X11749",
+      "柜台名称": "青岛海信奥林匹克广场",
+      "灯位编号": "A",
+      "灯位备注": "26YJul-护肤大灯箱",
+      "画面位置": "护肤咨询区墙面灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 1305,
+      "": "*",
+      "可见长": 1113,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.17250673854447,
+      "比例H/W": 0.852873563218391,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "护肤咨询区墙面灯箱"
+    },
+    "B": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC03X11749",
+      "柜台名称": "青岛海信奥林匹克广场",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-唇妆产品+文字",
+      "画面位置": "主上市壁龛灯箱-2",
+      "材质": "软膜灯箱布",
+      "可见宽": 1270,
+      "": "*",
+      "可见长": 1113,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.14106019766397,
+      "比例H/W": 0.876377952755905,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "主上市壁龛灯箱-2"
+    },
+    "C": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC03X11749",
+      "柜台名称": "青岛海信奥林匹克广场",
+      "灯位编号": "C",
+      "灯位备注": "26YJul-玉龙茶香大灯箱",
+      "画面位置": "冲外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1223,
+      "": "*",
+      "可见长": 2791,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.438194195628807,
+      "比例H/W": 2.28209321340965,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "冲外不挡"
+    },
+    "D": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC03X11749",
+      "柜台名称": "青岛海信奥林匹克广场",
+      "灯位编号": "D",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "冲外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1430,
+      "": "*",
+      "可见长": 2791,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.512361160874239,
+      "比例H/W": 1.95174825174825,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "冲外不挡"
+    }
+  },
+  "db-data": {
+    "id": 710,
+    "品牌": "Gac",
+    "店铺名称": "青岛海信奥林匹克广场",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 405,
+        "品牌": "Gac",
+        "店铺名称": "青岛海信奥林匹克广场",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/青岛海信奥林匹克广场_47.pdf",
+        "PDF标题": "青岛海信奥林匹克广场灯位图",
+        "编号列表": "[{\"distance\":9.8515,\"hasMatch\":true,\"id\":\"35905-img_p46_4\",\"image\":{\"dataUrl\":null,\"disHeight\":81,\"disWidth\":83,\"height\":338,\"id\":\"35905-img_p46_4\",\"index\":35905,\"originalTransform\":{\"height\":81,\"width\":83,\"x\":66,\"y\":374},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":348,\"x\":66,\"y\":374},\"imageId\":\"35905-img_p46_4\",\"num\":{\"distance\":9.8515,\"isInside\":false,\"str\":\"B\",\"x\":154.689,\"y\":384.4961},\"nums\":[{\"distance\":9.8515,\"isInside\":false,\"str\":\"B\",\"x\":154.689,\"y\":384.4961},{\"distance\":79.3891,\"isInside\":false,\"str\":\"C\",\"x\":223.3613,\"y\":415.9268},{\"distance\":101.7642,\"isInside\":false,\"str\":\"A\",\"x\":174.1574,\"y\":295.42229999999995},{\"distance\":542.5974,\"isInside\":false,\"str\":\"D\",\"x\":683.2483,\"y\":364.0055}]},{\"distance\":14.5543,\"hasMatch\":true,\"id\":\"35894-img_p46_3\",\"image\":{\"dataUrl\":null,\"disHeight\":114,\"disWidth\":73,\"height\":475,\"id\":\"35894-img_p46_3\",\"index\":35894,\"originalTransform\":{\"height\":114,\"width\":73,\"x\":700,\"y\":372},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":306,\"x\":700,\"y\":372},\"imageId\":\"35894-img_p46_3\",\"num\":{\"distance\":14.5543,\"isInside\":false,\"str\":\"D\",\"x\":683.2483,\"y\":364.0055},\"nums\":[{\"distance\":14.5543,\"isInside\":false,\"str\":\"D\",\"x\":683.2483,\"y\":364.0055},{\"distance\":473.82,\"isInside\":false,\"str\":\"C\",\"x\":223.3613,\"y\":415.9268},{\"distance\":542.678,\"isInside\":false,\"str\":\"B\",\"x\":154.689,\"y\":384.4961},{\"distance\":592.5539,\"isInside\":false,\"str\":\"A\",\"x\":174.1574,\"y\":295.42229999999995}]},{\"distance\":19.52,\"hasMatch\":true,\"id\":\"35883-img_p46_2\",\"image\":{\"dataUrl\":null,\"disHeight\":113,\"disWidth\":58,\"height\":471,\"id\":\"35883-img_p46_2\",\"index\":35883,\"originalTransform\":{\"height\":113,\"width\":58,\"x\":199,\"y\":441},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":242,\"x\":199,\"y\":441},\"imageId\":\"35883-img_p46_2\",\"num\":{\"distance\":19.52,\"isInside\":false,\"str\":\"C\",\"x\":223.3613,\"y\":415.9268},\"nums\":[{\"distance\":19.52,\"isInside\":false,\"str\":\"C\",\"x\":223.3613,\"y\":415.9268},{\"distance\":90.9485,\"isInside\":false,\"str\":\"B\",\"x\":154.689,\"y\":384.4961},{\"distance\":160.5539,\"isInside\":false,\"str\":\"A\",\"x\":174.1574,\"y\":295.42229999999995},{\"distance\":501.5974,\"isInside\":false,\"str\":\"D\",\"x\":683.2483,\"y\":364.0055}]},{\"distance\":14.5642,\"hasMatch\":true,\"id\":\"35872-img_p46_1\",\"image\":{\"dataUrl\":null,\"disHeight\":68,\"disWidth\":74,\"height\":285,\"id\":\"35872-img_p46_1\",\"index\":35872,\"originalTransform\":{\"height\":68,\"width\":74,\"x\":91,\"y\":245},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":308,\"x\":91,\"y\":245},\"imageId\":\"35872-img_p46_1\",\"num\":{\"distance\":14.5642,\"isInside\":false,\"str\":\"A\",\"x\":174.1574,\"y\":295.42229999999995},\"nums\":[{\"distance\":14.5642,\"isInside\":false,\"str\":\"A\",\"x\":174.1574,\"y\":295.42229999999995},{\"distance\":78.4515,\"isInside\":false,\"str\":\"B\",\"x\":154.689,\"y\":384.4961},{\"distance\":171.48,\"isInside\":false,\"str\":\"C\",\"x\":223.3613,\"y\":415.9268},{\"distance\":579.4457,\"isInside\":false,\"str\":\"D\",\"x\":683.2483,\"y\":364.0055}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-护肤大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-护肤大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 160,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-护肤大灯箱.pdf/1_Im0_obj10.png",
+              "source": "direct-fallback",
+              "time": "1.71075ms",
+              "type": "image-meta",
+              "width": 294
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-唇妆产品+文字.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-唇妆产品+文字.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "jpg",
+              "height": 281,
+              "object": 11,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-唇妆产品+文字.pdf/1_Im0_obj11.jpg",
+              "source": "direct-fast",
+              "time": "1.542µs",
+              "type": "image-meta",
+              "width": 175
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-玉龙茶香大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-玉龙茶香大灯箱.pdf",
+      "totalPages": 2,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 2,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_002_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 1172
+            },
+            {
+              "ext": "png",
+              "height": 1500,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-玉龙茶香大灯箱.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 2110
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-彩妆大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 606,
+              "object": 30,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im0_obj30.png",
+              "source": "direct-fast",
+              "time": "11.333µs",
+              "type": "image-meta",
+              "width": 345
+            },
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 31,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im1_obj31.png",
+              "source": "direct-fast",
+              "time": "8.958µs",
+              "type": "image-meta",
+              "width": 925
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    }
+  }
+}

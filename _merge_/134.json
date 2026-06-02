@@ -1,0 +1,292 @@
+{
+  "shopName": "唐山百货大楼",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "A": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01128921",
+      "柜台名称": "唐山百货大楼",
+      "灯位编号": "A",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "柜台外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1568,
+      "": "*",
+      "可见长": 2818,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.556422995031938,
+      "比例H/W": 1.79719387755102,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "柜台外不挡"
+    },
+    "B": {
+      "渠道": "DS",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01128921",
+      "柜台名称": "唐山百货大楼",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-护肤大灯箱",
+      "画面位置": "护肤背墙墙上灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 2120,
+      "": "*",
+      "可见长": 1113,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.9047619047619,
+      "比例H/W": 0.525,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "护肤背墙墙上灯箱"
+    }
+  },
+  "db-data": {
+    "id": 706,
+    "品牌": "Gac",
+    "店铺名称": "唐山百货大楼",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 401,
+        "品牌": "Gac",
+        "店铺名称": "唐山百货大楼",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/唐山百货大楼_42.pdf",
+        "PDF标题": "唐山百货大楼灯位图",
+        "编号列表": "[{\"distance\":9.7863,\"hasMatch\":true,\"id\":\"29660-img_p41_2\",\"image\":{\"dataUrl\":null,\"disHeight\":125,\"disWidth\":84,\"height\":667,\"id\":\"29660-img_p41_2\",\"index\":29660,\"originalTransform\":{\"height\":125,\"width\":84,\"x\":38,\"y\":201},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":500,\"x\":38,\"y\":201},\"imageId\":\"29660-img_p41_2\",\"num\":{\"distance\":9.7863,\"isInside\":false,\"str\":\"A\",\"x\":127.7285,\"y\":244.94329999999997},\"nums\":[{\"distance\":9.7863,\"isInside\":false,\"str\":\"A\",\"x\":127.7285,\"y\":244.94329999999997},{\"distance\":413.0162,\"isInside\":false,\"str\":\"B\",\"x\":463.125,\"y\":387.8847}]},{\"distance\":19.7414,\"hasMatch\":true,\"id\":\"29649-img_p41_1\",\"image\":{\"dataUrl\":null,\"disHeight\":66,\"disWidth\":119,\"height\":275,\"id\":\"29649-img_p41_1\",\"index\":29649,\"originalTransform\":{\"height\":66,\"width\":119,\"x\":407,\"y\":413},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":498,\"x\":407,\"y\":413},\"imageId\":\"29649-img_p41_1\",\"num\":{\"distance\":19.7414,\"isInside\":false,\"str\":\"B\",\"x\":463.125,\"y\":387.8847},\"nums\":[{\"distance\":19.7414,\"isInside\":false,\"str\":\"B\",\"x\":463.125,\"y\":387.8847},{\"distance\":437.3217,\"isInside\":false,\"str\":\"A\",\"x\":127.7285,\"y\":244.94329999999997}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-彩妆大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 606,
+              "object": 30,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im0_obj30.png",
+              "source": "direct-fast",
+              "time": "11.333µs",
+              "type": "image-meta",
+              "width": 345
+            },
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 31,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im1_obj31.png",
+              "source": "direct-fast",
+              "time": "8.958µs",
+              "type": "image-meta",
+              "width": 925
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-护肤大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-护肤大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 160,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-护肤大灯箱.pdf/1_Im0_obj10.png",
+              "source": "direct-fallback",
+              "time": "1.71075ms",
+              "type": "image-meta",
+              "width": 294
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    }
+  }
+}

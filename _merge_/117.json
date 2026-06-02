@@ -1,0 +1,344 @@
+{
+  "shopName": "江门汇悦大融城BD精品店",
+  "table-config": [
+    {
+      "label": "柜台名称",
+      "key": "柜台名称",
+      "width": 190,
+      "align": "left"
+    },
+    {
+      "label": "灯位编号",
+      "key": "灯位编号",
+      "width": 50,
+      "align": "center"
+    },
+    {
+      "label": "灯位位置",
+      "key": "灯位位置",
+      "width": 70,
+      "align": "center"
+    },
+    {
+      "label": "材质",
+      "key": "材质",
+      "width": 70,
+      "align": "left"
+    },
+    {
+      "label": "可见宽(Mm)",
+      "key": "可见宽",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "可见长(Mm)",
+      "key": "可见长",
+      "width": 60,
+      "align": "left"
+    },
+    {
+      "label": "灯位备注",
+      "key": "灯位备注",
+      "align": "left"
+    },
+    {
+      "label": "画面内容",
+      "key": "画面内容",
+      "align": "left"
+    }
+  ],
+  "brand-config": {
+    "addCatalogue": false,
+    "addGuide": false,
+    "addInstallDir": false,
+    "addPageNumber": false,
+    "addPageNumbers": [],
+    "addShopName": false,
+    "brandName": "Gac",
+    "catalogue": {
+      "background": "",
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "indentSize": 14,
+      "left": 50,
+      "lineHeight": 10,
+      "oneFontSize": 14,
+      "titleFontSize": 24,
+      "top": 180,
+      "twoFontSize": 12
+    },
+    "customTexts": [],
+    "guide": {
+      "borderColor": {
+        "blue": 0.25098039215686274,
+        "green": 1,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgb(0, 255, 64)"
+      },
+      "borderSize": 2,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descColor": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 0, 0, 1)"
+      },
+      "descFontSize": 8,
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 8
+    },
+    "header": [],
+    "id": 3,
+    "lastPageNumber": true,
+    "pageNumber": {
+      "bottom": 180,
+      "color": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 1,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 1)"
+      },
+      "fontData": "",
+      "fontFamily": "",
+      "fontSize": 14,
+      "left": 0
+    },
+    "shopName": {
+      "background": {
+        "blue": 0,
+        "green": 0,
+        "opacity": 0,
+        "red": 0,
+        "rgb": "rgba(0, 0, 0, 0)"
+      },
+      "bottom": 0,
+      "color": {
+        "blue": 1,
+        "green": 1,
+        "opacity": 1,
+        "red": 1,
+        "rgb": "rgba(255, 255, 255, 1)"
+      },
+      "fontFamily": "",
+      "fontSize": 35,
+      "left": 0,
+      "width": 200
+    },
+    "splitSeparator": [
+      "&"
+    ]
+  },
+  "excel-data": {
+    "A": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01146060",
+      "柜台名称": "江门汇悦大融城BD精品店",
+      "灯位编号": "A",
+      "灯位备注": "26YJul-彩妆大灯箱",
+      "画面位置": "柜台外不挡",
+      "材质": "软膜灯箱布",
+      "可见宽": 1718,
+      "": "*",
+      "可见长": 2956,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.581190798376184,
+      "比例H/W": 1.72060535506403,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "柜台外不挡"
+    },
+    "B": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01146060",
+      "柜台名称": "江门汇悦大融城BD精品店",
+      "灯位编号": "B",
+      "灯位备注": "26YJul-护肤大灯箱",
+      "画面位置": "护肤背墙墙上灯箱",
+      "材质": "软膜灯箱布",
+      "可见宽": 2486,
+      "": "*",
+      "可见长": 1276,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 1.94827586206897,
+      "比例H/W": 0.513274336283186,
+      "备注": "不含胶条尺寸",
+      "isNew": true,
+      "灯位位置": "护肤背墙墙上灯箱"
+    },
+    "AA": {
+      "渠道": "BD",
+      "color": [
+        1,
+        0,
+        0
+      ],
+      "柜台编号": "GC01146060",
+      "柜台名称": "江门汇悦大融城BD精品店",
+      "灯位编号": "AA",
+      "灯位备注": "26YJul-Hallmark",
+      "画面位置": "Hallmark墙上",
+      "材质": "灯布",
+      "可见宽": 838,
+      "": "*",
+      "可见长": 1278,
+      "柜台数量(张)": 1,
+      "上市灯片": "Y",
+      "比例W/H": 0.655712050078247,
+      "比例H/W": 1.52505966587112,
+      "备注": "胶条尺寸自行外放（胶条为12*2mm）",
+      "isNew": true,
+      "灯位位置": "Hallmark墙上"
+    }
+  },
+  "db-data": {
+    "id": 689,
+    "品牌": "Gac",
+    "店铺名称": "江门汇悦大融城BD精品店",
+    "柜台供应商": "",
+    "安装供应商": "",
+    "柜台形式": "",
+    "是否开业": "是",
+    "lamp": [
+      {
+        "id": 384,
+        "品牌": "Gac",
+        "店铺名称": "江门汇悦大融城BD精品店",
+        "宽度": "1010.268",
+        "高度": "714.3312",
+        "缩放": "1.2",
+        "文件": "guide/Gac/江门汇悦大融城BD精品店_25.pdf",
+        "PDF标题": "江门汇悦大融城BD精品店灯位图",
+        "编号列表": "[{\"distance\":11.8192,\"hasMatch\":true,\"id\":\"27574-img_p24_3\",\"image\":{\"dataUrl\":null,\"disHeight\":77,\"disWidth\":48,\"height\":322,\"id\":\"27574-img_p24_3\",\"index\":27574,\"originalTransform\":{\"height\":77,\"width\":48,\"x\":247,\"y\":138},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":201,\"x\":247,\"y\":138},\"imageId\":\"27574-img_p24_3\",\"num\":{\"distance\":11.8192,\"isInside\":false,\"str\":\"aa\",\"x\":299.4679,\"y\":165.9707},\"nums\":[{\"distance\":11.8192,\"isInside\":false,\"str\":\"aa\",\"x\":299.4679,\"y\":165.9707},{\"distance\":378.9239,\"isInside\":false,\"str\":\"B\",\"x\":436.7321,\"y\":442.8399},{\"distance\":572.3084,\"isInside\":false,\"str\":\"A\",\"x\":672.9734,\"y\":399.9831}]},{\"distance\":11.0778,\"hasMatch\":true,\"id\":\"27562-img_p24_2\",\"image\":{\"dataUrl\":null,\"disHeight\":107,\"disWidth\":57,\"height\":446,\"id\":\"27562-img_p24_2\",\"index\":27562,\"originalTransform\":{\"height\":107,\"width\":57,\"x\":686,\"y\":361},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":236,\"x\":686,\"y\":361},\"imageId\":\"27562-img_p24_2\",\"num\":{\"distance\":11.0778,\"isInside\":false,\"str\":\"A\",\"x\":672.9734,\"y\":399.9831},\"nums\":[{\"distance\":11.0778,\"isInside\":false,\"str\":\"A\",\"x\":672.9734,\"y\":399.9831},{\"distance\":247.3759,\"isInside\":false,\"str\":\"B\",\"x\":436.7321,\"y\":442.8399},{\"distance\":568.8894,\"isInside\":false,\"str\":\"aa\",\"x\":299.4679,\"y\":165.9707}]},{\"distance\":20.0241,\"hasMatch\":true,\"id\":\"27550-img_p24_1\",\"image\":{\"dataUrl\":null,\"disHeight\":63,\"disWidth\":100,\"height\":263,\"id\":\"27550-img_p24_1\",\"index\":27550,\"originalTransform\":{\"height\":63,\"width\":100,\"x\":390,\"y\":468},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":416,\"x\":390,\"y\":468},\"imageId\":\"27550-img_p24_1\",\"num\":{\"distance\":20.0241,\"isInside\":false,\"str\":\"B\",\"x\":436.7321,\"y\":442.8399},\"nums\":[{\"distance\":20.0241,\"isInside\":false,\"str\":\"B\",\"x\":436.7321,\"y\":442.8399},{\"distance\":249.1222,\"isInside\":false,\"str\":\"A\",\"x\":672.9734,\"y\":399.9831},{\"distance\":379.8894,\"isInside\":false,\"str\":\"aa\",\"x\":299.4679,\"y\":165.9707}]}]"
+      }
+    ]
+  },
+  "file-data": {
+    "26Y Jul-彩妆大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-彩妆大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 606,
+              "object": 30,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im0_obj30.png",
+              "source": "direct-fast",
+              "time": "11.333µs",
+              "type": "image-meta",
+              "width": 345
+            },
+            {
+              "ext": "png",
+              "height": 610,
+              "object": 31,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-彩妆大灯箱.pdf/1_Im1_obj31.png",
+              "source": "direct-fast",
+              "time": "8.958µs",
+              "type": "image-meta",
+              "width": 925
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-护肤大灯箱.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-护肤大灯箱.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 160,
+              "object": 10,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-护肤大灯箱.pdf/1_Im0_obj10.png",
+              "source": "direct-fallback",
+              "time": "1.71075ms",
+              "type": "image-meta",
+              "width": 294
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    },
+    "26Y Jul-Hallmark.pdf": {
+      "path": "/Users/Yau/Downloads/1.loreal/新上市/GAC/0602/数据/GAC7月上市比例档/26Y Jul-Hallmark.pdf",
+      "totalPages": 1,
+      "lazy": false,
+      "pages": [
+        {
+          "title": "",
+          "catalogueTitle": "",
+          "p": 1,
+          "items": [],
+          "images": [
+            {
+              "ext": "png",
+              "height": 1017,
+              "index": 1,
+              "page": 1,
+              "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260602/Gac/26YJul-Hallmark.pdf/page_001_image_001.png",
+              "source": "render-whole-page",
+              "type": "image-meta",
+              "width": 927
+            }
+          ],
+          "width": 0,
+          "height": 0,
+          "path": ""
+        }
+      ]
+    }
+  }
+}
