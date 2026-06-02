@@ -277,6 +277,11 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 			log.Printf("  选中图片: %s (%.0fx%.0f)", match.Image.Path, match.Image.Width, match.Image.Height)
 		}
 
+		// 上一档且 prev=1 时跳过整个灯片（不替换图片，不输出消息）
+		if !lampItem.IsNewValue() && prevShow == 1 {
+			continue
+		}
+
 		prepJobs = append(prepJobs, prepJob{
 			numStr:   numStr,
 			lampItem: lampItem,
@@ -288,10 +293,6 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 		})
 
 		processedCount++
-		// 上一档且 prev=1 时不输出
-		if !lampItem.IsNewValue() && prevShow == 1 {
-			continue
-		}
 		reportProgress(jsonProgress, 0,
 			fmt.Sprintf("点位 %s %s", numStr, lampLabel(lampItem.IsNewValue())),
 			float64(processedCount)*progressPerLamp)
