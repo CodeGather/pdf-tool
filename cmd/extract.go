@@ -1,8 +1,8 @@
 package cmd
 
 import (
+	"bytes"
 	"encoding/json"
-	"golang.org/x/image/tiff"
 	"fmt"
 	"image"
 	"image/color"
@@ -30,6 +30,7 @@ import (
 	"example.com/pdf-tool/util"
 )
 
+// RunExtract 是图片提取模式的入口函数。
 func RunExtract(inputFile, outputDir, format string, dpi float64, timing, progressEnabled bool, quality int, parallelPercent int, colorCorrectionEnabled bool) error {
 	if err := os.MkdirAll(outputDir, 0755); err != nil {
 		return fmt.Errorf("创建输出目录失败: %v", err)
@@ -157,7 +158,7 @@ return renderWholePagePDF(inputFile, outputDir, format, dpi, timing, progressEna
 	case routeRenderCropComplexTransparency:
 		// 复杂透明度 + Form XObject 场景，优先保证最终可见结果。
 		// 这类 PDF 往往无法靠对象直取稳定还原，所以走整页渲染后裁剪。
-return renderWholePagePDF(inputFile, outputDir, format, dpi, timing, progressEnabled, quality, parallelPercent)
+		return renderCropPDF(inputFile, outputDir, format, dpi, timing, progressEnabled, quality, parallelPercent)
 	case routeRenderWholePageImage:
 		// 页面本身就是整图时，整页渲染比对象级重建更稳。
 		// 这种场景通常对应扫描件或大图铺满页面，直接输出整页最合理。
@@ -274,7 +275,6 @@ func classifyPDFDocument(ctx *model.Context, inputFile string) (pdfDocumentRoute
 				anyGroupWithClip = true
 			}
 		}
-
 		// 有实际裁剪路径但没有 /Group 标记。
 		// 这类页面仍然需要渲染后裁剪才能得到正确的视觉效果。
 		if hasClip {
@@ -291,7 +291,7 @@ func classifyPDFDocument(ctx *model.Context, inputFile string) (pdfDocumentRoute
 		}
 
 		// ImageObjNrs 会返回当前页直接引用到的图片对象号。
-		// 这是决定“能否走对象级直取”的最直接信号。
+		// 这是决定"能否走对象级直取"的最直接信号。
 		objNrs := pdfcpu.ImageObjNrs(ctx, pageNr)
 		if len(objNrs) > 0 {
 			anyImagePage = true
@@ -1171,7 +1171,7 @@ func writeDirectImage(ctx *model.Context, ctxMu *sync.Mutex, inputFile string, p
 			qual = "image"
 		}
 		outputExt := util.OutputExtension(format)
-		fileName := fmt.Sprintf("%s_%0*d_%s_obj%d.%s", inputStem, pageDigits, pageNr, qual, objNr, outputExt)
+		fileName := fmt.Sprintf("%0*d_%s_obj%d.%s", pageDigits, pageNr, qual, objNr, outputExt)
 		outPath := filepath.Join(outputDir, fileName)
 		metaWidth, metaHeight := resolveImageDimensions(imageObj.ImageDict, img.Width, img.Height)
 		traceImageMeta(imageMetaRecord{
@@ -1201,7 +1201,7 @@ func writeDirectImage(ctx *model.Context, ctxMu *sync.Mutex, inputFile string, p
 		qual = "image"
 	}
 	outputExt := normalizeOutputImageExt(img.FileType)
-	fileName := fmt.Sprintf("%s_%0*d_%s_obj%d.%s", inputStem, pageDigits, pageNr, qual, objNr, outputExt)
+	fileName := fmt.Sprintf("%0*d_%s_obj%d.%s", pageDigits, pageNr, qual, objNr, outputExt)
 	outPath := filepath.Join(outputDir, fileName)
 	metaWidth, metaHeight := resolveImageDimensions(imageObj.ImageDict, img.Width, img.Height)
 	traceImageMeta(imageMetaRecord{
@@ -1218,17 +1218,48 @@ func writeDirectImage(ctx *model.Context, ctxMu *sync.Mutex, inputFile string, p
 
 	writeStart := time.Now()
 	if outputExt == "png" && !isDirectCopyableImageType(img.FileType) {
-		decodedImg, decodeErr := decodeImageForOutput(img.FileType, img.Reader)
-		if decodeErr != nil {
-			traceTiming(timing, "direct-extract page %d obj %d decode-skip=%v", pageNr, objNr, decodeErr)
+		// 先读取原始数据，因为 reader 只能消费一次
+		rawData, readErr := io.ReadAll(img.Reader)
+		if readErr != nil {
+			traceTiming(timing, "direct-extract page %d obj %d read-skip=%v", pageNr, objNr, readErr)
 			return nil
 		}
-		if err := util.WriteImageAtomically(outPath, func(w io.Writer) error {
-			return util.EncodePNG(w, decodedImg)
-		}); err != nil {
-			traceTiming(timing, "direct-extract page %d obj %d encode-skip=%v", pageNr, objNr, err)
-			return nil
+		// 尝试用 image.Decode 从原始数据解析
+		if dec, _, decErr := image.Decode(bytes.NewReader(rawData)); decErr == nil {
+			if err := util.WriteImageAtomically(outPath, func(w io.Writer) error {
+				return util.EncodePNG(w, dec)
+			}); err != nil {
+				traceTiming(timing, "direct-extract page %d obj %d encode-skip=%v", pageNr, objNr, err)
+				return nil
+			}
+		} else if len(rawData) == metaWidth*metaHeight*3 || len(rawData) == metaWidth*metaHeight*4 {
+			// 可能是原始 RGB/RGBA 像素数据
+			bounds := image.Rect(0, 0, metaWidth, metaHeight)
+			rgba := image.NewRGBA(bounds)
+			if len(rawData) == metaWidth*metaHeight*3 {
+				for y := 0; y < metaHeight; y++ {
+					for x := 0; x < metaWidth; x++ {
+						idx := (y*metaWidth + x) * 3
+						rgba.Set(x, y, color.RGBA{R: rawData[idx], G: rawData[idx+1], B: rawData[idx+2], A: 255})
+					}
+				}
+			} else {
+				copy(rgba.Pix, rawData)
+			}
+			if err := util.WriteImageAtomically(outPath, func(w io.Writer) error {
+				return util.EncodePNG(w, rgba)
+			}); err != nil {
+				traceTiming(timing, "direct-extract page %d obj %d encode-skip=%v", pageNr, objNr, err)
+			}
+		} else {
+			// 写入原始数据
+			traceTiming(timing, "direct-extract page %d obj %d unknown-format len=%d", pageNr, objNr, len(rawData))
+			if err := os.WriteFile(outPath, rawData, 0644); err != nil {
+				traceTiming(timing, "direct-extract page %d obj %d write-skip=%v", pageNr, objNr, err)
+			}
 		}
+		traceTiming(timing, "direct-extract page %d obj %d fallback-write=%s", pageNr, objNr, time.Since(writeStart))
+		return nil
 	} else {
 		if err := util.WriteImageAtomically(outPath, func(w io.Writer) error {
 			_, copyErr := io.Copy(w, img.Reader)
@@ -1360,7 +1391,7 @@ func writeDirectImageFast(ctx *model.Context, sd *types.StreamDict, objNr int, i
 		if resourceID == "" {
 			resourceID = "image"
 		}
-		fileName := fmt.Sprintf("%s_%0*d_%s_obj%d.%s", inputStem, pageDigits, pageNr, resourceID, objNr, ext)
+		fileName := fmt.Sprintf("%0*d_%s_obj%d.%s", pageDigits, pageNr, resourceID, objNr, ext)
 		outPath := filepath.Join(outputDir, fileName)
 		traceImageMeta(imageMetaRecord{
 			Type:   "image-meta",
@@ -1445,7 +1476,7 @@ func writeDirectImageFast(ctx *model.Context, sd *types.StreamDict, objNr int, i
 	if resourceID == "" {
 		resourceID = "image"
 	}
-	fileName := fmt.Sprintf("%s_%0*d_%s_obj%d.png", inputStem, pageDigits, pageNr, resourceID, objNr)
+	fileName := fmt.Sprintf("%0*d_%s_obj%d.png", pageDigits, pageNr, resourceID, objNr)
 	outPath := filepath.Join(outputDir, fileName)
 	traceImageMeta(imageMetaRecord{
 		Type:   "image-meta",
@@ -1873,25 +1904,6 @@ func normalizeOutputImageExt(fileType string) string {
 		return "png"
 	default:
 		return "png"
-	}
-}
-
-// decodeImageForOutput 根据文件类型解码图片数据。
-// 支持 JPEG、PNG 两种常见格式。
-func decodeImageForOutput(fileType string, reader io.Reader) (image.Image, error) {
-	switch strings.ToLower(strings.TrimSpace(fileType)) {
-	case "tif", "tiff":
-		img, err := tiff.Decode(reader)
-		if err != nil {
-			return nil, err
-		}
-		return img, nil
-	default:
-		img, _, err := image.Decode(reader)
-		if err != nil {
-			return nil, err
-		}
-		return img, nil
 	}
 }
 
