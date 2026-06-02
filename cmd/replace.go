@@ -85,6 +85,14 @@ func flushProgress(jsonEnabled bool, code int, msg string) {
 	}
 }
 
+// lampLabel 返回"本档素材"或"上一档"
+func lampLabel(isNew bool) string {
+	if isNew {
+		return "本档素材"
+	}
+	return "上一档"
+}
+
 // failJSON JSON 模式下遇到致命错误时输出错误结果并返回 nil
 func failJSON(jsonEnabled bool, msg string) error {
 	if jsonEnabled {
@@ -96,7 +104,7 @@ func failJSON(jsonEnabled bool, msg string) error {
 }
 
 // Run 程序主入口
-func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress bool) error {
+func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress bool, prevShow int) error {
 	cfg, err := config.LoadConfig(inputPath)
 	if err != nil {
 		return failJSON(jsonProgress, fmt.Sprintf("加载配置失败: %v", err))
@@ -226,7 +234,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 		if !found {
 			processedCount++
 			reportProgress(jsonProgress, 1,
-				fmt.Sprintf("编号 %s 无匹配素材", numStr),
+				fmt.Sprintf("点位 %s 没有找到%s素材", numStr, lampLabel(lampItem.IsNewValue())),
 				float64(processedCount)*progressPerLamp)
 			continue
 		}
@@ -239,7 +247,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 		if len(allImages) == 0 {
 			processedCount++
 			reportProgress(jsonProgress, 1,
-				fmt.Sprintf("编号 %s 素材无图片", numStr),
+				fmt.Sprintf("点位 %s 没有找到%s素材", numStr, lampLabel(lampItem.IsNewValue())),
 				float64(processedCount)*progressPerLamp)
 			continue
 		}
@@ -255,7 +263,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 		if !match.Found {
 			processedCount++
 			reportProgress(jsonProgress, 1,
-				fmt.Sprintf("编号 %s 未找到符合比例的素材图片", numStr),
+				fmt.Sprintf("点位 %s 没有找到%s素材", numStr, lampLabel(lampItem.IsNewValue())),
 				float64(processedCount)*progressPerLamp)
 			continue
 		}
@@ -274,8 +282,12 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 		})
 
 		processedCount++
+		// 上一档且 prev=1 时不输出
+		if !lampItem.IsNewValue() && prevShow == 1 {
+			continue
+		}
 		reportProgress(jsonProgress, 0,
-			fmt.Sprintf("编号 %s 匹配成功", numStr),
+			fmt.Sprintf("点位 %s %s", numStr, lampLabel(lampItem.IsNewValue())),
 			float64(processedCount)*progressPerLamp)
 	}
 
@@ -369,8 +381,11 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 			newRows = append(newRows, tableRow{num: r.numStr, item: r.lampItem})
 		}
 		jobDone++
+		if !r.isNew && prevShow == 1 {
+			continue
+		}
 		reportProgress(jsonProgress, 0,
-			fmt.Sprintf("编号 %s 替换成功", r.numStr),
+			fmt.Sprintf("点位 %s %s", r.numStr, lampLabel(r.isNew)),
 			90.0+float64(jobDone)/float64(totalJobs)*5.0)
 	}
 
@@ -517,7 +532,7 @@ func renderTable(tmpl *pdf.Template, cfg *model.ReplaceConfig, rows []tableRow, 
 var jsonProgress bool
 
 // RunReplaceDir 批量合成模式：扫描目录中所有 *.json 文件，依次处理
-func RunReplaceDir(mergeDir, outputDir string, cpu int, jsonProg bool) error {
+func RunReplaceDir(mergeDir, outputDir string, cpu int, jsonProg bool, prevShow int) error {
 	jsonProgress = jsonProg
 
 	entries, err := os.ReadDir(mergeDir)
@@ -557,7 +572,7 @@ func RunReplaceDir(mergeDir, outputDir string, cpu int, jsonProg bool) error {
 		outputPath := filepath.Join(outputDir, outName)
 
 		fileStart := time.Now()
-		if err := Run(inputPath, outputPath, "", "", cpu, jsonProg); err != nil {
+		if err := Run(inputPath, outputPath, "", "", cpu, jsonProg, prevShow); err != nil {
 			if jsonProg {
 				reportProgress(true, 1, fmt.Sprintf("文件 %s 处理失败: %v", name, err),
 					float64(i+1)/float64(len(jsonFiles))*100.0)
