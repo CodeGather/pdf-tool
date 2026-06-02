@@ -185,6 +185,7 @@ func main() {
 	}
 
 	// 默认：提取图片
+	cmd.InitMetaCollector(*metaEnabled || *metaJSONEnabled, *metaJSONEnabled)
 	if err := os.MkdirAll(*outputDir, 0755); err != nil {
 		fmt.Fprintf(os.Stderr, "创建输出目录失败：%v\n", err)
 		os.Exit(1)
@@ -193,4 +194,5 @@ func main() {
 		fmt.Fprintf(os.Stderr, "PDF 转图片失败：%v\n", err)
 		os.Exit(1)
 	}
+	cmd.FlushMetaCollector()
 }

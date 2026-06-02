@@ -38,6 +38,8 @@ func RunExtract(inputFile, outputDir, format string, dpi float64, timing, progre
 	return convertPDFToImages(inputFile, outputDir, format, dpi, timing, progressEnabled, quality, parallelPercent, colorCorrectionEnabled)
 }
 
+// imageMetaCollector 收集所有图片元数据，在程序结束时统一输出。
+// 支持文本和 JSON 两种格式。
 type imageMetaCollector struct {
 	mu         sync.Mutex
 	enabled    bool
@@ -45,8 +47,20 @@ type imageMetaCollector struct {
 	records    []imageMetaRecord
 }
 
+var globalMetaCollector = newImageMetaCollector(false, false)
+
 func newImageMetaCollector(enabled, jsonOutput bool) *imageMetaCollector {
 	return &imageMetaCollector{enabled: enabled, jsonOutput: jsonOutput}
+}
+
+// InitMetaCollector 初始化全局收集器，必须在提取开始前调用。
+func InitMetaCollector(enabled, jsonOutput bool) {
+	globalMetaCollector = newImageMetaCollector(enabled, jsonOutput)
+}
+
+// FlushMetaCollector 输出所有收集到的元数据。
+func FlushMetaCollector() {
+	globalMetaCollector.flush()
 }
 
 func (c *imageMetaCollector) add(meta imageMetaRecord) {
@@ -1870,9 +1884,10 @@ func floodFillRegion(img *image.RGBA, startX, startY int, visited []bool) (image
 
 // traceImageMeta 记录单张图片的元数据到全局收集器。
 // 收集后在程序结束时统一输出。
+func traceImageMeta(meta imageMetaRecord) {
+	globalMetaCollector.add(meta)
+}
 
-// resolveImageDimensions 尽量补全 pdfcpu 可能缺失的图片宽高。
-// 兜底顺序：已解析出的尺寸优先，其次回退到原始 XObject 字典里的 Width/Height。
 // resolveImageDimensions 尽量补全 pdfcpu 可能缺失的图片宽高。
 // 兜底顺序：已解析出的尺寸优先，其次回退到原始 XObject 字典里的 Width/Height。
 func resolveImageDimensions(imageDict *types.StreamDict, width, height int) (int, int) {
@@ -1931,22 +1946,5 @@ func traceTiming(enabled bool, format string, args ...any) {
 	fmt.Fprintln(os.Stderr, msg)
 }
 
-func traceImageMeta(meta imageMetaRecord) {
-	if util.ImageMetaJSONEnabled {
-		b, err := json.Marshal(meta)
-		if err != nil {
-			return
-		}
-		fmt.Fprintln(os.Stdout, string(b))
-		return
-	}
-	var builder strings.Builder
-	if meta.Time != "" {
-		builder.WriteString(fmt.Sprintf("[image] page=%d source=%s object=%d index=%d size=%dx%d time=%s path=%s\n", meta.Page, meta.Source, meta.Object, meta.Index, meta.Width, meta.Height, meta.Time, meta.Path))
-	} else {
-		builder.WriteString(fmt.Sprintf("[image] page=%d source=%s object=%d index=%d size=%dx%d path=%s\n", meta.Page, meta.Source, meta.Object, meta.Index, meta.Width, meta.Height, meta.Path))
-	}
-	fmt.Fprint(os.Stdout, builder.String())
-}
 
-
+// ─── PDF 压缩功能（基于 Ghostscript）──
