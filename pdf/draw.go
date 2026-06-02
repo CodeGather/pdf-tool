@@ -67,6 +67,43 @@ func ScaleImageContain(img image.Image, targetW, targetH float64) image.Image {
 	return canvas
 }
 
+// ScaleImageFill 将图片拉伸至目标尺寸（fill 模式，不留黑边）
+func ScaleImageFill(img image.Image, targetW, targetH float64) image.Image {
+	bounds := img.Bounds()
+	srcW := float64(bounds.Dx())
+	srcH := float64(bounds.Dy())
+
+	dstW := int(math.Round(targetW))
+	dstH := int(math.Round(targetH))
+	if dstW <= 0 {
+		dstW = 1
+	}
+	if dstH <= 0 {
+		dstH = 1
+	}
+
+	canvas := image.NewRGBA(image.Rect(0, 0, dstW, dstH))
+
+	scaleX := srcW / targetW
+	scaleY := srcH / targetH
+
+	for y := 0; y < dstH; y++ {
+		for x := 0; x < dstW; x++ {
+			srcX := int(math.Round(float64(x) * scaleX))
+			srcY := int(math.Round(float64(y) * scaleY))
+			if srcX >= bounds.Dx() {
+				srcX = bounds.Dx() - 1
+			}
+			if srcY >= bounds.Dy() {
+				srcY = bounds.Dy() - 1
+			}
+			canvas.Set(x, y, img.At(bounds.Min.X+srcX, bounds.Min.Y+srcY))
+		}
+	}
+
+	return canvas
+}
+
 // DrawTextOnTop 在图片上方绘制文本，自动缩字号以适应图片宽度
 func DrawTextOnTop(img image.Image, text string, r, g, b, a float64, fontSizePt float64, fontPath string) image.Image {
 	if text == "" {

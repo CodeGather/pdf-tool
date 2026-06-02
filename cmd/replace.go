@@ -152,11 +152,12 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int) error {
 			continue
 		}
 
-		targetW := lampItem.VisibleW
-		targetH := lampItem.VisibleH
+		// 3e. 必须缩放到原始图片像素尺寸，否则 PDF CTM 矩阵缩放后贴不准灯位
+		targetW := entry.Image.Width
+		targetH := entry.Image.Height
 		if targetW <= 0 || targetH <= 0 {
-			targetW = entry.Image.Width
-			targetH = entry.Image.Height
+			targetW = lampItem.VisibleW
+			targetH = lampItem.VisibleH
 		}
 		match := matcher.SelectBestImage(targetW, targetH, allImages)
 		if !match.Found {
@@ -296,7 +297,7 @@ func processImageDirect(srcPath string, lampItem model.LampItem, bc model.BrandC
 	}
 
 	// 缩放到灯位显示尺寸
-	img := pdf.ScaleImageContain(srcImg, targetW, targetH)
+	img := pdf.ScaleImageFill(srcImg, targetW, targetH)
 
 	// 上市备注文字
 	if lampItem.LaunchNote != "" {
