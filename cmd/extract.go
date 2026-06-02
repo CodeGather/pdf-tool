@@ -80,7 +80,7 @@ func (c *imageMetaCollector) flush() {
 	defer c.mu.Unlock()
 
 	if c.jsonOutput {
-		data, err := json.MarshalIndent(c.records, "", "  ")
+		data, err := json.Marshal(c.records)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "image meta marshal error: %v\n", err)
 			return
