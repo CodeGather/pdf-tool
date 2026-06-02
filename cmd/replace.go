@@ -48,21 +48,58 @@ type progressMsg struct {
 	Progress float64 `json:"progress"`
 }
 
+// replaceResult 单次替换的最终 JSON 结果
+type replaceResult struct {
+	Code     int           `json:"code"`
+	Message  string        `json:"message"`
+	Progress float64       `json:"progress"`
+	Data     []progressMsg `json:"data"`
+}
+
+var progressEvents []progressMsg
+var progressMu sync.Mutex
+
 func reportProgress(jsonEnabled bool, code int, msg string, progress float64) {
 	if jsonEnabled {
-		p := progressMsg{Code: code, Message: msg, Progress: progress}
-		b, _ := json.Marshal(p)
-		fmt.Println(string(b))
+		progressMu.Lock()
+		progressEvents = append(progressEvents, progressMsg{Code: code, Message: msg, Progress: progress})
+		progressMu.Unlock()
 	} else {
 		log.Printf(msg)
 	}
+}
+
+func flushProgress(jsonEnabled bool, code int, msg string) {
+	if jsonEnabled {
+		result := replaceResult{
+			Code:     code,
+			Message:  msg,
+			Progress: 100.0,
+			Data:     progressEvents,
+		}
+		b, _ := json.Marshal(result)
+		fmt.Println(string(b))
+		progressEvents = nil
+	} else if code == 1 {
+		log.Printf(msg)
+	}
+}
+
+// failJSON JSON 模式下遇到致命错误时输出错误结果并返回 nil
+func failJSON(jsonEnabled bool, msg string) error {
+	if jsonEnabled {
+		reportProgress(true, 1, msg, 0)
+		flushProgress(true, 1, msg)
+		return nil
+	}
+	return fmt.Errorf("%s", msg)
 }
 
 // Run 程序主入口
 func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress bool) error {
 	cfg, err := config.LoadConfig(inputPath)
 	if err != nil {
-		return fmt.Errorf("加载配置失败: %w", err)
+		return failJSON(jsonProgress, fmt.Sprintf("加载配置失败: %v", err))
 	}
 
 	if !jsonProgress {
@@ -87,7 +124,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 
 	// 1. 确定模板 PDF 路径
 	if len(cfg.DbData.Lamps) == 0 {
-		return fmt.Errorf("db-data.lamp 为空")
+		return failJSON(jsonProgress, "db-data.lamp 为空")
 	}
 	tmplPath := filepath.Join(actualPDFBase, cfg.DbData.Lamps[0].File)
 	if !jsonProgress {
@@ -97,7 +134,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 	// 2. 打开模板
 	tmpl, err := pdf.OpenTemplate(tmplPath)
 	if err != nil {
-		return fmt.Errorf("打开模板失败: %w", err)
+		return failJSON(jsonProgress, fmt.Sprintf("打开模板失败: %v", err))
 	}
 	defer tmpl.Close()
 
@@ -127,6 +164,13 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 	}
 	progressPerLamp := 100.0 / float64(totalLamps)
 	processedCount := 0
+
+	// JSON 模式：重置收集器
+	if jsonProgress {
+		progressMu.Lock()
+		progressEvents = nil
+		progressMu.Unlock()
+	}
 
 	for _, entry := range allEntries {
 		// 3a. 灯位编号
@@ -243,6 +287,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 			return fmt.Errorf("写入 PDF 失败: %w", err)
 		}
 		reportProgress(jsonProgress, 0, "完成", 100.0)
+		flushProgress(jsonProgress, 0, "完成")
 		return nil
 	}
 
@@ -366,7 +411,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 	if !jsonProgress {
 		log.Printf("完成: %s", outputPath)
 	}
-	reportProgress(jsonProgress, 0, "完成", 100.0)
+	flushProgress(jsonProgress, 0, "完成")
 	return nil
 }
 
