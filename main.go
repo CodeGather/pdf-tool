@@ -94,6 +94,7 @@ func main() {
 	replaceOutput := flag.String("replace-output", "", "替换模式：输出 PDF 路径")
 	replaceFont := flag.String("replace-font", "", "替换模式：中文字体文件路径（TTF）")
 	replaceBaseDir := flag.String("replace-base-dir", "", "替换模式：模板 PDF 基础目录（默认用户数据目录）")
+	replaceDir := flag.String("replace-dir", "", "替换模式：批量合成目录（扫描所有 *.json 文件依次处理）")
 	flag.Usage = func() {
 		numCPU := runtime.NumCPU()
 		fmt.Fprintf(flag.CommandLine.Output(), "用法：%s [参数]\n", os.Args[0])
@@ -153,9 +154,16 @@ func main() {
 	}
 
 	if *replaceEnabled {
-		if err := cmd.Run(*replaceJSON, *replaceOutput, *replaceFont, *replaceBaseDir, *parallelPct); err != nil {
-			fmt.Fprintf(os.Stderr, "替换失败：%v\n", err)
-			os.Exit(1)
+		if *replaceDir != "" {
+			if err := cmd.RunReplaceDir(*replaceDir, *replaceOutput, *parallelPct); err != nil {
+				fmt.Fprintf(os.Stderr, "批量合成失败：%v\n", err)
+				os.Exit(1)
+			}
+		} else {
+			if err := cmd.Run(*replaceJSON, *replaceOutput, *replaceFont, *replaceBaseDir, *parallelPct); err != nil {
+				fmt.Fprintf(os.Stderr, "替换失败：%v\n", err)
+				os.Exit(1)
+			}
 		}
 		return
 	}

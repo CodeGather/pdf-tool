@@ -8,7 +8,9 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
+	"time"
 
 	"example.com/pdf-tool/config"
 	"example.com/pdf-tool/matcher"
@@ -78,6 +80,11 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int) error {
 	defer tmpl.Close()
 
 	// 3. 准备所有灯位的任务
+	var newRows []tableRow
+	var newObjNrPositions []struct {
+		objNr int
+		name  string
+	}
 	type prepJob struct {
 		numStr   string
 		lampItem model.LampItem
@@ -110,7 +117,12 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int) error {
 			continue
 		}
 
-		// 3c. 匹配 PDF 图片位置
+		// 3c. 收集 isNew 表格行（独立于图片替换，无素材也有表格）
+		if lampItem.IsNewValue() {
+			newRows = append(newRows, tableRow{num: numStr, item: lampItem})
+		}
+
+		// 3d. 匹配 PDF 图片位置
 		imgX := entry.Image.OriginalTransform.X
 		imgY := entry.Image.OriginalTransform.Y
 		imgW := entry.Image.OriginalTransform.Width
@@ -217,12 +229,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int) error {
 	wg.Wait()
 	close(results)
 
-	// 5. 串行替换 PDF 图片
-	var newRows []tableRow
-	var newObjNrPositions []struct {
-		objNr int
-		name  string
-	}
+	// 5. 串行替换 PDF 图片（直接 Flate 压缩像素，跳过二次解码）
 	for r := range results {
 		if r.err != nil {
 			log.Printf("  [错误] 灯位 %s: %v", r.numStr, r.err)
@@ -234,7 +241,6 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int) error {
 		}
 		log.Printf("  [替换] 灯位 %s (obj=%d)", r.numStr, r.objNr)
 		if r.isNew {
-			newRows = append(newRows, tableRow{num: r.numStr, item: r.lampItem})
 			newObjNrPositions = append(newObjNrPositions, struct {
 				objNr int
 				name  string
@@ -359,4 +365,63 @@ func renderTable(tmpl *pdf.Template, cfg *model.ReplaceConfig, rows []tableRow, 
 
 	log.Printf("表格已注入 (行数=%d, 字体=%s)", len(rows), filepath.Base(fontPath))
 	return 0, nil
+}
+
+// RunReplaceDir 批量合成模式：扫描目录中所有 *.json 文件，依次处理
+func RunReplaceDir(mergeDir, outputDir string, cpu int) error {
+	entries, err := os.ReadDir(mergeDir)
+	if err != nil {
+		return fmt.Errorf("读取合成目录失败: %w", err)
+	}
+
+	// 收集并排序所有 .json 文件
+	var jsonFiles []string
+	for _, e := range entries {
+		if e.IsDir() || !strings.HasSuffix(e.Name(), ".json") {
+			continue
+		}
+		jsonFiles = append(jsonFiles, e.Name())
+	}
+	if len(jsonFiles) == 0 {
+		return fmt.Errorf("合成目录中无 JSON 文件: %s", mergeDir)
+	}
+
+	// 默认输出目录
+	if outputDir == "" {
+		outputDir = filepath.Join(mergeDir, "_output_")
+	}
+	if err := os.MkdirAll(outputDir, 0755); err != nil {
+		return fmt.Errorf("创建输出目录失败: %w", err)
+	}
+
+	log.Printf("批量合成: %s → %s (%d 个文件)", mergeDir, outputDir, len(jsonFiles))
+	startTime := time.Now()
+
+	success, fail := 0, 0
+	for i, name := range jsonFiles {
+		inputPath := filepath.Join(mergeDir, name)
+		outName := strings.TrimSuffix(name, ".json") + ".pdf"
+		outputPath := filepath.Join(outputDir, outName)
+
+		fileStart := time.Now()
+		if err := Run(inputPath, outputPath, "", "", cpu); err != nil {
+			log.Printf("  [失败 %s] %v", name, err)
+			fail++
+			continue
+		}
+		elapsed := time.Since(fileStart)
+		if fi, err := os.Stat(outputPath); err == nil {
+			log.Printf("  [%d/%d] %s → %s (%.1fMB, %v)",
+				i+1, len(jsonFiles), name, outName,
+				float64(fi.Size())/1024/1024, elapsed.Round(time.Millisecond))
+		} else {
+			log.Printf("  [%d/%d] %s → %s (%v)",
+				i+1, len(jsonFiles), name, outName, elapsed.Round(time.Millisecond))
+		}
+		success++
+	}
+
+	totalTime := time.Since(startTime)
+	log.Printf("批量合成完成: 成功=%d 失败=%d 总耗时=%v", success, fail, totalTime.Round(time.Second))
+	return nil
 }

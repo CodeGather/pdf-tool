@@ -293,5 +293,6 @@ GOOS=windows GOARCH=amd64 CGO_ENABLED=1 \
 | 文件 | 说明 |
 |------|------|
 | [README.md](README.md) | 本文件：快速入门、参数说明、示例 |
+| [docs/FEATURES.md](docs/FEATURES.md) | 功能说明文档：四种模式的详细流程和参数参考 |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | 完整架构文档：每个分支和流程的精确描述 |
 | [docs/AI_HANDOVER.md](docs/AI_HANDOVER.md) | AI 模型接手文档：函数调用图、关键陷阱、修改指南 |

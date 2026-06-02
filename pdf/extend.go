@@ -59,15 +59,37 @@ func (t *Template) ExtendPageHeight(extraHeight float64) error {
 			if !found || entry.Object == nil {
 				continue
 			}
-			sd, ok := entry.Object.(types.StreamDict)
-			if !ok {
-				continue
+			// IndRef 可能指向 Array（多内容流）或 StreamDict（单流）
+			if arr, ok := entry.Object.(types.Array); ok {
+				for _, item := range arr {
+					ir, ok := item.(types.IndirectRef)
+					if !ok {
+						continue
+					}
+					objNr := ir.ObjectNumber.Value()
+					genNr := ir.GenerationNumber.Value()
+					entry, found := xt.FindTableEntry(objNr, genNr)
+					if !found || entry.Object == nil {
+						continue
+					}
+					sd, ok := entry.Object.(types.StreamDict)
+					if !ok {
+						continue
+					}
+					if err := sd.Decode(); err != nil {
+						return fmt.Errorf("解码子内容流失败: %w", err)
+					}
+					allContent = append(allContent, sd.Content...)
+					allContent = append(allContent, '\n')
+					targets = append(targets, streamTarget{entry: entry, objNr: objNr})
+				}
+			} else if sd, ok := entry.Object.(types.StreamDict); ok {
+				if err := sd.Decode(); err != nil {
+					return fmt.Errorf("解码内容流失败: %w", err)
+				}
+				allContent = sd.Content
+				targets = append(targets, streamTarget{entry: entry, objNr: objNr})
 			}
-			if err := sd.Decode(); err != nil {
-				return fmt.Errorf("解码内容流失败: %w", err)
-			}
-			allContent = sd.Content
-			targets = append(targets, streamTarget{entry: entry, objNr: objNr})
 
 		case types.Array:
 			for _, item := range obj {
