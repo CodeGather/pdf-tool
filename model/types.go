@@ -205,7 +205,7 @@ type ImageInfo struct {
 	} `json:"originalTransform"`
 	PageHeight float64 `json:"pageHeight"`
 	PageWidth  float64 `json:"pageWidth"`
-	Rotate     int     `json:"rotate"`
+	Rotate     float64 `json:"rotate"`
 	Width      float64 `json:"width"`
 	X          float64 `json:"x"`
 	Y          float64 `json:"y"`

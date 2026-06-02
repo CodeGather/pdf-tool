@@ -117,12 +117,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int) error {
 			continue
 		}
 
-		// 3c. 收集 isNew 表格行（独立于图片替换，无素材也有表格）
-		if lampItem.IsNewValue() {
-			newRows = append(newRows, tableRow{num: numStr, item: lampItem})
-		}
-
-		// 3d. 匹配 PDF 图片位置
+		// 3c. 匹配 PDF 图片位置
 		imgX := entry.Image.OriginalTransform.X
 		imgY := entry.Image.OriginalTransform.Y
 		imgW := entry.Image.OriginalTransform.Width
@@ -245,6 +240,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int) error {
 				objNr int
 				name  string
 			}{objNr: r.objNr, name: r.numStr})
+			newRows = append(newRows, tableRow{num: r.numStr, item: r.lampItem})
 		}
 	}
 
