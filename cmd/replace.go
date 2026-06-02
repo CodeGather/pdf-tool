@@ -233,9 +233,11 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 		fileKey, found := matcher.MatchFileDataKey(lampItem.LampNote, cfg.FileData)
 		if !found {
 			processedCount++
-			reportProgress(jsonProgress, 1,
-				fmt.Sprintf("点位 %s 没有找到%s素材", numStr, lampLabel(lampItem.IsNewValue())),
-				float64(processedCount)*progressPerLamp)
+			if lampItem.IsNewValue() || prevShow != 1 {
+				reportProgress(jsonProgress, 1,
+					fmt.Sprintf("点位 %s 没有找到%s素材", numStr, lampLabel(lampItem.IsNewValue())),
+					float64(processedCount)*progressPerLamp)
+			}
 			continue
 		}
 		fileEntry := cfg.FileData[fileKey]
@@ -246,9 +248,11 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 		}
 		if len(allImages) == 0 {
 			processedCount++
-			reportProgress(jsonProgress, 1,
-				fmt.Sprintf("点位 %s 没有找到%s素材", numStr, lampLabel(lampItem.IsNewValue())),
-				float64(processedCount)*progressPerLamp)
+			if lampItem.IsNewValue() || prevShow != 1 {
+				reportProgress(jsonProgress, 1,
+					fmt.Sprintf("点位 %s 没有找到%s素材", numStr, lampLabel(lampItem.IsNewValue())),
+					float64(processedCount)*progressPerLamp)
+			}
 			continue
 		}
 
@@ -262,9 +266,11 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 		match := matcher.SelectBestImage(targetW, targetH, allImages)
 		if !match.Found {
 			processedCount++
-			reportProgress(jsonProgress, 1,
-				fmt.Sprintf("点位 %s 没有找到%s素材", numStr, lampLabel(lampItem.IsNewValue())),
-				float64(processedCount)*progressPerLamp)
+			if lampItem.IsNewValue() || prevShow != 1 {
+				reportProgress(jsonProgress, 1,
+					fmt.Sprintf("点位 %s 没有找到%s素材", numStr, lampLabel(lampItem.IsNewValue())),
+					float64(processedCount)*progressPerLamp)
+			}
 			continue
 		}
 		if !jsonProgress {
