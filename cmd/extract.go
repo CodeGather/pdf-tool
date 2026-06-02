@@ -163,11 +163,11 @@ return renderWholePagePDF(inputFile, outputDir, format, dpi, timing, progressEna
 		// 这种场景通常对应扫描件或大图铺满页面，直接输出整页最合理。
 		// 完全串行渲染，不使用任何并行。
 return renderWholePagePDF(inputFile, outputDir, format, dpi, timing, progressEnabled, quality, parallelPercent)
-	case routeDirectExtractTransparency, routeDirectExtractMultiImageStack, routeDirectExtractSingleObject:
+case routeDirectExtractTransparency, routeDirectExtractMultiImageStack, routeDirectExtractSingleObject:
 		// 其余情况都走对象级提取。
 		// 这里会在 writeDirectImage / writeDirectImageFast 里再细分：
 		// 能快拷贝的快拷贝，不能快拷贝的再按颜色空间、遮罩和编码格式回退。
-return renderWholePagePDF(inputFile, outputDir, format, dpi, timing, progressEnabled, quality, parallelPercent)
+		return extractDirectImages(ctx, inputFile, outputDir, format, dpi, timing, progressEnabled, quality)
 	default:
 		return fmt.Errorf("unsupported PDF route %v", route)
 	}
@@ -649,6 +649,9 @@ return renderWholePagePDF(inputFile, outputDir, format, dpi, timing, progressEna
 				Source: "render-whole-page",
 				Page:   nr,
 				Index:  1,
+				Width:  rgba.Bounds().Dx(),
+				Height: rgba.Bounds().Dy(),
+				Object: 0,
 				Ext:    ext,
 				Path:   outPath,
 			})
@@ -701,6 +704,7 @@ func renderWholePagePDFGoFitz(inputFile, outputDir, format string, dpi float64, 
 			Index:  1,
 			Width:  w,
 			Height: h,
+			Object: 0,
 			Ext:    util.OutputExtension(format),
 			Path:   outputPath,
 		})
@@ -1916,6 +1920,14 @@ func traceTiming(enabled bool, format string, args ...any) {
 }
 
 func traceImageMeta(meta imageMetaRecord) {
+	if util.ImageMetaJSONEnabled {
+		b, err := json.Marshal(meta)
+		if err != nil {
+			return
+		}
+		fmt.Fprintln(os.Stdout, string(b))
+		return
+	}
 	var builder strings.Builder
 	if meta.Time != "" {
 		builder.WriteString(fmt.Sprintf("[image] page=%d source=%s object=%d index=%d size=%dx%d time=%s path=%s\n", meta.Page, meta.Source, meta.Object, meta.Index, meta.Width, meta.Height, meta.Time, meta.Path))

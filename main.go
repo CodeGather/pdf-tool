@@ -138,7 +138,7 @@ func main() {
 	colorCorrectionEnabled = *colorCorrection
 	parallelPercent = *parallelPct
 
-	if debugLogsEnabled && !util.ImageMetaJSONEnabled {
+	if debugLogsEnabled {
 		log.SetOutput(os.Stderr)
 	} else {
 		log.SetOutput(io.Discard)
