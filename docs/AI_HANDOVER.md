@@ -1,6 +1,6 @@
 # AI 模型接手文档 — PDF Tool
 
-> 目标：让下一个大模型（LLM/AI Agent）能在 5 分钟内完全理解本项目的代码结构、关键决策、所有分支逻辑和常见陷阱，无需重读 2900 行代码。
+> 目标：让下一个大模型（LLM/AI Agent）能在 5 分钟内完全理解本项目的代码结构、关键决策、所有分支逻辑和常见陷阱，无需重读全部代码。
 
 ---
 
@@ -9,11 +9,10 @@
 | 属性 | 值 |
 |------|-----|
 | 语言 | Go 1.24 |
-| 文件 | 单文件 `main.go` (~2900 行) + 1 个 CGo stub |
-| 核心依赖 | pdfcpu (PDF 解析)、go-fitz (MuPDF CGo)、mutool (子进程渲染) |
+| 文件 | 多文件：`main.go` (~240 行) + `cmd/` + `util/` + `pdf/` + 其他子包 |
+| 核心依赖 | pdfcpu (PDF 解析)、go-fitz (MuPDF CGo)、mutool (子进程渲染)、Ghostscript (压缩) |
 | 编译 | `go build -o pdf-tool .` |
-| 运行 | `./pdf-tool -i input.pdf -o output` |
-| 风格 | 所有代码在 `package main`，无子包，无接口，面向过程 |
+| 运行 | `./pdf-tool -i input.pdf -o output` 或 `-merge` / `-compress` / `-replace` |
 
 ---
 
@@ -21,19 +20,24 @@
 
 ```
 pdf-tool/
-├── main.go                  # 核心文件 (~2900 行，所有功能都在这里)
-├── fitz_warning_stub.go     # 98 字节 CGo 废弃警告抑制
-├── go.mod / go.sum          # Go 依赖
-├── README.md                # 用户文档
+├── main.go                  # 入口：flag 解析 → 路由分发到 cmd.RunXxx()
+├── cmd/
+│   ├── extract.go           # ★ 图片提取核心（~2000 行）——路由、渲染、直取、flood fill
+│   ├── merge.go             # PDF 合并（分块、压缩、分隔页）
+│   ├── compress.go          # PDF 压缩（Ghostscript pdfwrite）
+│   ├── replace.go           # 灯位图片替换（JSON 配置驱动）
+│   └── fitz_*.go            # MuPDF go-fitz 封装层
+├── util/
+│   ├── util.go              # FindMutool / FindGS / ComputeWorkerCount / FormatSize
+│   ├── image.go             # 图片编码、CMYK 转换、SMask、原子写盘
+│   └── str.go               # 自然排序、裁剪操作符检测
+├── pdf/                     # 替换模式：模板操作（template.go/draw.go/table.go/extend.go）
+├── model/ + config/ + matcher/ + assets/   # 替换模式模块
 ├── docs/
 │   ├── ARCHITECTURE.md      # 完整架构文档
 │   └── AI_HANDOVER.md       # 本文件
-└── scripts/                 # 构建脚本（可选）
+└── scripts/ + dist/         # 构建脚本和产物
 ```
-
-**没有子包，没有接口，没有测试文件。** 如果用户让你添加测试或重构，从创建 `internal/` 子包开始。
-
-注意：`fitz_warning_stub.go` 引用了已删除的 `ProcessWarning` 函数符号，编译时 `go vet` 会报 `undefined: muteFitzWarnings`，但 Go 编译器只报 vet 警告不报编译错误 — 不影响 `go build`。如果用户要求消除 vet 警告，需要删除该文件或将引用修改为 `go-fitz` 的官方禁止警告 API。
 
 ---
 
@@ -41,47 +45,56 @@ pdf-tool/
 
 ```
 main()
-  ├── mergePDFs()
-  │     ├── collectMergeInputs()        # 收集文件（目录/列表/通配符）
-  │     └── api.MergeCreateFile()       # pdfcpu 合并（分批）
+  ├── cmd.RunMerge()
+  │     ├── collectMergeInputs()
+  │     ├── [可选] gs 并发压缩 → 替换输入列表
+  │     └── api.MergeCreateFile()  (分块)
   │
-  └── convertPDFToImages()
-        ├── classifyPDFDocument()       # ★ 路由决策核心
-        │     ├── hasPageContentClip()  #   裁剪路径检测
-        │     │     ├── extractCM()     #     cm 矩阵的 a,d
-        │     │     └── extractRect()   #     re 矩形的 w,h
-        │     ├── getPageContentString()
-        │     ├── shouldRenderWholePageImage()
-        │     └── dictAt()
-        │
-        ├── [routeRenderCropComplexTransparency]
-        │   └── renderCropPDF()
-        │         ├── findMutool()
-        │         ├── [mutool] renderSinglePageCropPdftoppm()
-        │         │     ├── readPPM()
-        │         │     └── cropImage()
-        │         └── [go-fitz] renderSinglePageCrop()
-        │               └── findLargestRegions()
-        │                     └── floodFillRegion()
-        │
-        ├── [routeRenderWholePageImage]
-        │   ├── renderWholePagePDF()
-        │   │     ├── computeWorkerCount()
-        │   │     ├── [Phase 1] N × mutool draw -ppm (子进程)
-        │   │     ├── [Phase 2] N goroutines readPPM → encode
-        │   │     └── [回退] renderWholePagePDFGoFitz()
-        │   └── renderWholePagePDFGoFitz()
-        │
-        └── [routeDirectExtract*]
-            └── extractDirectImages()
-                  └── writeDirectImage()
-                        ├── writeDirectImageFast()     # ★ 快速路径
-                        │     ├── sd.Decode()          #   FlateDecode 修复
-                        │     ├── [直通] 直接写流
-                        │     ├── [CMYK JPEG] convertCMYKJPEGToOutput()
-                        │     ├── [SMask] extractSoftMask()
-                        │     └── [8-bit] encodeJPEG/PNG
-                        └── [回退] pdfcpu.ExtractImage()
+  ├── cmd.RunCompress()
+  │     ├── compressPDF()       # 单文件 gs
+  │     └── compressPDFDir()    # 目录并发压缩
+  │
+  ├── cmd.Run()  # replace 模式
+  │     └── LoadConfig → 逐灯位替换 → gopdf 表格 → 输出
+  │
+  └── cmd.RunExtract()
+        └── convertPDFToImages()
+              ├── classifyPDFDocument()       # ★ 路由决策核心
+              │     ├── hasPageContentClip()  #   裁剪路径检测
+              │     │     ├── extractCM()     #     cm 矩阵的 a,d
+              │     │     └── extractRect()   #     re 矩形的 w,h
+              │     ├── getPageContentString()
+              │     ├── shouldRenderWholePageImage()
+              │     └── dictAt()
+              │
+              ├── [routeRenderCropComplexTransparency]
+              │   └── renderCropPDF()
+              │         ├── FindMutool()
+              │         ├── [mutool] renderSinglePageCropMutool()
+              │         │     ├── ReadPPM()
+              │         │     └── CropImage()
+              │         └── [go-fitz] renderSinglePageCrop()
+              │               └── findLargestRegions()
+              │                     └── floodFillRegion()
+              │
+              ├── [routeRenderWholePageImage]
+              │   ├── renderWholePagePDF()
+              │   │     ├── ComputeWorkerCount()
+              │   │     ├── [Phase 1] N × mutool draw -ppm (子进程)
+              │   │     ├── [Phase 2] N goroutines ReadPPM → encode
+              │   │     └── [回退] renderWholePagePDFGoFitz()
+              │   └── renderWholePagePDFGoFitz()
+              │
+              └── [routeDirectExtract*]
+                  └── extractDirectImages()
+                        └── writeDirectImage()
+                              ├── writeDirectImageFast()     # ★ 快速路径
+                              │     ├── sd.Decode()          #   FlateDecode 修复
+                              │     ├── [直通] 直接写流
+                              │     ├── [CMYK JPEG] ConvertCMYKJPEGToOutput()
+                              │     ├── [SMask] ExtractSoftMask()
+                              │     └── [8-bit] encodeJPEG/PNG
+                              └── [回退] pdfcpu.ExtractImage()
 ```
 
 ---
@@ -95,7 +108,7 @@ main()
 **影响**：
 - `pdftoppm` 相关的所有代码、捆绑二进制、库文件已全部删除
 - 色彩校正矩阵（`-cc`）保留但默认关闭，仅用于回归测试
-- 函数名 `renderSinglePageCropPdftoppm` 未改（历史遗留），内容已改为 mutool
+- `ApplyColorCorrection()` 函数存在于 `util/util.go` 但不再主动调用
 
 ### 3.2 Clip 检测的两个独立条件
 
@@ -133,7 +146,7 @@ if len(sd.Content) == 0 && len(sd.Raw) > 0 {
 ### 3.5 并行策略的两个阶段
 
 ```go
-n := computeWorkerCount()
+n := ComputeWorkerCount(parallelPercent)
 // Phase 1: 渲染并行 — n 个子进程
 // Phase 2: 编码并行 — n 个 goroutine
 ```
@@ -151,7 +164,7 @@ n := computeWorkerCount()
 | `1.05` | hasPageContentClip | cm_a / clip_w 超过此值说明有实际裁剪 |
 | `5%` | nearlyEqual | 图片尺寸与页面尺寸的容差（用于整页渲染判断） |
 | `50000` | findLargestRegions | flood fill 最小面积过滤噪声 |
-| `200` | isBackground | RGB 通道阈值（RGB>200 视为背景） |
+| `200` | IsBackground | RGB 通道阈值（RGB>200 视为背景） |
 | `8` | maxClipOperatorCountForCrop | 同一内容流中裁剪操作符超过此数视为"重复裁剪框"而非实际裁剪 |
 
 ---
@@ -162,13 +175,13 @@ n := computeWorkerCount()
 
 1. **修改分类逻辑** → 会影响所有 PDF 的路由选择。改完后测试 `16.pdf`（应该 render-crop）、`17.pdf`（应该 direct-extract）、`18.pdf`（应该 render-crop）
 
-2. **修改并行度** → computeWorkerCount 的返回值影响渲染分块和编码池大小。确保 `-cpu 0` 返回 1（串行），不超过 NumCPU
+2. **修改并行度** → ComputeWorkerCount 的返回值影响渲染分块和编码池大小。确保 `-cpu 0` 返回 1（串行），不超过 NumCPU
 
 3. **修改快速路径** → 一定测试 2.pdf（FlateDecode+SMask）。确保 sd.Decode() 在正确的位置被调用
 
 4. **修改颜色处理** → 测试 12.pdf 和 15.pdf 的 RGB 值是否与 mutool 参考一致。12.pdf 的参考值 RGB(163,109,99)
 
-5. **修改渲染引擎** → 如果换回 pdftoppm，必须重新启用色彩校正矩阵。如果添加新引擎，需要扩展 findMutool()
+5. **修改渲染引擎** → 如果换回 pdftoppm，必须重新启用色彩校正矩阵。如果添加新引擎，需要扩展 FindMutool()
 
 6. **添加新参数** → 注意 `-p` 已被合并进度占用，不可复用。`-w` 是已废弃子进程参数
 
@@ -238,17 +251,27 @@ mutool 渲染使用 `os.MkdirTemp`，如果 `TMPDIR` 环境变量无效或目录
 
 `-p` 参数同时输出压缩阶段（`-merge-compress=true`）和合并阶段的进度数字。压缩阶段每完成一个文件输出一次 `completed*100/total`，合并阶段每完成一个 chunk 输出一次。两者都是 0→100 的数字序列，Tauri 前端通过 stderr 接收。
 
+### 8.5 main.go 被重构为子包
+
+main.go 只做 flag 解析和路由分发（~240 行），所有业务逻辑在 `cmd/` 子包中。修改功能逻辑需要到正确的子包：
+- 图片提取 → `cmd/extract.go`
+- 合并 → `cmd/merge.go`
+- 压缩 → `cmd/compress.go`
+- 替换 → `cmd/replace.go`
+- 工具函数 → `util/*.go`
+
 ---
 
 ## 9. 添加新功能的模式
 
-由于所有代码在单个 `main.go` 中，添加功能时：
+由于代码已拆分为多个子包，添加功能时：
 
-1. **添加函数** → 在文件末尾添加（自定义排序：public 函数在前，private 辅助在后）
-2. **添加全局变量** → 在文件顶部 `var` 区块添加（必须加中文注释）
-3. **添加参数** → 在 `main()` 的 flag 定义区块添加，同时在 `flag.Usage` 中添加示例
-4. **添加进度输出** → 如果新增慢速阶段，使用 `traceProgress(enabled, 0→100)` 输出到 stderr，配合已有 `-p` 参数。注意启动循环和结果收集需分 goroutine 并行，避免 sem/信号量阻塞延迟进度；`wg.Add(total)` 必须在主 goroutine 提前设置，防止 WaitGroup 竞态
-5. **添加路由** → 扩展 `pdfDocumentRoute` 枚举 + `classifyPDFDocument` 的判定 + `convertPDFToImages` 的分支 + 实现对应函数
+1. **添加提取相关的函数** → 在 `cmd/extract.go` 添加
+2. **添加新命令模式** → 在 `cmd/` 创建新文件，在 `main.go` 注册 flag 和路由
+3. **添加工具函数** → 在 `util/` 中对应文件添加（带中文注释）
+4. **添加参数** → 在 `main()` 的 flag 定义区块添加，同时在 `flag.Usage` 中添加示例
+5. **添加进度输出** → 使用 `util.TraceProgress()`，注意启动循环和结果收集需分 goroutine 并行
+6. **添加路由分类** → 扩展 `pdfDocumentRoute` 枚举 + `classifyPDFDocument` 的判定 + `convertPDFToImages` 的分支
 
 ---
 

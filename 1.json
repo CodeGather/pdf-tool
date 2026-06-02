@@ -1,0 +1,1512 @@
+{
+    "shopName": "上海七宝领展广场BD精品店",
+    "table-config": [
+        {
+            "label": "柜台名称",
+            "key": "柜台名称",
+            "width": 190,
+            "align": "left"
+        },
+        {
+            "label": "灯位编号",
+            "key": "灯位编号",
+            "width": 50,
+            "align": "center"
+        },
+        {
+            "label": "灯位位置",
+            "key": "灯位位置",
+            "width": 70,
+            "align": "center"
+        },
+        {
+            "label": "材质",
+            "key": "材质",
+            "width": 70,
+            "align": "left"
+        },
+        {
+            "label": "可见宽(Mm)",
+            "key": "可见宽",
+            "width": 60,
+            "align": "left"
+        },
+        {
+            "label": "可见长(Mm)",
+            "key": "可见长",
+            "width": 60,
+            "align": "left"
+        },
+        {
+            "label": "灯位备注",
+            "key": "灯位备注",
+            "align": "left"
+        },
+        {
+            "label": "画面内容",
+            "key": "画面内容",
+            "align": "left"
+        }
+    ],
+    "brand-config": {
+        "borderColor": {
+            "blue": 0,
+            "green": 0,
+            "opacity": 1,
+            "red": 1,
+            "rgb": "rgba(255, 0, 0, 1)"
+        },
+        "borderSize": 2,
+        "color": {
+            "blue": 0,
+            "green": 0,
+            "opacity": 1,
+            "red": 1,
+            "rgb": "rgba(255, 0, 0, 1)"
+        },
+        "descColor": {
+            "blue": 0,
+            "green": 0,
+            "opacity": 1,
+            "red": 1,
+            "rgb": "rgba(255, 0, 0, 1)"
+        },
+        "descFontSize": 8,
+        "fontData": "",
+        "fontFamily": "",
+        "fontSize": 8
+    },
+    "excel-data": {
+        "1": {
+            "柜台编号": "Y01142116",
+            "color": [
+                1,
+                0,
+                0
+            ],
+            "渠道": "BD",
+            "区域": "华东区",
+            "城市": "上海",
+            "柜台名称": "上海七宝领展广场BD精品店",
+            "灯位编号": "1",
+            "灯位备注": "SKINCARE-人脸-2605",
+            "大类": "SC",
+            "灯位位置": "SKINCAREBAY-有假样",
+            "材质": "卡布灯箱",
+            "可见宽": 1260,
+            "": "*",
+            "可见长": 1282,
+            "柜台所有数量(张)": 1,
+            "上市灯片": "Y",
+            "比例(W/H)": 0.982839313572543,
+            "比例(H/W)": 1.01746031746032,
+            "冲外/冲内": "冲内",
+            "画面内容": "全模特",
+            "画面位置": "背柜墙上",
+            "isNew": true
+        },
+        "2": {
+            "柜台编号": "Y01142116",
+            "渠道": "BD",
+            "区域": "华东区",
+            "城市": "上海",
+            "柜台名称": "上海七宝领展广场BD精品店",
+            "灯位编号": "2",
+            "灯位备注": "ORROUGE-全产品-0801",
+            "大类": "OR",
+            "灯位位置": "ORROUGEBAY",
+            "材质": "卡布灯箱",
+            "可见宽": 733,
+            "": "*",
+            "可见长": 1282,
+            "柜台所有数量(张)": 1,
+            "比例(W/H)": 0.571762870514821,
+            "比例(H/W)": 1.74897680763984,
+            "冲外/冲内": "冲内",
+            "画面内容": "全产品",
+            "画面位置": "背柜墙上",
+            "isNew": true
+        },
+        "3": {
+            "柜台编号": "Y01142116",
+            "渠道": "BD",
+            "区域": "华东区",
+            "城市": "上海",
+            "柜台名称": "上海七宝领展广场BD精品店",
+            "灯位编号": "3",
+            "灯位备注": "gift-0901",
+            "大类": "GIFT",
+            "灯位位置": "GIFTWALL",
+            "材质": "卡布灯箱",
+            "可见宽": 1392,
+            "": "*",
+            "可见长": 1282,
+            "柜台所有数量(张)": 1,
+            "比例(W/H)": 1.08580343213729,
+            "比例(H/W)": 0.920977011494253,
+            "冲外/冲内": "冲内",
+            "画面内容": "全模特",
+            "画面位置": "背柜墙上",
+            "isNew": true
+        },
+        "4": {
+            "柜台编号": "Y01142116",
+            "渠道": "BD",
+            "区域": "华东区",
+            "城市": "上海",
+            "柜台名称": "上海七宝领展广场BD精品店",
+            "灯位编号": "4",
+            "灯位备注": "LIBRE-模特+文字-0901",
+            "大类": "FRG",
+            "灯位位置": "FRAGRANCEBAY",
+            "材质": "卡布灯箱",
+            "可见宽": 1760,
+            "": "*",
+            "可见长": 1282,
+            "柜台所有数量(张)": 1,
+            "比例(W/H)": 1.37285491419657,
+            "比例(H/W)": 0.728409090909091,
+            "冲外/冲内": "冲内",
+            "画面内容": "全模特",
+            "画面位置": "背柜墙上",
+            "isNew": true
+        },
+        "V1": {
+            "柜台编号": "Y01142116",
+            "渠道": "BD",
+            "区域": "华东区",
+            "城市": "上海",
+            "柜台名称": "上海七宝领展广场BD精品店",
+            "灯位编号": "V1",
+            "灯位备注": "MUSE模特",
+            "大类": "LVP",
+            "灯位位置": "LVPBAY",
+            "材质": "卡布灯箱",
+            "可见宽": 737,
+            "": "*",
+            "可见长": 1268,
+            "柜台所有数量(张)": 1,
+            "比例(W/H)": 0.581230283911672,
+            "比例(H/W)": 1.72048846675712,
+            "冲外/冲内": "冲内",
+            "画面内容": "全模特",
+            "画面位置": "背柜墙上",
+            "isNew": true
+        },
+        "V2": {
+            "柜台编号": "Y01142116",
+            "渠道": "BD",
+            "区域": "华东区",
+            "城市": "上海",
+            "柜台名称": "上海七宝领展广场BD精品店",
+            "灯位编号": "V2",
+            "灯位备注": "MUSE产品",
+            "大类": "LVP",
+            "灯位位置": "LVPBAY",
+            "材质": "卡布灯箱",
+            "可见宽": 737,
+            "": "*",
+            "可见长": 1268,
+            "柜台所有数量(张)": 1,
+            "比例(W/H)": 0.581230283911672,
+            "比例(H/W)": 1.72048846675712,
+            "冲外/冲内": "冲内",
+            "画面内容": "全产品",
+            "画面位置": "背柜墙上",
+            "isNew": true
+        },
+        "B1": {
+            "柜台编号": "Y01142116",
+            "渠道": "BD",
+            "区域": "华东区",
+            "城市": "上海",
+            "柜台名称": "上海七宝领展广场BD精品店",
+            "灯位编号": "B1",
+            "灯位备注": "GLORIFIER-STATEMENT-lovenude",
+            "大类": "MU",
+            "灯位位置": "GLORIFIER",
+            "材质": "写真全透",
+            "可见宽": 380,
+            "": "*",
+            "可见长": 345,
+            "柜台所有数量(张)": 1,
+            "比例(W/H)": 1.10144927536232,
+            "比例(H/W)": 0.907894736842105,
+            "备注": "每边出血5mm不覆膜",
+            "isNew": true
+        },
+        "G6": {
+            "柜台编号": "Y01142116",
+            "渠道": "BD",
+            "区域": "华东区",
+            "城市": "上海",
+            "柜台名称": "上海七宝领展广场BD精品店",
+            "灯位编号": "G6",
+            "灯位备注": "FRGTABLE-LIBRE-0328",
+            "大类": "FRG",
+            "灯位位置": "FRGTABLE-1.9M",
+            "材质": "卡布灯箱",
+            "可见宽": 325,
+            "": "*",
+            "可见长": 242,
+            "柜台所有数量(张)": 1,
+            "比例(W/H)": 1.34297520661157,
+            "比例(H/W)": 0.744615384615385,
+            "isNew": true
+        },
+        "G9": {
+            "柜台编号": "Y01142116",
+            "渠道": "BD",
+            "区域": "华东区",
+            "城市": "上海",
+            "柜台名称": "上海七宝领展广场BD精品店",
+            "灯位编号": "G9",
+            "灯位备注": "FRGTABLE-MYSLF",
+            "大类": "FRG",
+            "灯位位置": "FRGTABLE-1.9M",
+            "材质": "卡布灯箱",
+            "可见宽": 325,
+            "": "*",
+            "可见长": 242,
+            "柜台所有数量(张)": 1,
+            "比例(W/H)": 1.34297520661157,
+            "比例(H/W)": 0.744615384615385,
+            "isNew": true
+        },
+        "E6": {
+            "柜台编号": "Y01142116",
+            "渠道": "BD",
+            "区域": "华东区",
+            "城市": "上海",
+            "柜台名称": "上海七宝领展广场BD精品店",
+            "灯位编号": "E6",
+            "灯位备注": "SKTABLE-SHOT-2601",
+            "大类": "SC",
+            "灯位位置": "SKTABLE",
+            "材质": "卡布灯箱",
+            "可见宽": 325,
+            "": "*",
+            "可见长": 242,
+            "柜台所有数量(张)": 1,
+            "比例(W/H)": 1.34297520661157,
+            "比例(H/W)": 0.744615384615385,
+            "isNew": true
+        }
+    },
+    "db-data": {
+        "id": 313,
+        "品牌": "Ysl",
+        "店铺名称": "上海七宝领展广场BD精品店",
+        "柜台供应商": "",
+        "安装供应商": "",
+        "柜台形式": "",
+        "是否开业": "是",
+        "lamp": [
+            {
+                "id": 311,
+                "品牌": "Ysl",
+                "店铺名称": "上海七宝领展广场BD精品店",
+                "宽度": "1010.268",
+                "高度": "714.3312",
+                "缩放": "1.2",
+                "文件": "guide/Ysl/上海七宝领展广场BD精品店_164.pdf",
+                "PDF标题": "上海七宝领展广场BD精品店-平面图",
+                "编号列表": "[{\"distance\":16.6227,\"hasMatch\":true,\"id\":\"113-img_p163_4\",\"image\":{\"dataUrl\":null,\"disHeight\":61,\"disWidth\":33,\"height\":254,\"id\":\"113-img_p163_4\",\"index\":113,\"originalTransform\":{\"height\":61,\"width\":33,\"x\":736,\"y\":213},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":137,\"x\":736,\"y\":213},\"imageId\":\"113-img_p163_4\",\"num\":{\"distance\":16.6227,\"isInside\":false,\"str\":\"V1\",\"x\":714.6152,\"y\":226.5929},\"nums\":[{\"distance\":16.6227,\"isInside\":false,\"str\":\"V1\",\"x\":714.6152,\"y\":226.5929},{\"distance\":95.8157,\"isInside\":false,\"str\":\"V2\",\"x\":713.8202,\"y\":128.5141},{\"distance\":132.8504,\"isInside\":false,\"str\":\"G9\",\"x\":617.4489,\"y\":187.4861},{\"distance\":142.3174,\"isInside\":false,\"str\":\"4\",\"x\":598.7441,\"y\":276.7303},{\"distance\":236.3804,\"isInside\":false,\"str\":\"G6\",\"x\":599.1255,\"y\":102.2795},{\"distance\":392.2657,\"isInside\":false,\"str\":\"B1\",\"x\":444.5906,\"y\":102.3031},{\"distance\":520.9467,\"isInside\":false,\"str\":\"1\",\"x\":214.3039,\"y\":186.8149},{\"distance\":542.6676,\"isInside\":false,\"str\":\"E6\",\"x\":293.7853,\"y\":102.1162},{\"distance\":546.3268,\"isInside\":false,\"str\":\"2\",\"x\":213.494,\"y\":295.4708},{\"distance\":680.4068,\"isInside\":false,\"str\":\"3\",\"x\":223.5585,\"y\":439.5653}]},{\"distance\":15.3939,\"hasMatch\":true,\"id\":\"104-g_d35_img_p156_8\",\"image\":{\"dataUrl\":null,\"disHeight\":61,\"disWidth\":33,\"height\":256,\"id\":\"104-g_d35_img_p156_8\",\"index\":104,\"originalTransform\":{\"height\":61,\"width\":33,\"x\":735,\"y\":106},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":138,\"x\":735,\"y\":106},\"imageId\":\"104-g_d35_img_p156_8\",\"num\":{\"distance\":15.3939,\"isInside\":false,\"str\":\"V2\",\"x\":713.8202,\"y\":128.5141},\"nums\":[{\"distance\":15.3939,\"isInside\":false,\"str\":\"V2\",\"x\":713.8202,\"y\":128.5141},{\"distance\":79.9227,\"isInside\":false,\"str\":\"V1\",\"x\":714.6152,\"y\":226.5929},{\"distance\":130.8594,\"isInside\":false,\"str\":\"G6\",\"x\":599.1255,\"y\":102.2795},{\"distance\":136.7426,\"isInside\":false,\"str\":\"G9\",\"x\":617.4489,\"y\":187.4861},{\"distance\":248.3174,\"isInside\":false,\"str\":\"4\",\"x\":598.7441,\"y\":276.7303},{\"distance\":286.7919,\"isInside\":false,\"str\":\"B1\",\"x\":444.5906,\"y\":102.3031},{\"distance\":436.82,\"isInside\":false,\"str\":\"E6\",\"x\":293.7853,\"y\":102.1162},{\"distance\":523.4965,\"isInside\":false,\"str\":\"1\",\"x\":214.3039,\"y\":186.8149},{\"distance\":652.3268,\"isInside\":false,\"str\":\"2\",\"x\":213.494,\"y\":295.4708},{\"distance\":786.4068,\"isInside\":false,\"str\":\"3\",\"x\":223.5585,\"y\":439.5653}]},{\"distance\":24.8504,\"hasMatch\":true,\"id\":\"93-g_d35_img_p110_8\",\"image\":{\"dataUrl\":null,\"disHeight\":24,\"disWidth\":32,\"height\":101,\"id\":\"93-g_d35_img_p110_8\",\"index\":93,\"originalTransform\":{\"height\":24,\"width\":32,\"x\":608,\"y\":217},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":136,\"x\":608,\"y\":217},\"imageId\":\"93-g_d35_img_p110_8\",\"num\":{\"distance\":24.8504,\"isInside\":false,\"str\":\"G9\",\"x\":617.4489,\"y\":187.4861},\"nums\":[{\"distance\":24.8504,\"isInside\":false,\"str\":\"G9\",\"x\":617.4489,\"y\":187.4861},{\"distance\":47.3174,\"isInside\":false,\"str\":\"4\",\"x\":598.7441,\"y\":276.7303},{\"distance\":79.8631,\"isInside\":false,\"str\":\"V1\",\"x\":714.6152,\"y\":226.5929},{\"distance\":112.3804,\"isInside\":false,\"str\":\"G6\",\"x\":599.1255,\"y\":102.2795},{\"distance\":163.1561,\"isInside\":false,\"str\":\"V2\",\"x\":713.8202,\"y\":128.5141},{\"distance\":268.2657,\"isInside\":false,\"str\":\"B1\",\"x\":444.5906,\"y\":102.3031},{\"distance\":396.9467,\"isInside\":false,\"str\":\"1\",\"x\":214.3039,\"y\":186.8149},{\"distance\":418.6676,\"isInside\":false,\"str\":\"E6\",\"x\":293.7853,\"y\":102.1162},{\"distance\":451.3268,\"isInside\":false,\"str\":\"2\",\"x\":213.494,\"y\":295.4708},{\"distance\":585.4068,\"isInside\":false,\"str\":\"3\",\"x\":223.5585,\"y\":439.5653}]},{\"distance\":6.7696,\"hasMatch\":true,\"id\":\"85-g_d35_img_p138_3\",\"image\":{\"dataUrl\":null,\"disHeight\":24,\"disWidth\":33,\"height\":101,\"id\":\"85-g_d35_img_p138_3\",\"index\":85,\"originalTransform\":{\"height\":24,\"width\":33,\"x\":590,\"y\":77},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":136,\"x\":590,\"y\":77},\"imageId\":\"85-g_d35_img_p138_3\",\"num\":{\"distance\":6.7696,\"isInside\":false,\"str\":\"G6\",\"x\":599.1255,\"y\":102.2795},\"nums\":[{\"distance\":6.7696,\"isInside\":false,\"str\":\"G6\",\"x\":599.1255,\"y\":102.2795},{\"distance\":92.1496,\"isInside\":false,\"str\":\"G9\",\"x\":617.4489,\"y\":187.4861},{\"distance\":129.1843,\"isInside\":false,\"str\":\"V2\",\"x\":713.8202,\"y\":128.5141},{\"distance\":146.7919,\"isInside\":false,\"str\":\"B1\",\"x\":444.5906,\"y\":102.3031},{\"distance\":180.8674,\"isInside\":false,\"str\":\"4\",\"x\":598.7441,\"y\":276.7303},{\"distance\":227.2631,\"isInside\":false,\"str\":\"V1\",\"x\":714.6152,\"y\":226.5929},{\"distance\":296.82,\"isInside\":false,\"str\":\"E6\",\"x\":293.7853,\"y\":102.1162},{\"distance\":444.4965,\"isInside\":false,\"str\":\"1\",\"x\":214.3039,\"y\":186.8149},{\"distance\":573.3268,\"isInside\":false,\"str\":\"2\",\"x\":213.494,\"y\":295.4708},{\"distance\":707.4068,\"isInside\":false,\"str\":\"3\",\"x\":223.5585,\"y\":439.5653}]},{\"distance\":6.32,\"hasMatch\":true,\"id\":\"77-g_d35_img_p145_6\",\"image\":{\"dataUrl\":null,\"disHeight\":28,\"disWidth\":31,\"height\":117,\"id\":\"77-g_d35_img_p145_6\",\"index\":77,\"originalTransform\":{\"height\":28,\"width\":31,\"x\":284,\"y\":73},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":130,\"x\":284,\"y\":73},\"imageId\":\"77-g_d35_img_p145_6\",\"num\":{\"distance\":6.32,\"isInside\":false,\"str\":\"E6\",\"x\":293.7853,\"y\":102.1162},\"nums\":[{\"distance\":6.32,\"isInside\":false,\"str\":\"E6\",\"x\":293.7853,\"y\":102.1162},{\"distance\":138.4965,\"isInside\":false,\"str\":\"1\",\"x\":214.3039,\"y\":186.8149},{\"distance\":140.7343,\"isInside\":false,\"str\":\"B1\",\"x\":444.5906,\"y\":102.3031},{\"distance\":267.3268,\"isInside\":false,\"str\":\"2\",\"x\":213.494,\"y\":295.4708},{\"distance\":296.6196,\"isInside\":false,\"str\":\"G6\",\"x\":599.1255,\"y\":102.2795},{\"distance\":400.1496,\"isInside\":false,\"str\":\"G9\",\"x\":617.4489,\"y\":187.4861},{\"distance\":401.4068,\"isInside\":false,\"str\":\"3\",\"x\":223.5585,\"y\":439.5653},{\"distance\":437.1843,\"isInside\":false,\"str\":\"V2\",\"x\":713.8202,\"y\":128.5141},{\"distance\":467.0632,\"isInside\":false,\"str\":\"4\",\"x\":598.7441,\"y\":276.7303},{\"distance\":535.2631,\"isInside\":false,\"str\":\"V1\",\"x\":714.6152,\"y\":226.5929}]},{\"distance\":22.1826,\"hasMatch\":true,\"id\":\"68-g_d35_img_p107_12\",\"image\":{\"dataUrl\":null,\"disHeight\":59,\"disWidth\":81,\"height\":320,\"id\":\"68-g_d35_img_p107_12\",\"index\":68,\"originalTransform\":{\"height\":59,\"width\":81,\"x\":560,\"y\":303},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":474,\"x\":560,\"y\":303},\"imageId\":\"68-g_d35_img_p107_12\",\"num\":{\"distance\":22.1826,\"isInside\":false,\"str\":\"4\",\"x\":598.7441,\"y\":276.7303},\"nums\":[{\"distance\":22.1826,\"isInside\":false,\"str\":\"4\",\"x\":598.7441,\"y\":276.7303},{\"distance\":111.6504,\"isInside\":false,\"str\":\"G9\",\"x\":617.4489,\"y\":187.4861},{\"distance\":150.0773,\"isInside\":false,\"str\":\"V1\",\"x\":714.6152,\"y\":226.5929},{\"distance\":196.5906,\"isInside\":false,\"str\":\"G6\",\"x\":599.1255,\"y\":102.2795},{\"distance\":248.1561,\"isInside\":false,\"str\":\"V2\",\"x\":713.8202,\"y\":128.5141},{\"distance\":306.2657,\"isInside\":false,\"str\":\"B1\",\"x\":444.5906,\"y\":102.3031},{\"distance\":346.3852,\"isInside\":false,\"str\":\"2\",\"x\":213.494,\"y\":295.4708},{\"distance\":416.4068,\"isInside\":false,\"str\":\"3\",\"x\":223.5585,\"y\":439.5653},{\"distance\":434.9467,\"isInside\":false,\"str\":\"1\",\"x\":214.3039,\"y\":186.8149},{\"distance\":456.6676,\"isInside\":false,\"str\":\"E6\",\"x\":293.7853,\"y\":102.1162}]},{\"distance\":15.7238,\"hasMatch\":true,\"id\":\"56-g_d35_img_p49_4\",\"image\":{\"dataUrl\":null,\"disHeight\":55,\"disWidth\":61,\"height\":321,\"id\":\"56-g_d35_img_p49_4\",\"index\":56,\"originalTransform\":{\"height\":55,\"width\":61,\"x\":150,\"y\":444},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":340,\"x\":150,\"y\":444},\"imageId\":\"56-g_d35_img_p49_4\",\"num\":{\"distance\":15.7238,\"isInside\":false,\"str\":\"3\",\"x\":223.5585,\"y\":439.5653},\"nums\":[{\"distance\":15.7238,\"isInside\":false,\"str\":\"3\",\"x\":223.5585,\"y\":439.5653},{\"distance\":148.6732,\"isInside\":false,\"str\":\"2\",\"x\":213.494,\"y\":295.4708},{\"distance\":277.5035,\"isInside\":false,\"str\":\"1\",\"x\":214.3039,\"y\":186.8149},{\"distance\":425.18,\"isInside\":false,\"str\":\"E6\",\"x\":293.7853,\"y\":102.1162},{\"distance\":552.6826,\"isInside\":false,\"str\":\"4\",\"x\":598.7441,\"y\":276.7303},{\"distance\":575.2081,\"isInside\":false,\"str\":\"B1\",\"x\":444.5906,\"y\":102.3031},{\"distance\":664.2574,\"isInside\":false,\"str\":\"G9\",\"x\":617.4489,\"y\":187.4861},{\"distance\":721.0773,\"isInside\":false,\"str\":\"V1\",\"x\":714.6152,\"y\":226.5929},{\"distance\":731.1406,\"isInside\":false,\"str\":\"G6\",\"x\":599.1255,\"y\":102.2795},{\"distance\":819.1561,\"isInside\":false,\"str\":\"V2\",\"x\":713.8202,\"y\":128.5141}]},{\"distance\":16.3148,\"hasMatch\":true,\"id\":\"44-img_p163_3\",\"image\":{\"dataUrl\":null,\"disHeight\":58,\"disWidth\":34,\"height\":241,\"id\":\"44-img_p163_3\",\"index\":44,\"originalTransform\":{\"height\":58,\"width\":34,\"x\":166,\"y\":280},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":141,\"x\":166,\"y\":280},\"imageId\":\"44-img_p163_3\",\"num\":{\"distance\":16.3148,\"isInside\":false,\"str\":\"2\",\"x\":213.494,\"y\":295.4708},\"nums\":[{\"distance\":16.3148,\"isInside\":false,\"str\":\"2\",\"x\":213.494,\"y\":295.4708},{\"distance\":124.5035,\"isInside\":false,\"str\":\"1\",\"x\":214.3039,\"y\":186.8149},{\"distance\":132.7238,\"isInside\":false,\"str\":\"3\",\"x\":223.5585,\"y\":439.5653},{\"distance\":272.18,\"isInside\":false,\"str\":\"E6\",\"x\":293.7853,\"y\":102.1162},{\"distance\":402.5826,\"isInside\":false,\"str\":\"4\",\"x\":598.7441,\"y\":276.7303},{\"distance\":422.2081,\"isInside\":false,\"str\":\"B1\",\"x\":444.5906,\"y\":102.3031},{\"distance\":511.2574,\"isInside\":false,\"str\":\"G9\",\"x\":617.4489,\"y\":187.4861},{\"distance\":568.0773,\"isInside\":false,\"str\":\"V1\",\"x\":714.6152,\"y\":226.5929},{\"distance\":578.1406,\"isInside\":false,\"str\":\"G6\",\"x\":599.1255,\"y\":102.2795},{\"distance\":666.1561,\"isInside\":false,\"str\":\"V2\",\"x\":713.8202,\"y\":128.5141}]},{\"distance\":37.4535,\"hasMatch\":true,\"id\":\"32-img_p163_2\",\"image\":{\"dataUrl\":null,\"disHeight\":57,\"disWidth\":56,\"height\":237,\"id\":\"32-img_p163_2\",\"index\":32,\"originalTransform\":{\"height\":57,\"width\":56,\"x\":144,\"y\":173},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":235,\"x\":144,\"y\":173},\"imageId\":\"32-img_p163_2\",\"num\":{\"distance\":37.4535,\"isInside\":false,\"str\":\"1\",\"x\":214.3039,\"y\":186.8149},\"nums\":[{\"distance\":37.4535,\"isInside\":false,\"str\":\"1\",\"x\":214.3039,\"y\":186.8149},{\"distance\":86.6148,\"isInside\":false,\"str\":\"2\",\"x\":213.494,\"y\":295.4708},{\"distance\":165.18,\"isInside\":false,\"str\":\"E6\",\"x\":293.7853,\"y\":102.1162},{\"distance\":240.7238,\"isInside\":false,\"str\":\"3\",\"x\":223.5585,\"y\":439.5653},{\"distance\":315.2081,\"isInside\":false,\"str\":\"B1\",\"x\":444.5906,\"y\":102.3031},{\"distance\":424.2074,\"isInside\":false,\"str\":\"G9\",\"x\":617.4489,\"y\":187.4861},{\"distance\":453.0632,\"isInside\":false,\"str\":\"4\",\"x\":598.7441,\"y\":276.7303},{\"distance\":471.1406,\"isInside\":false,\"str\":\"G6\",\"x\":599.1255,\"y\":102.2795},{\"distance\":521.2631,\"isInside\":false,\"str\":\"V1\",\"x\":714.6152,\"y\":226.5929},{\"distance\":559.1561,\"isInside\":false,\"str\":\"V2\",\"x\":713.8202,\"y\":128.5141}]},{\"distance\":5.7919,\"hasMatch\":true,\"id\":\"20-g_d35_img_p146_2\",\"image\":{\"dataUrl\":null,\"disHeight\":29,\"disWidth\":32,\"height\":120,\"id\":\"20-g_d35_img_p146_2\",\"index\":20,\"originalTransform\":{\"height\":29,\"width\":32,\"x\":434,\"y\":73},\"pageHeight\":595.276,\"pageWidth\":841.89,\"rotate\":0,\"width\":133,\"x\":434,\"y\":73},\"imageId\":\"20-g_d35_img_p146_2\",\"num\":{\"distance\":5.7919,\"isInside\":false,\"str\":\"B1\",\"x\":444.5906,\"y\":102.3031},\"nums\":[{\"distance\":5.7919,\"isInside\":false,\"str\":\"B1\",\"x\":444.5906,\"y\":102.3031},{\"distance\":139.82,\"isInside\":false,\"str\":\"E6\",\"x\":293.7853,\"y\":102.1162},{\"distance\":144.6196,\"isInside\":false,\"str\":\"G6\",\"x\":599.1255,\"y\":102.2795},{\"distance\":248.1496,\"isInside\":false,\"str\":\"G9\",\"x\":617.4489,\"y\":187.4861},{\"distance\":285.1843,\"isInside\":false,\"str\":\"V2\",\"x\":713.8202,\"y\":128.5141},{\"distance\":287.4965,\"isInside\":false,\"str\":\"1\",\"x\":214.3039,\"y\":186.8149},{\"distance\":315.0632,\"isInside\":false,\"str\":\"4\",\"x\":598.7441,\"y\":276.7303},{\"distance\":383.2631,\"isInside\":false,\"str\":\"V1\",\"x\":714.6152,\"y\":226.5929},{\"distance\":416.3268,\"isInside\":false,\"str\":\"2\",\"x\":213.494,\"y\":295.4708},{\"distance\":550.4068,\"isInside\":false,\"str\":\"3\",\"x\":223.5585,\"y\":439.5653}]}]"
+            }
+        ]
+    },
+    "file-data": {
+        "OR ROUGE-全产品-0801.pdf": {
+            "path": "/Users/Yau/Downloads/1.loreal/新上市/YSL/0526/数据/比例档/3月/OR ROUGE-全产品-0801.pdf",
+            "totalPages": null,
+            "pages": [
+                {
+                    "title": "",
+                    "catalogueTitle": "",
+                    "p": 1,
+                    "items": [],
+                    "images": [
+                        {
+                            "ext": "png",
+                            "height": 307,
+                            "index": 5,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/ORROUGE-全产品-0801.pdf/page_001_image_005.png",
+                            "source": "render-crop",
+                            "time": "1.394166ms",
+                            "type": "image-meta",
+                            "width": 367
+                        },
+                        {
+                            "ext": "png",
+                            "height": 307,
+                            "index": 6,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/ORROUGE-全产品-0801.pdf/page_001_image_006.png",
+                            "source": "render-crop",
+                            "time": "1.411625ms",
+                            "type": "image-meta",
+                            "width": 346
+                        },
+                        {
+                            "ext": "png",
+                            "height": 402,
+                            "index": 3,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/ORROUGE-全产品-0801.pdf/page_001_image_003.png",
+                            "source": "render-crop",
+                            "time": "1.47925ms",
+                            "type": "image-meta",
+                            "width": 299
+                        },
+                        {
+                            "ext": "png",
+                            "height": 385,
+                            "index": 4,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/ORROUGE-全产品-0801.pdf/page_001_image_004.png",
+                            "source": "render-crop",
+                            "time": "1.390791ms",
+                            "type": "image-meta",
+                            "width": 299
+                        },
+                        {
+                            "ext": "png",
+                            "height": 433,
+                            "index": 2,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/ORROUGE-全产品-0801.pdf/page_001_image_002.png",
+                            "source": "render-crop",
+                            "time": "1.540667ms",
+                            "type": "image-meta",
+                            "width": 298
+                        },
+                        {
+                            "ext": "png",
+                            "height": 477,
+                            "index": 1,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/ORROUGE-全产品-0801.pdf/page_001_image_001.png",
+                            "source": "render-crop",
+                            "time": "1.697334ms",
+                            "type": "image-meta",
+                            "width": 298
+                        },
+                        {
+                            "ext": "png",
+                            "height": 337,
+                            "index": 7,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/ORROUGE-全产品-0801.pdf/page_001_image_007.png",
+                            "source": "render-crop",
+                            "time": "1.85575ms",
+                            "type": "image-meta",
+                            "width": 298
+                        },
+                        {
+                            "ext": "png",
+                            "height": 307,
+                            "index": 8,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/ORROUGE-全产品-0801.pdf/page_001_image_008.png",
+                            "source": "render-crop",
+                            "time": "782µs",
+                            "type": "image-meta",
+                            "width": 310
+                        },
+                        {
+                            "ext": "png",
+                            "height": 313,
+                            "index": 9,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/ORROUGE-全产品-0801.pdf/page_001_image_009.png",
+                            "source": "render-crop",
+                            "time": "3.750209ms",
+                            "type": "image-meta",
+                            "width": 298
+                        }
+                    ],
+                    "width": 0,
+                    "height": 0,
+                    "path": ""
+                }
+            ],
+            "lazy": true
+        },
+        "gift-0901.pdf": {
+            "path": "/Users/Yau/Downloads/1.loreal/新上市/YSL/0526/数据/比例档/3月/gift-0901.pdf",
+            "totalPages": null,
+            "lazy": true,
+            "pages": [
+                {
+                    "title": "",
+                    "catalogueTitle": "",
+                    "p": 1,
+                    "items": [],
+                    "images": [
+                        {
+                            "ext": "png",
+                            "height": 644,
+                            "object": 21,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/gift-0901.pdf/gift-0901_1_Im8_obj21.png",
+                            "source": "direct-fast",
+                            "time": "394.542µs",
+                            "type": "image-meta",
+                            "width": 461
+                        },
+                        {
+                            "ext": "png",
+                            "height": 321,
+                            "object": 12,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/gift-0901.pdf/gift-0901_1_Im1_obj12.png",
+                            "source": "direct-fast",
+                            "time": "496.125µs",
+                            "type": "image-meta",
+                            "width": 350
+                        },
+                        {
+                            "ext": "png",
+                            "height": 322,
+                            "object": 19,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/gift-0901.pdf/gift-0901_1_Im6_obj19.png",
+                            "source": "direct-fast",
+                            "time": "472.958µs",
+                            "type": "image-meta",
+                            "width": 555
+                        },
+                        {
+                            "ext": "png",
+                            "height": 876,
+                            "object": 20,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/gift-0901.pdf/gift-0901_1_Im7_obj20.png",
+                            "source": "direct-fast",
+                            "time": "462.334µs",
+                            "type": "image-meta",
+                            "width": 470
+                        },
+                        {
+                            "ext": "png",
+                            "height": 321,
+                            "object": 11,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/gift-0901.pdf/gift-0901_1_Im0_obj11.png",
+                            "source": "direct-fast",
+                            "time": "521.542µs",
+                            "type": "image-meta",
+                            "width": 340
+                        },
+                        {
+                            "ext": "png",
+                            "height": 321,
+                            "object": 15,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/gift-0901.pdf/gift-0901_1_Im2_obj15.png",
+                            "source": "direct-fast",
+                            "time": "521.584µs",
+                            "type": "image-meta",
+                            "width": 374
+                        },
+                        {
+                            "ext": "png",
+                            "height": 535,
+                            "object": 13,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/gift-0901.pdf/gift-0901_1_Im10_obj13.png",
+                            "source": "direct-fast",
+                            "time": "564.958µs",
+                            "type": "image-meta",
+                            "width": 507
+                        },
+                        {
+                            "ext": "png",
+                            "height": 322,
+                            "object": 17,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/gift-0901.pdf/gift-0901_1_Im4_obj17.png",
+                            "source": "direct-fast",
+                            "time": "472.75µs",
+                            "type": "image-meta",
+                            "width": 440
+                        },
+                        {
+                            "ext": "png",
+                            "height": 320,
+                            "object": 18,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/gift-0901.pdf/gift-0901_1_Im5_obj18.png",
+                            "source": "direct-fast",
+                            "time": "458.209µs",
+                            "type": "image-meta",
+                            "width": 474
+                        },
+                        {
+                            "ext": "png",
+                            "height": 321,
+                            "object": 14,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/gift-0901.pdf/gift-0901_1_Im11_obj14.png",
+                            "source": "direct-fast",
+                            "time": "528.125µs",
+                            "type": "image-meta",
+                            "width": 315
+                        },
+                        {
+                            "ext": "png",
+                            "height": 321,
+                            "object": 16,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/gift-0901.pdf/gift-0901_1_Im3_obj16.png",
+                            "source": "direct-fast",
+                            "time": "778.333µs",
+                            "type": "image-meta",
+                            "width": 419
+                        },
+                        {
+                            "ext": "png",
+                            "height": 535,
+                            "object": 22,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/gift-0901.pdf/gift-0901_1_Im9_obj22.png",
+                            "source": "direct-fast",
+                            "time": "1.044292ms",
+                            "type": "image-meta",
+                            "width": 449
+                        }
+                    ],
+                    "width": 0,
+                    "height": 0,
+                    "path": ""
+                }
+            ]
+        },
+        "LIBRE-模特+文字-0901.pdf": {
+            "path": "/Users/Yau/Downloads/1.loreal/新上市/YSL/0526/数据/比例档/3月/LIBRE-模特+文字-0901.pdf",
+            "totalPages": null,
+            "pages": [
+                {
+                    "title": "",
+                    "catalogueTitle": "",
+                    "p": 1,
+                    "items": [],
+                    "images": [
+                        {
+                            "ext": "png",
+                            "height": 580,
+                            "object": 17,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/LIBRE-模特+文字-0901.pdf/LIBRE-模特+文字-0901_1_Im6_obj17.png",
+                            "source": "direct-fast",
+                            "time": "15.208µs",
+                            "type": "image-meta",
+                            "width": 1087
+                        },
+                        {
+                            "ext": "png",
+                            "height": 580,
+                            "object": 13,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/LIBRE-模特+文字-0901.pdf/LIBRE-模特+文字-0901_1_Im2_obj13.png",
+                            "source": "direct-fast",
+                            "time": "20.25µs",
+                            "type": "image-meta",
+                            "width": 1036
+                        },
+                        {
+                            "ext": "png",
+                            "height": 500,
+                            "object": 11,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/LIBRE-模特+文字-0901.pdf/LIBRE-模特+文字-0901_1_Im0_obj11.png",
+                            "source": "direct-fast",
+                            "time": "19.666µs",
+                            "type": "image-meta",
+                            "width": 1176
+                        },
+                        {
+                            "ext": "png",
+                            "height": 320,
+                            "object": 15,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/LIBRE-模特+文字-0901.pdf/LIBRE-模特+文字-0901_1_Im4_obj15.png",
+                            "source": "direct-fast",
+                            "time": "17.042µs",
+                            "type": "image-meta",
+                            "width": 474
+                        },
+                        {
+                            "ext": "png",
+                            "height": 580,
+                            "object": 16,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/LIBRE-模特+文字-0901.pdf/LIBRE-模特+文字-0901_1_Im5_obj16.png",
+                            "source": "direct-fast",
+                            "time": "31.5µs",
+                            "type": "image-meta",
+                            "width": 942
+                        },
+                        {
+                            "ext": "png",
+                            "height": 500,
+                            "object": 12,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/LIBRE-模特+文字-0901.pdf/LIBRE-模特+文字-0901_1_Im1_obj12.png",
+                            "source": "direct-fast",
+                            "time": "199.625µs",
+                            "type": "image-meta",
+                            "width": 500
+                        },
+                        {
+                            "ext": "png",
+                            "height": 676,
+                            "object": 14,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/LIBRE-模特+文字-0901.pdf/LIBRE-模特+文字-0901_1_Im3_obj14.png",
+                            "source": "direct-fast",
+                            "time": "440.417µs",
+                            "type": "image-meta",
+                            "width": 500
+                        }
+                    ],
+                    "width": 0,
+                    "height": 0,
+                    "path": ""
+                }
+            ],
+            "lazy": true
+        },
+        "MUSE模特.pdf": {
+            "path": "/Users/Yau/Downloads/1.loreal/新上市/YSL/0526/数据/比例档/3月/MUSE模特.pdf",
+            "totalPages": null,
+            "pages": [
+                {
+                    "title": "",
+                    "catalogueTitle": "",
+                    "p": 1,
+                    "items": [],
+                    "images": [
+                        {
+                            "ext": "png",
+                            "height": 876,
+                            "object": 24,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE模特.pdf/MUSE模特_1_Im9_obj24.png",
+                            "source": "direct-fast",
+                            "time": "21.583µs",
+                            "type": "image-meta",
+                            "width": 470
+                        },
+                        {
+                            "ext": "png",
+                            "height": 500,
+                            "object": 17,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE模特.pdf/MUSE模特_1_Im2_obj17.png",
+                            "source": "direct-fast",
+                            "time": "27.5µs",
+                            "type": "image-meta",
+                            "width": 610
+                        },
+                        {
+                            "ext": "png",
+                            "height": 880,
+                            "object": 13,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE模特.pdf/MUSE模特_1_Im10_obj13.png",
+                            "source": "direct-fast",
+                            "time": "31.291µs",
+                            "type": "image-meta",
+                            "width": 500
+                        },
+                        {
+                            "ext": "png",
+                            "height": 768,
+                            "object": 14,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE模特.pdf/MUSE模特_1_Im11_obj14.png",
+                            "source": "direct-fast",
+                            "time": "134µs",
+                            "type": "image-meta",
+                            "width": 500
+                        },
+                        {
+                            "ext": "png",
+                            "height": 322,
+                            "object": 22,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE模特.pdf/MUSE模特_1_Im7_obj22.png",
+                            "source": "direct-fast",
+                            "time": "272.083µs",
+                            "type": "image-meta",
+                            "width": 555
+                        },
+                        {
+                            "ext": "png",
+                            "height": 320,
+                            "object": 21,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE模特.pdf/MUSE模特_1_Im6_obj21.png",
+                            "source": "direct-fast",
+                            "time": "408.875µs",
+                            "type": "image-meta",
+                            "width": 474
+                        },
+                        {
+                            "ext": "png",
+                            "height": 552,
+                            "object": 11,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE模特.pdf/MUSE模特_1_Im0_obj11.png",
+                            "source": "direct-fast",
+                            "time": "267µs",
+                            "type": "image-meta",
+                            "width": 500
+                        },
+                        {
+                            "ext": "png",
+                            "height": 629,
+                            "object": 16,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE模特.pdf/MUSE模特_1_Im13_obj16.png",
+                            "source": "direct-fast",
+                            "time": "473.916µs",
+                            "type": "image-meta",
+                            "width": 500
+                        },
+                        {
+                            "ext": "png",
+                            "height": 500,
+                            "object": 12,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE模特.pdf/MUSE模特_1_Im1_obj12.png",
+                            "source": "direct-fast",
+                            "time": "272.084µs",
+                            "type": "image-meta",
+                            "width": 505
+                        },
+                        {
+                            "ext": "png",
+                            "height": 321,
+                            "object": 19,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE模特.pdf/MUSE模特_1_Im4_obj19.png",
+                            "source": "direct-fast",
+                            "time": "266.334µs",
+                            "type": "image-meta",
+                            "width": 419
+                        },
+                        {
+                            "ext": "png",
+                            "height": 880,
+                            "object": 23,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE模特.pdf/MUSE模特_1_Im8_obj23.png",
+                            "source": "direct-fast",
+                            "time": "278.625µs",
+                            "type": "image-meta",
+                            "width": 432
+                        },
+                        {
+                            "ext": "png",
+                            "height": 321,
+                            "object": 18,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE模特.pdf/MUSE模特_1_Im3_obj18.png",
+                            "source": "direct-fast",
+                            "time": "296.458µs",
+                            "type": "image-meta",
+                            "width": 374
+                        },
+                        {
+                            "ext": "png",
+                            "height": 322,
+                            "object": 20,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE模特.pdf/MUSE模特_1_Im5_obj20.png",
+                            "source": "direct-fast",
+                            "time": "306.375µs",
+                            "type": "image-meta",
+                            "width": 440
+                        },
+                        {
+                            "ext": "png",
+                            "height": 675,
+                            "object": 15,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE模特.pdf/MUSE模特_1_Im12_obj15.png",
+                            "source": "direct-fast",
+                            "time": "293.417µs",
+                            "type": "image-meta",
+                            "width": 500
+                        }
+                    ],
+                    "width": 0,
+                    "height": 0,
+                    "path": ""
+                }
+            ],
+            "lazy": true
+        },
+        "MUSE产品.pdf": {
+            "path": "/Users/Yau/Downloads/1.loreal/新上市/YSL/0526/数据/比例档/3月/MUSE产品.pdf",
+            "totalPages": null,
+            "pages": [
+                {
+                    "title": "",
+                    "catalogueTitle": "",
+                    "p": 1,
+                    "items": [],
+                    "images": [
+                        {
+                            "ext": "png",
+                            "height": 495,
+                            "index": 2,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE产品.pdf/page_001_image_002.png",
+                            "source": "render-crop",
+                            "time": "1.095667ms",
+                            "type": "image-meta",
+                            "width": 394
+                        },
+                        {
+                            "ext": "png",
+                            "height": 689,
+                            "index": 1,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/MUSE产品.pdf/page_001_image_001.png",
+                            "source": "render-crop",
+                            "time": "1.189583ms",
+                            "type": "image-meta",
+                            "width": 370
+                        }
+                    ],
+                    "width": 0,
+                    "height": 0,
+                    "path": ""
+                }
+            ],
+            "lazy": true
+        },
+        "GLORIFIER-STATEMENT-lovenude.pdf": {
+            "path": "/Users/Yau/Downloads/1.loreal/新上市/YSL/0526/数据/比例档/3月/GLORIFIER-STATEMENT-lovenude.pdf",
+            "totalPages": null,
+            "pages": [
+                {
+                    "title": "",
+                    "catalogueTitle": "",
+                    "p": 1,
+                    "items": [],
+                    "images": [
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/GLORIFIER-STATEMENT-lovenude.pdf/page_001_image_001.png",
+                            "source": "render-crop",
+                            "time": "12.709375ms",
+                            "type": "image-meta",
+                            "width": 1969
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 2,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/GLORIFIER-STATEMENT-lovenude.pdf/page_002_image_001.png",
+                            "source": "render-crop",
+                            "time": "15.398208ms",
+                            "type": "image-meta",
+                            "width": 2165
+                        }
+                    ],
+                    "width": 0,
+                    "height": 0,
+                    "path": ""
+                }
+            ],
+            "lazy": true
+        },
+        "FRG TABLE-LIBRE-0328.pdf": {
+            "path": "/Users/Yau/Downloads/1.loreal/新上市/YSL/0526/数据/比例档/3月/FRG TABLE-LIBRE-0328.pdf",
+            "totalPages": null,
+            "pages": [
+                {
+                    "title": "",
+                    "catalogueTitle": "",
+                    "p": 1,
+                    "items": [],
+                    "images": [
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/FRGTABLE-LIBRE-0328.pdf/page_001_image_001.png",
+                            "source": "render-crop",
+                            "time": "17.038417ms",
+                            "type": "image-meta",
+                            "width": 2500
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 2,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/FRGTABLE-LIBRE-0328.pdf/page_002_image_001.png",
+                            "source": "render-crop",
+                            "time": "17.988625ms",
+                            "type": "image-meta",
+                            "width": 2579
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 3,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/FRGTABLE-LIBRE-0328.pdf/page_003_image_001.png",
+                            "source": "render-crop",
+                            "time": "17.401125ms",
+                            "type": "image-meta",
+                            "width": 2599
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 4,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/FRGTABLE-LIBRE-0328.pdf/page_004_image_001.png",
+                            "source": "render-crop",
+                            "time": "18.482958ms",
+                            "type": "image-meta",
+                            "width": 2619
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 5,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/FRGTABLE-LIBRE-0328.pdf/page_005_image_001.png",
+                            "source": "render-crop",
+                            "time": "16.272625ms",
+                            "type": "image-meta",
+                            "width": 2639
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 6,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/FRGTABLE-LIBRE-0328.pdf/page_006_image_001.png",
+                            "source": "render-crop",
+                            "time": "17.174ms",
+                            "type": "image-meta",
+                            "width": 2657
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 7,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/FRGTABLE-LIBRE-0328.pdf/page_007_image_001.png",
+                            "source": "render-crop",
+                            "time": "16.775166ms",
+                            "type": "image-meta",
+                            "width": 2677
+                        }
+                    ],
+                    "width": 0,
+                    "height": 0,
+                    "path": ""
+                }
+            ],
+            "lazy": true
+        },
+        "FRG TABLE-MYSLF.pdf": {
+            "path": "/Users/Yau/Downloads/1.loreal/新上市/YSL/0526/数据/比例档/3月/FRG TABLE-MYSLF.pdf",
+            "totalPages": null,
+            "pages": [
+                {
+                    "title": "",
+                    "catalogueTitle": "",
+                    "p": 1,
+                    "items": [],
+                    "images": [
+                        {
+                            "ext": "png",
+                            "height": 490,
+                            "object": 10,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/FRGTABLE-MYSLF.pdf/FRG TABLE-MYSLF_1_Im0_obj10.png",
+                            "source": "direct-fast",
+                            "time": "4.333µs",
+                            "type": "image-meta",
+                            "width": 659
+                        }
+                    ],
+                    "width": 0,
+                    "height": 0,
+                    "path": ""
+                }
+            ],
+            "lazy": true
+        },
+        "SK TABLE-SHOT-2601.pdf": {
+            "path": "/Users/Yau/Downloads/1.loreal/新上市/YSL/0526/数据/比例档/3月/SK TABLE-SHOT-2601.pdf",
+            "totalPages": null,
+            "pages": [
+                {
+                    "title": "",
+                    "catalogueTitle": "",
+                    "p": 1,
+                    "items": [],
+                    "images": [
+                        {
+                            "ext": "png",
+                            "height": 475,
+                            "index": 5,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKTABLE-SHOT-2601.pdf/page_001_image_005.png",
+                            "source": "render-crop",
+                            "time": "2.5445ms",
+                            "type": "image-meta",
+                            "width": 602
+                        },
+                        {
+                            "ext": "png",
+                            "height": 475,
+                            "index": 3,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKTABLE-SHOT-2601.pdf/page_001_image_003.png",
+                            "source": "render-crop",
+                            "time": "3.046625ms",
+                            "type": "image-meta",
+                            "width": 631
+                        },
+                        {
+                            "ext": "png",
+                            "height": 475,
+                            "index": 1,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKTABLE-SHOT-2601.pdf/page_001_image_001.png",
+                            "source": "render-crop",
+                            "time": "3.083084ms",
+                            "type": "image-meta",
+                            "width": 640
+                        },
+                        {
+                            "ext": "png",
+                            "height": 475,
+                            "index": 4,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKTABLE-SHOT-2601.pdf/page_001_image_004.png",
+                            "source": "render-crop",
+                            "time": "3.081125ms",
+                            "type": "image-meta",
+                            "width": 626
+                        },
+                        {
+                            "ext": "png",
+                            "height": 475,
+                            "index": 2,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKTABLE-SHOT-2601.pdf/page_001_image_002.png",
+                            "source": "render-crop",
+                            "time": "3.285208ms",
+                            "type": "image-meta",
+                            "width": 635
+                        }
+                    ],
+                    "width": 0,
+                    "height": 0,
+                    "path": ""
+                }
+            ],
+            "lazy": true
+        },
+        "SKIN CARE-人脸-2605.pdf": {
+            "path": "/Users/Yau/Downloads/1.loreal/新上市/YSL/0526/数据/比例档/5月/SKIN CARE-人脸-2605.pdf",
+            "totalPages": null,
+            "pages": [
+                {
+                    "title": "",
+                    "catalogueTitle": "",
+                    "p": 1,
+                    "items": [],
+                    "images": [
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 1,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_001_image_001.png",
+                            "source": "render-crop",
+                            "time": "9.244083ms",
+                            "type": "image-meta",
+                            "width": 1182
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 2,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_002_image_001.png",
+                            "source": "render-crop",
+                            "time": "13.524667ms",
+                            "type": "image-meta",
+                            "width": 1752
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 3,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_003_image_001.png",
+                            "source": "render-crop",
+                            "time": "6.474084ms",
+                            "type": "image-meta",
+                            "width": 1064
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 4,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_004_image_001.png",
+                            "source": "render-crop",
+                            "time": "7.694417ms",
+                            "type": "image-meta",
+                            "width": 1162
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 5,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_005_image_001.png",
+                            "source": "render-crop",
+                            "time": "7.379417ms",
+                            "type": "image-meta",
+                            "width": 1240
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 6,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_006_image_001.png",
+                            "source": "render-crop",
+                            "time": "7.384375ms",
+                            "type": "image-meta",
+                            "width": 1280
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 7,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_007_image_001.png",
+                            "source": "render-crop",
+                            "time": "7.790541ms",
+                            "type": "image-meta",
+                            "width": 1339
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 8,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_008_image_001.png",
+                            "source": "render-crop",
+                            "time": "8.934416ms",
+                            "type": "image-meta",
+                            "width": 1417
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 9,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_009_image_001.png",
+                            "source": "render-crop",
+                            "time": "10.314292ms",
+                            "type": "image-meta",
+                            "width": 1417
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 10,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_010_image_001.png",
+                            "source": "render-crop",
+                            "time": "12.257084ms",
+                            "type": "image-meta",
+                            "width": 1477
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 11,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_011_image_001.png",
+                            "source": "render-crop",
+                            "time": "9.647583ms",
+                            "type": "image-meta",
+                            "width": 1535
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 12,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_012_image_001.png",
+                            "source": "render-crop",
+                            "time": "10.249ms",
+                            "type": "image-meta",
+                            "width": 1555
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 13,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_013_image_001.png",
+                            "source": "render-crop",
+                            "time": "10.589875ms",
+                            "type": "image-meta",
+                            "width": 1595
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 14,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_014_image_001.png",
+                            "source": "render-crop",
+                            "time": "11.509625ms",
+                            "type": "image-meta",
+                            "width": 1634
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 15,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_015_image_001.png",
+                            "source": "render-crop",
+                            "time": "17.563459ms",
+                            "type": "image-meta",
+                            "width": 1654
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 16,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_016_image_001.png",
+                            "source": "render-crop",
+                            "time": "12.343958ms",
+                            "type": "image-meta",
+                            "width": 1694
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 17,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_017_image_001.png",
+                            "source": "render-crop",
+                            "time": "11.681958ms",
+                            "type": "image-meta",
+                            "width": 1714
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 18,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_018_image_001.png",
+                            "source": "render-crop",
+                            "time": "12.345291ms",
+                            "type": "image-meta",
+                            "width": 1752
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 19,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_019_image_001.png",
+                            "source": "render-crop",
+                            "time": "11.39375ms",
+                            "type": "image-meta",
+                            "width": 1821
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 20,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_020_image_001.png",
+                            "source": "render-crop",
+                            "time": "12.351708ms",
+                            "type": "image-meta",
+                            "width": 1841
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 21,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_021_image_001.png",
+                            "source": "render-crop",
+                            "time": "10.805208ms",
+                            "type": "image-meta",
+                            "width": 1859
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 22,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_022_image_001.png",
+                            "source": "render-crop",
+                            "time": "14.989875ms",
+                            "type": "image-meta",
+                            "width": 1870
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 23,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_023_image_001.png",
+                            "source": "render-crop",
+                            "time": "16.703542ms",
+                            "type": "image-meta",
+                            "width": 1880
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 24,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_024_image_001.png",
+                            "source": "render-crop",
+                            "time": "12.401334ms",
+                            "type": "image-meta",
+                            "width": 1890
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 25,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_025_image_001.png",
+                            "source": "render-crop",
+                            "time": "16.9765ms",
+                            "type": "image-meta",
+                            "width": 1900
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 26,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_026_image_001.png",
+                            "source": "render-crop",
+                            "time": "13.330709ms",
+                            "type": "image-meta",
+                            "width": 2007
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 27,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_027_image_001.png",
+                            "source": "render-crop",
+                            "time": "14.3105ms",
+                            "type": "image-meta",
+                            "width": 2067
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 28,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_028_image_001.png",
+                            "source": "render-crop",
+                            "time": "14.745541ms",
+                            "type": "image-meta",
+                            "width": 2077
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 29,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_029_image_001.png",
+                            "source": "render-crop",
+                            "time": "15.152333ms",
+                            "type": "image-meta",
+                            "width": 2086
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 30,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_030_image_001.png",
+                            "source": "render-crop",
+                            "time": "16.420333ms",
+                            "type": "image-meta",
+                            "width": 2096
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 31,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_031_image_001.png",
+                            "source": "render-crop",
+                            "time": "14.297083ms",
+                            "type": "image-meta",
+                            "width": 2106
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 32,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_032_image_001.png",
+                            "source": "render-crop",
+                            "time": "16.249042ms",
+                            "type": "image-meta",
+                            "width": 2116
+                        },
+                        {
+                            "ext": "png",
+                            "height": 1969,
+                            "index": 1,
+                            "page": 33,
+                            "path": "/Users/yau/Library/Application Support/com.lorealchina.mplus/temp_file/20260531/Ysl/SKINCARE-人脸-2605.pdf/page_033_image_001.png",
+                            "source": "render-crop",
+                            "time": "16.619958ms",
+                            "type": "image-meta",
+                            "width": 2126
+                        }
+                    ],
+                    "width": 0,
+                    "height": 0,
+                    "path": ""
+                }
+            ],
+            "lazy": true
+        }
+    }
+}

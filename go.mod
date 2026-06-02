@@ -16,7 +16,9 @@ require (
 	github.com/hhrutter/tiff v1.0.2 // indirect
 	github.com/jupiterrider/ffi v0.5.0 // indirect
 	github.com/mattn/go-runewidth v0.0.19 // indirect
+	github.com/phpdave11/gofpdi v1.0.14-0.20211212211723-1f10f9844311 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/signintech/gopdf v0.36.1 // indirect
 	golang.org/x/crypto v0.43.0 // indirect
 	golang.org/x/image v0.32.0 // indirect
 	golang.org/x/sys v0.37.0 // indirect
