@@ -148,14 +148,16 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 
 	// 3. 准备所有灯位的任务
 	var newRows []tableRow
-	var newObjNrPositions []struct {
+	var newItems []struct {
 		objNr int
 		name  string
+		pos   pdf.ImagePosition
 	}
 	type prepJob struct {
 		numStr   string
 		lampItem model.LampItem
 		objNr    int
+		imgPos   pdf.ImagePosition
 		srcPath  string
 		targetW  float64
 		targetH  float64
@@ -217,6 +219,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 			imgW = entry.Image.Width
 			imgH = entry.Image.Height
 		}
+		log.Printf("  [匹配] %s: 搜索 img ot=(%.0f,%.0f,%.0f,%.0f)", numStr, imgX, imgY, imgW, imgH)
 		ip := tmpl.FindImageByRect(imgX, imgY, imgW, imgH, tolerance)
 		if ip == nil {
 			processedCount++
@@ -228,6 +231,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 		if !jsonProgress {
 			log.Printf("  灯位 %s: obj=%d", numStr, ip.ObjNr)
 		}
+		log.Printf("  [匹配] %s: 找到 obj=%d xywh=(%.0f,%.0f,%.0f,%.0f)", numStr, ip.ObjNr, ip.X, ip.Y, ip.W, ip.H)
 
 		// 3d. 匹配素材
 		fileKey, found := matcher.MatchFileDataKey(lampItem.LampNote, cfg.FileData)
@@ -286,6 +290,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 			numStr:   numStr,
 			lampItem: lampItem,
 			objNr:    ip.ObjNr,
+			imgPos:   *ip,
 			srcPath:  match.Image.Path,
 			targetW:  targetW,
 			targetH:  targetH,
@@ -318,6 +323,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 		objNr    int
 		sd       *types.StreamDict
 		isNew    bool
+		imgPos   pdf.ImagePosition
 		lampItem model.LampItem
 		err      error
 	}
@@ -344,9 +350,9 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 				img, err := processImageDirect(job.srcPath, job.lampItem, cfg.BrandConf, job.targetW, job.targetH, actualFontPath)
 				if err == nil && img != nil {
 					sd := pdf.ImageToStreamDictJPEG(img, 85)
-					results <- processed{numStr: job.numStr, objNr: job.objNr, sd: sd, isNew: job.isNew, lampItem: job.lampItem, err: nil}
+					results <- processed{numStr: job.numStr, objNr: job.objNr, sd: sd, isNew: job.isNew, imgPos: job.imgPos, lampItem: job.lampItem, err: nil}
 				} else {
-					results <- processed{numStr: job.numStr, objNr: job.objNr, sd: nil, isNew: job.isNew, lampItem: job.lampItem, err: err}
+					results <- processed{numStr: job.numStr, objNr: job.objNr, sd: nil, isNew: job.isNew, imgPos: job.imgPos, lampItem: job.lampItem, err: err}
 				}
 			}
 		}()
@@ -381,10 +387,11 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 			log.Printf("  [替换] 灯位 %s (obj=%d)", r.numStr, r.objNr)
 		}
 		if r.isNew {
-			newObjNrPositions = append(newObjNrPositions, struct {
+			newItems = append(newItems, struct {
 				objNr int
 				name  string
-			}{objNr: r.objNr, name: r.numStr})
+				pos   pdf.ImagePosition
+			}{objNr: r.objNr, name: r.numStr, pos: r.imgPos})
 			newRows = append(newRows, tableRow{num: r.numStr, item: r.lampItem})
 		}
 		jobDone++
@@ -398,12 +405,7 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 
 	// 5b. 独立 PDF 矢量边框
 	bc := cfg.BrandConf
-	for _, item := range newObjNrPositions {
-		imgPos := tmpl.FindImageByObjNr(item.objNr)
-		if imgPos == nil {
-			log.Printf("  [警告] 灯位 %s(obj=%d) 无位置信息，跳过边框", item.name, item.objNr)
-			continue
-		}
+	for _, item := range newItems {
 		lw := 1.0
 		borderR, borderG, borderB := 1.0, 0.0, 0.0
 		if bc.Guide != nil {
@@ -415,7 +417,9 @@ func Run(inputPath, outputPath, fontPath, baseDir string, cpu int, jsonProgress 
 		if lw < 1 {
 			lw = 1
 		}
-		if err := tmpl.DrawRectBorder(*imgPos, lw,
+		log.Printf("  [边框] %s: obj=%d page=%d xywh=%.0f,%.0f,%.0f,%.0f lw=%.1f rgb=%.2f,%.2f,%.2f",
+			item.name, item.objNr, item.pos.Page, item.pos.X, item.pos.Y, item.pos.W, item.pos.H, lw, borderR, borderG, borderB)
+		if err := tmpl.DrawRectBorder(item.pos, lw,
 			borderR, borderG, borderB); err != nil {
 			log.Printf("  [警告] 灯位 %s 边框失败: %v", item.name, err)
 		}
