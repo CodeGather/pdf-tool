@@ -37,6 +37,7 @@ func FindMutool() string {
 			candidates := []string{
 				filepath.Join(exeDir, "mutool"),
 				filepath.Join(exeDir, "..", "Resources", "mutool"),
+				filepath.Join(exeDir, "..", "Resources", "binaries", "darwin", "mutool"),
 				filepath.Join(exeDir, "mutool.exe"),
 			}
 			for _, c := range candidates {
@@ -76,6 +77,7 @@ func FindGS() string {
 			candidates := []string{
 				filepath.Join(exeDir, "gs"),
 				filepath.Join(exeDir, "..", "Resources", "gs"),
+				filepath.Join(exeDir, "..", "Resources", "binaries", "darwin", "gs"),
 				filepath.Join(exeDir, "gs.exe"),
 				filepath.Join(exeDir, "gswin64c.exe"),
 				filepath.Join(exeDir, "gswin32c.exe"),

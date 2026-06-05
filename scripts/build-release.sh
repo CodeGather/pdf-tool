@@ -44,15 +44,19 @@ build_darwin() {
     local out_dir="$DIST_DIR/darwin"
     mkdir -p "$out_dir"
 
-    # 1. 编译 arm64 pdf-tool
+    # 1. 编译 arm64 pdf-tool（CGO_ENABLED=1 + linkmode=external 确保 Mach-O 含 LC_BUILD_VERSION）
     local tmp_arm64="$(mktemp)"
     echo "  → 编译 arm64 pdf-tool（临时）"
-    GOOS=darwin GOARCH=arm64 CGO_ENABLED=0 go build -o "$tmp_arm64" "$PROJECT_DIR" 2>&1 | tail -3
+    GOOS=darwin GOARCH=arm64 CGO_ENABLED=1 go build \
+        -ldflags="-s -w -linkmode=external" -buildmode=pie \
+        -o "$tmp_arm64" "$PROJECT_DIR" 2>&1 | tail -3
 
     # 2. 编译 amd64 pdf-tool
     local tmp_amd64="$(mktemp)"
     echo "  → 编译 amd64 pdf-tool（临时）"
-    GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -o "$tmp_amd64" "$PROJECT_DIR" 2>&1 | tail -3
+    GOOS=darwin GOARCH=amd64 CGO_ENABLED=1 go build \
+        -ldflags="-s -w -linkmode=external" -buildmode=pie \
+        -o "$tmp_amd64" "$PROJECT_DIR" 2>&1 | tail -3
 
     # 3. lipo 合并为通用二进制
     echo "  → lipo 合并 pdf-tool"

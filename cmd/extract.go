@@ -263,6 +263,7 @@ func classifyPDFDocument(ctx *model.Context, inputFile string) (pdfDocumentRoute
 		anyFormXObject     bool
 		anyMultiImagePage  bool
 		anyImagePage       bool
+		anyCMYKImage       bool
 		allPagesWholeImage = true
 	)
 
@@ -318,6 +319,17 @@ func classifyPDFDocument(ctx *model.Context, inputFile string) (pdfDocumentRoute
 		if len(objNrs) != 1 || !shouldRenderWholePageImage(ctx, pageNr, objNrs) {
 			allPagesWholeImage = false
 		}
+		// 检测当前页是否有 DeviceCMYK 图片。
+		// Go 的 CMYK→RGB 标准公式与 ICC profile 转换有肉眼可见色差，
+		// 因此强制走渲染裁剪路径，由 mutool/MuPDF 做正确的色彩空间转换。
+		for _, objNr := range objNrs {
+			if imageObj := ctx.Optimize.ImageObjects[objNr]; imageObj != nil && imageObj.ImageDict != nil {
+				if cs, err := pdfcpu.ColorSpaceString(ctx, imageObj.ImageDict); err == nil && cs == model.DeviceCMYKCS {
+					anyCMYKImage = true
+					break
+				}
+			}
+		}
 	}
 
 	// 先返回最保守但语义最明确的分支：整页扫描图。
@@ -337,6 +349,11 @@ func classifyPDFDocument(ctx *model.Context, inputFile string) (pdfDocumentRoute
 	// 直取只能拿到原始图片对象，不会应用 content stream 中的裁剪路径，
 	// 导致输出整张原图而非裁剪后的视觉效果。
 	if anyRealClip {
+		return routeRenderCropComplexTransparency, nil
+	}
+	// CMYK 图片：Go 的 CMYK→RGB 标准公式与 ICC profile 差异大，
+	// 强制走渲染裁剪路径，由 mutool/MuPDF 做正确的色彩空间转换。
+	if anyCMYKImage {
 		return routeRenderCropComplexTransparency, nil
 	}
 	// Group 标记但内容流中没有实际 clip 路径。
@@ -1247,7 +1264,7 @@ func writeDirectImage(ctx *model.Context, ctxMu *sync.Mutex, inputFile string, p
 				return nil
 			}
 		} else if len(rawData) == metaWidth*metaHeight*3 || len(rawData) == metaWidth*metaHeight*4 {
-			// 可能是原始 RGB/RGBA 像素数据
+			// 可能是原始 RGB/RGBA/CMYK 像素数据
 			bounds := image.Rect(0, 0, metaWidth, metaHeight)
 			rgba := image.NewRGBA(bounds)
 			if len(rawData) == metaWidth*metaHeight*3 {
@@ -1258,6 +1275,10 @@ func writeDirectImage(ctx *model.Context, ctxMu *sync.Mutex, inputFile string, p
 					}
 				}
 			} else {
+				// 4 字节/像素：可能是 RGBA 或 CMYK
+				// 如果 image.Decode 失败了（没有对应解码器），就走原始数据分支
+				// 注意：CMYK 图片的 4 字节数据会被当成 RGBA 拷贝（颜色不对），
+				// 但当前代码路径不会到这儿，因为 TIFF 解码器已注册且优先处理了 CMYK
 				copy(rgba.Pix, rawData)
 			}
 			if err := util.WriteImageAtomically(outPath, func(w io.Writer) error {
@@ -1935,8 +1956,6 @@ func isDirectCopyableImageType(fileType string) bool {
 }
 
 // ─── PDF 压缩功能（基于 Ghostscript）──
-
-// compressPDF 使用 Ghostscript 压缩 PDF 文件。
 // preset: 压缩预设 (screen/ebook/printer/prepress)
 // jpegQuality: JPEG 质量 1-100
 
